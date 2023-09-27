@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,20 +10,31 @@ using UnityEngine.InputSystem;
 public class movement : MonoBehaviour
 {
     [Header("Assignables")]
+    public movementStates movmentState;
     [SerializeField] private Rigidbody rb;
     public GameObject objOrientation;
     [SerializeField] private bool freeLook;
     MovementInputActions movementInput;
 
-    [Space, Header("Stats")]
+    [Space, Header("Base Movement Stats")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float moveMulti;
     [SerializeField] private float drag = 6f;
-    public movementStates movmentState { private set; get; }
 
+
+    [Header("Ground Check Stats")]
     [Space][SerializeField] private float groundCheckDistance;
     [SerializeField] private GameObject groundCheckPosition;
     [SerializeField] private LayerMask groundCheckLayers;
+
+    [Header("External Movement Stats")]
+    [SerializeField] private int staminaCharges;
+    [SerializeField] private float rechargeRate;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float dashForce;
+    [SerializeField] private float slidingSpeed;
+    [SerializeField] private float buttSlamForce;
+
     private Vector2 horizontalMovement;
 
     private void OnEnable()
@@ -71,9 +83,17 @@ public class movement : MonoBehaviour
 
     void jump()
     {
-        //Reset artifical gravity of player,
-        //Apply jump force dependant on how long player holds button for
-        //set state of player to be airborne
+        
+    }
+
+    void dash()
+    {
+
+    }
+
+    void slide()
+    {
+        
     }
 
     void controlDrag()
