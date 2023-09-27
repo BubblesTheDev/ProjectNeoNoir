@@ -10,7 +10,7 @@ public class movement : MonoBehaviour
 {
     [Header("Assignables")]
     [SerializeField] private Rigidbody rb;
-    public GameObject objOrientation { private set; get; }
+    public GameObject objOrientation;
     [SerializeField] private bool freeLook;
     MovementInputActions movementInput;
 
@@ -38,7 +38,6 @@ public class movement : MonoBehaviour
     {
         movementInput = new MovementInputActions();
         rb = GetComponent<Rigidbody>();
-
         movementInput.playerMovment.HorizontalMovement.performed += HorizontalMovement_performed;
     }
 
@@ -82,11 +81,10 @@ public class movement : MonoBehaviour
         rb.drag = drag;
     }
 
-    bool getGroundCheck()
+    public bool getGroundCheck()
     {
-        RaycastHit groundCheckHit;
-        Physics.SphereCast(groundCheckPosition.transform.position, groundCheckDistance, -groundCheckPosition.transform.up, out groundCheckHit, Mathf.Infinity, groundCheckLayers);
-        if (groundCheckHit.point != null)
+
+        if (Physics.OverlapSphere(groundCheckPosition.transform.position, groundCheckDistance, groundCheckLayers).Length > 0)
         {
             return true;
         }
