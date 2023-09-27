@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Walkable
+  - Player
+  - Enemy
+  - Item
   - 
   - 
   - 

@@ -386,17 +386,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2085444124}
   playerRb: {fileID: 2085444126}
-  gravityIsFlipped: 0
   gravitySwitchCooldownBase: 3
   canSwitch: 1
   gravityForce: 10
   gravityMultiplier: 1
   timeToFlipGravity: 0.4
-  teleportFlip: 0
-  instantFlip: 0
-  enviromentLayers:
-    serializedVersion: 2
-    m_Bits: 0
+  instantFlip: 1
 --- !u!1 &284212097
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +404,7 @@ GameObject:
   - component: {fileID: 284212101}
   - component: {fileID: 284212100}
   - component: {fileID: 284212099}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 291050997}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +625,7 @@ GameObject:
   - component: {fileID: 639711244}
   - component: {fileID: 639711243}
   - component: {fileID: 639711242}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerGFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +730,7 @@ GameObject:
   - component: {fileID: 1823688466}
   - component: {fileID: 1823688465}
   - component: {fileID: 1823688468}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -945,6 +940,37 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!1 &1985090557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1985090558}
+  m_Layer: 7
+  m_Name: GroundCheckPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1985090558
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985090557}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2085444128}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1995028568
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +983,7 @@ GameObject:
   - component: {fileID: 1995028572}
   - component: {fileID: 1995028571}
   - component: {fileID: 1995028570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1112,7 +1138,7 @@ GameObject:
   - component: {fileID: 2085444125}
   - component: {fileID: 2085444130}
   - component: {fileID: 2085444129}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,6 +1209,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 291050997}
+  - {fileID: 1985090558}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 42.242, z: 0}
 --- !u!114 &2085444129
@@ -1192,21 +1219,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2085444124}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fccde661052e3c4458983b55d256d2dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movmentState: 0
   rb: {fileID: 2085444126}
+  objOrientation: {fileID: 291050994}
   freeLook: 0
   moveSpeed: 50
   moveMulti: 50
-  drag: 6
-  groundCheckDistance: 0
-  groundCheckPosition: {fileID: 0}
+  drag: 2
+  groundCheckDistance: 0.4
+  groundCheckPosition: {fileID: 1985090557}
   groundCheckLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  staminaCharges: 0
+  rechargeRate: 0
+  jumpForce: 0
+  dashForce: 0
+  slidingSpeed: 0
+  buttSlamForce: 0
 --- !u!114 &2085444130
 MonoBehaviour:
   m_ObjectHideFlags: 0
