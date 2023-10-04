@@ -13,6 +13,8 @@ public class cameraControl : MonoBehaviour
     [SerializeField] private GameObject CameraObj;
     CameraInputActions controls;
     gravity playerGravReference;
+    public RaycastHit lookingDir;
+    public LayerMask layersToIgnoreForAimingDir;
 
     [Space, Header("Stats")]
     [SerializeField] private float mouseSensitivity;
@@ -48,6 +50,8 @@ public class cameraControl : MonoBehaviour
         CameraObj.transform.localRotation = Quaternion.Euler(yRot, CameraObj.transform.localRotation.y, CameraObj.transform.localRotation.z);
         if(playerGravReference.gravityIsFlipped) transform.localRotation = Quaternion.Euler(0, -xRot, 180);
         else transform.localRotation = Quaternion.Euler(0, xRot, 0);
+
+        Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity);
     }
 
 
