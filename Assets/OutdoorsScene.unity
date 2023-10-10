@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.1184, g: 2264.4983, b: 3287.9224, a: 1}
+  m_IndirectSpecularColor: {r: 2160.7024, g: 2264.9026, b: 3288.2974, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -394,6 +394,7 @@ MonoBehaviour:
   player: {fileID: 2085444124}
   playerRb: {fileID: 2085444126}
   gravitySwitchCooldownBase: 3
+  useGravity: 1
   canSwitch: 1
   gravityForce: 10
   gravityMultiplier: 1
@@ -544,7 +545,7 @@ Transform:
   - {fileID: 565275321}
   - {fileID: 269594497}
   - {fileID: 1138491939}
-  m_Father: {fileID: 2085444128}
+  m_Father: {fileID: 2083594054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &356860725
 GameObject:
@@ -1482,6 +1483,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2083594053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2083594054}
+  - component: {fileID: 2083594055}
+  m_Layer: 7
+  m_Name: Orientation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2083594054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083594053}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.36033493, z: -0, w: 0.93282306}
+  m_LocalPosition: {x: 0, y: 5.206, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 291050997}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083594055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083594053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 927f3f723a3f1e946b7ffc75421305a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objToFollow: {fileID: 2085444124}
+  xAxis: 1
+  yAxis: 1
+  zAxis: 1
 --- !u!1 &2085444124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,7 +1615,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 291050997}
   - {fileID: 1985090558}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 42.242, z: 0}
@@ -1576,29 +1625,51 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2085444124}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fccde661052e3c4458983b55d256d2dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movmentState: 0
   rb: {fileID: 2085444126}
-  objOrientation: {fileID: 291050994}
+  objOrientation: {fileID: 2083594053}
   freeLook: 0
   moveSpeed: 50
   moveMulti: 50
   drag: 2
+  airDrag: 0.95
+  currentMovementState: 0
+  isGrounded: 0
   groundCheckDistance: 0.4
   groundCheckPosition: {fileID: 1985090557}
   groundCheckLayers:
     serializedVersion: 2
     m_Bits: 64
-  staminaCharges: 0
-  rechargeRate: 0
-  jumpForce: 0
-  dashForce: 0
+  staminaCharges: 3
+  instantRecharge: 1
+  rechargeRate: 0.66
+  jumpForce: 40
+  jumpCooldown: 0.2
+  canJump: 1
+  dashForce: 25
+  dashCooldown: 0.4
+  dashDistance: 5
+  dashDrag: 0.5
+  maxDashTime: 0.15
+  canDash: 1
   slidingSpeed: 0
+  slideCooldown: 0
   buttSlamForce: 0
+  buttSlamCooldown: 0
+  distanceToDetectWall: 0
+  wallLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  maxWallrunTime: 0
+  wallRunGravity: 0
+  wallRunJumpAngle: 0
+  wallRunDistance: 0
+  cameraAngleTilt: 0
 --- !u!114 &2085444130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1611,7 +1682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc117bc225aa514fb9bed59b74564c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Orientation: {fileID: 2085444124}
+  Orientation: {fileID: 2083594053}
   CameraObj: {fileID: 291050994}
   layersToIgnoreForAimingDir:
     serializedVersion: 2
@@ -1697,5 +1768,6 @@ SceneRoots:
   - {fileID: 432432461}
   - {fileID: 2013410475}
   - {fileID: 175434480}
+  - {fileID: 2083594054}
   - {fileID: 2085444128}
   - {fileID: 356860726}

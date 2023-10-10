@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class gravity : MonoBehaviour
 {
-    
+    public static gravity gravityReference;
 
     [Header("Assignables")]
     [SerializeField] private GameObject player;
@@ -18,6 +18,7 @@ public class gravity : MonoBehaviour
 
     [Space, Header("Statistics")]
     public float gravitySwitchCooldownBase;
+    public bool useGravity = true;
     [SerializeField] private bool canSwitch = true;
     [SerializeField] private float gravityForce;
     [SerializeField] private float gravityMultiplier;
@@ -31,12 +32,14 @@ public class gravity : MonoBehaviour
     private void Awake()
     {
         playerMovement = player.GetComponent<movement>();
+
+        gravityReference = GameObject.Find("Game Manager").GetComponent<gravity>();
         currentGravityDir = -Vector3.up;
     }
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.R) && canSwitch)
+        if (Input.GetKeyUp(KeyCode.R) && canSwitch && useGravity)
         {
             StartCoroutine(flipGravity());
         }
@@ -44,11 +47,14 @@ public class gravity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (player != null && playerRb != null)
+        if(useGravity) 
         {
-            if (playerMovement.getGroundCheck())
-                playerRb.velocity = new Vector3(playerRb.velocity.x, currentGravityDir.y, playerRb.velocity.z);
-            else playerRb.velocity = new Vector3(playerRb.velocity.x, playerRb.velocity.y + ((currentGravityDir.y * gravityForce) * Mathf.Exp(2)) * Time.deltaTime, playerRb.velocity.z);
+            if (player != null && playerRb != null)
+            {
+                if (playerMovement.getGroundCheck())
+                    playerRb.velocity = new Vector3(playerRb.velocity.x, currentGravityDir.y, playerRb.velocity.z);
+                else playerRb.velocity = new Vector3(playerRb.velocity.x, playerRb.velocity.y + ((currentGravityDir.y * gravityForce) * Mathf.Exp(2)) * Time.deltaTime, playerRb.velocity.z);
+            }
         }
     }
 

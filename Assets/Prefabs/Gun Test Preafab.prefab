@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4469394646056695688
 Transform:
   m_ObjectHideFlags: 0
@@ -48,9 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponDamage: 30
   shotsPerFire: 1
-  fireRate: 1
+  fireRate: 0
   numOfPellets: 1
-  fireCooldown: 1
+  fireCooldown: 0.3
   multiPelletAngle: 0
   muzzleVelocity: 25
   layersToHit:
