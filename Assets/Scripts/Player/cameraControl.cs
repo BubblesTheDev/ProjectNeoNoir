@@ -12,6 +12,9 @@ public class cameraControl : MonoBehaviour
     [SerializeField] private GameObject Orientation;
     [SerializeField] private GameObject CameraObj;
     CameraInputActions controls;
+    gravity playerGravReference;
+    public RaycastHit lookingDir;
+    public LayerMask layersToIgnoreForAimingDir;
 
     [Space, Header("Stats")]
     [SerializeField] private float mouseSensitivity;
@@ -28,6 +31,8 @@ public class cameraControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         controls = new CameraInputActions();
         controls.CameraControls.CameraRotation.performed += CameraRotation_performed;
+
+        playerGravReference = GameObject.Find("Game Manager").GetComponent<gravity>();
     }
 
     private void OnEnable()
@@ -42,8 +47,10 @@ public class cameraControl : MonoBehaviour
 
     private void Update()
     {
-        CameraObj.transform.localRotation = Quaternion.Euler(yRot, 0, 0);
-        transform.localRotation = Quaternion.Euler(0, xRot, 0);
+        CameraObj.transform.localRotation = Quaternion.Euler(yRot, CameraObj.transform.localRotation.y, CameraObj.transform.localRotation.z);
+        Orientation.transform.localRotation = Quaternion.Euler(0, xRot, 0);
+
+        Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity);
     }
 
 
