@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{e3433595-af0e-4e1e-87ce-ec267714457d}">
+		<property name="assetPath">
+			<value>Main_Menu1/Backup/Main_Menu1 (autosaved at 16h28).flp</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7b97db15-e2df-4e58-a513-ffe8389781e2}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
+using FMODUnity;
 
 public class weaponBase : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class weaponBase : MonoBehaviour
     RaycastHit shotHit;
     InteractionInputActions interactionInput;
     cameraControl camControl;
+
+    [SerializeField] private EventReference pistolShotSound;
 
     private void Awake()
     {
@@ -78,6 +81,7 @@ public class weaponBase : MonoBehaviour
 
     IEnumerator fireGun()
     {
+        AudioManager.instance.PlayPistolShot(pistolShotSound, this.transform.position);
         //print("Starting to fire: " + gameObject.name);
         canFire = false;
         for (int x = 0; x < shotsPerFire; x++)
@@ -171,4 +175,5 @@ public class weaponBase : MonoBehaviour
             Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(0, -multiPelletAngle, 0) * firePoint.transform.forward * 3f);
         }
     }
+
 }

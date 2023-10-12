@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{efcc6ac7-4b48-419f-b221-1d0fde25881a}">
+		<property name="assetPath">
+			<value>Gun Sounds/Gun 1 Pistol/Pistol Shot Sound/Audio/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7b97db15-e2df-4e58-a513-ffe8389781e2}</destination>
+		</relationship>
+	</object>
+</objects>

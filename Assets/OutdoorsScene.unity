@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2154.9644, g: 2258.2043, b: 3279.0972, a: 1}
+  m_IndirectSpecularColor: {r: 2160.847, g: 2263.057, b: 3121.6997, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +377,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1566338405}
+  - {fileID: 2114553530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &175434481
@@ -1501,7 +1502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
+  attenuationObject: {fileID: 2085444124}
 --- !u!1 &1985090557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,6 +1965,50 @@ MonoBehaviour:
   minAngle: -70
   mouseX: 0
   mouseY: 0
+--- !u!1 &2114553529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2114553530}
+  - component: {fileID: 2114553531}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2114553530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114553529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 175434480}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2114553531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114553529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a09445adfbbb6f46ac2bacf2160be34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2454827265585569832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1976,6 +2021,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gun Test Preafab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2080324174636414483, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4469394646056695688, guid: e6b020421741ae44d8c4ae139622c2da,
         type: 3}
@@ -2026,6 +2076,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Path
+      value: event:/Pistol Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data1
+      value: -574071897
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data2
+      value: 1179578397
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data3
+      value: -1150068829
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data4
+      value: 579732067
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
