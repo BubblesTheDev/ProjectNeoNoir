@@ -51,12 +51,18 @@ public class movement : MonoBehaviour
     public bool canDash = true;
 
     //Sliding Variables
-    [SerializeField, Space] private float slidingSpeed;
+    [SerializeField, Space] private float slideSpeed;
     [SerializeField] private float slideCooldown;
 
     //Buttslam Variables
     [SerializeField, Space] private float buttSlamForce;
     [SerializeField] private float buttSlamCooldown;
+    [SerializeField] private float slamReboundTime;
+    [SerializeField] private float slamDrag;
+    [SerializeField] private float timeToRaiseSlam;
+    [SerializeField] private float raiseDistance;
+    private bool slamRebound;
+    private bool canSlam = true;
 
     //Wallrun Variables
     [SerializeField, Space] private float distanceToDetectWall;
@@ -85,17 +91,18 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.HorizontalMovement.performed += HorizontalMovement_performed => movePlayer();
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
+        movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
     }
 
     private void FixedUpdate()
     {
-        movePlayer();
+        if(!freeLook) movePlayer();
 
     }
 
     private void Update()
     {
-        if (getGroundCheck()) currentMovementState = movementStates.grounded;
+        //if (getGroundCheck()) currentMovementState = movementStates.grounded;     
         controlDrag();
         if (!freeLook)
         {
@@ -123,7 +130,7 @@ public class movement : MonoBehaviour
         {
             if (staminaCharges > 0)
             {
-                print("jumping 3");
+                //print("jumping 3");
                 staminaCharges--;
             }
             else yield break;
@@ -177,7 +184,7 @@ public class movement : MonoBehaviour
         while (Vector3.Distance(transform.position, originDashPos) < dashDistance || timer < maxDashTime)
         {
             timer += Time.deltaTime;
-            print(timer);
+            //print(timer);
             yield return null;
         }
 
@@ -189,9 +196,83 @@ public class movement : MonoBehaviour
 
     }
 
-    void slide()
+    void startSlide()
     {
+        Vector3 slideDirection = new Vector3(0, objOrientation.transform.localEulerAngles.y, 0);
+        freeLook = true;
+        currentMovementState = movementStates.sliding;
 
+        while (movementInput.playerMovment.Slide.IsPressed())
+        {
+            rb.AddForce((slideDirection + Vector3.down) * slideSpeed * Time.deltaTime, ForceMode.Force);
+        }
+        
+    }
+
+
+    IEnumerator buttSlam()
+    {
+        //Detects if the player can slam
+        if(currentMovementState == movementStates.grounded 
+            || currentMovementState == movementStates.sliding 
+            || currentMovementState == movementStates.slamming 
+            || getGroundCheck() && canSlam)
+        {
+            yield break;
+        }
+
+        //Sets the player to start slamming, turns off gravity and stops any vertical movement while
+        //causing the player to slow a lot with a high drag 
+        currentMovementState = movementStates.slamming;
+        gravity.gravityReference.useGravity = false;
+        rb.drag = slamDrag;
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        freeLook = true;
+        canSlam = false;
+
+        //The player will then raise into the air slightly before slamming
+        float tempTime = 0;
+        while(tempTime < timeToRaiseSlam)
+        {
+            tempTime += Time.deltaTime;
+            rb.Move(transform.position + -gravity.gravityReference.currentGravityDir * raiseDistance, transform.rotation);
+            yield return null;
+        }
+
+        //Once the player has raised slightly they will slam down quickly
+        rb.AddForce(gravity.gravityReference.currentGravityDir * buttSlamForce, ForceMode.Impulse);
+
+        //Waits till certain seconds, or till the player hits the ground
+        tempTime = 0;
+        while(tempTime < 0.5f || getGroundCheck())
+        {
+            tempTime += Time.deltaTime;
+            yield return null;
+        }
+
+
+        freeLook = false;
+        gravity.gravityReference.useGravity = true;
+        rb.drag = drag;
+        currentMovementState = movementStates.grounded;
+
+        //if slam hits the ground,
+        //deal dmg to enemies and knock them back,
+        //screenshake
+        //Start the rebound timer
+
+        if (getGroundCheck())
+        {
+            slamRebound = true;
+            yield return new WaitForSeconds(slamReboundTime);
+        }
+
+        
+
+        float tempSlamCooldown = buttSlamCooldown;
+        if (getGroundCheck()) tempSlamCooldown = buttSlamCooldown - slamReboundTime;
+        yield return new WaitForSeconds(tempSlamCooldown);
+        canSlam = true;
     }
 
     void controlDrag()
