@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="Bank" id="{ca3c7c23-26e9-45af-ba84-6c042e0c8553}">
+	<object class="Bank" id="{c7b88d0f-ec25-4e7e-8a0a-f9c657b80d07}">
 		<property name="name">
-			<value>Pistol</value>
+			<value>Shotgun</value>
 		</property>
 		<relationship name="folder">
 			<destination>{0225404c-0df2-4164-9d86-a4bb0723381d}</destination>
