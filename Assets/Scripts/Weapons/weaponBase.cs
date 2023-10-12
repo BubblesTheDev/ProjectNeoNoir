@@ -65,10 +65,10 @@ public class weaponBase : MonoBehaviour
         {
             StartCoroutine(fireGun());
         }
-        /*if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+        if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
         {
-            print("Use Power");
-        }*/
+            StartCoroutine(currentWeaponPower.usePower());
+        }
     }
 
     
@@ -175,4 +175,12 @@ public class weaponBase : MonoBehaviour
         }
     }
 
+}
+
+public enum statusEffects
+{
+    normal,
+    oil,
+    electric,
+    fire
 }
