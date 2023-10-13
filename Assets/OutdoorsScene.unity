@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.5403, g: 2264.5706, b: 3287.5903, a: 1}
+  m_IndirectSpecularColor: {r: 2160.847, g: 2265.096, b: 3288.399, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -754,7 +754,21 @@ MonoBehaviour:
       Data2: 1179578397
       Data3: -1150068829
       Data4: 579732067
-    Path: event:/Pistol Shot
+    Path: event:/Gun Sounds/Pistol Shot
+  <shotgunShotNoCock>k__BackingField:
+    Guid:
+      Data1: -503321063
+      Data2: 1082164412
+      Data3: -12904
+      Data4: -1269078503
+    Path: event:/Gun Sounds/Shotgun Shot (No Cocking)
+  <shotgunShotCock>k__BackingField:
+    Guid:
+      Data1: 1074811739
+      Data2: 1129934216
+      Data3: 1136135100
+      Data4: 247813690
+    Path: event:/Gun Sounds/Shotgun Shot (With Cocking)
 --- !u!1 &565275320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,10 +1995,14 @@ MonoBehaviour:
   dashDrag: 0.5
   maxDashTime: 0.15
   canDash: 1
-  slidingSpeed: 0
+  slideSpeed: 0
   slideCooldown: 0
   buttSlamForce: 0
   buttSlamCooldown: 0
+  slamReboundTime: 0
+  slamDrag: 0
+  timeToRaiseSlam: 0
+  raiseDistance: 0
   distanceToDetectWall: 0
   wallLayers:
     serializedVersion: 2
