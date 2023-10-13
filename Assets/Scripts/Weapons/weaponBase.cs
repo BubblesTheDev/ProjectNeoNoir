@@ -95,7 +95,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayPistolShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
 
 
@@ -131,7 +131,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayPistolShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
                     GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
                     if (tempBullet.GetComponent<Rigidbody>() != null)

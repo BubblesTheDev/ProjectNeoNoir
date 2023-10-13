@@ -17,8 +17,8 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void PlayPistolShot(EventReference pistolShoot, Vector3 worldPos)
+    public void PlayGunShot(EventReference gunShot, Vector3 worldPos)
     {
-        RuntimeManager.PlayOneShot(pistolShoot, worldPos);
-    }
+        RuntimeManager.PlayOneShot(gunShot, worldPos);
+    } 
 }
