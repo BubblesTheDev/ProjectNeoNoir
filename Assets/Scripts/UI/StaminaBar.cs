@@ -18,7 +18,7 @@ public class StaminaBar : MonoBehaviour
     private float regenRate;
     [Tooltip("The rate at which stamina is recovered per 0.1 seconds.")]
 
-    public static StaminaBar instance;
+    public static StaminaBar instance { get; private set; }
 
     private WaitForSeconds w = new WaitForSeconds(0.1f);
 
@@ -26,7 +26,14 @@ public class StaminaBar : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if(instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
     }
     void Start()
     {
