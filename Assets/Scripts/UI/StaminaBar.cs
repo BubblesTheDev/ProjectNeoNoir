@@ -6,48 +6,64 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
     [SerializeField]
-    private float dashCD;
+    private Slider staminaBar;
 
-    // needs to be attached to the functional dash timers and whatnot
     [SerializeField]
-    private float dashTimer;
+    private float maxStamina;
 
-    private Vector3 currentBarScale;
+    [SerializeField]
+    private float currentStamina;
 
-    private Image im;
+    [SerializeField]
+    private float regenRate;
+    [Tooltip("The rate at which stamina is recovered per 0.1 seconds.")]
 
-    // private Color red = Color.red;
-    private Color yellow;
+    public static StaminaBar instance;
 
-    // Start is called before the first frame update
+    private WaitForSeconds w = new WaitForSeconds(0.1f);
+
+    private Coroutine regen;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
-        dashCD = 0.4f;
-        dashTimer = 0.4f;
-        im = gameObject.GetComponent<Image>();
-        yellow = im.color;
+        maxStamina = 100;
+        currentStamina = maxStamina;
+        staminaBar.maxValue = maxStamina;
+        staminaBar.value = maxStamina;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UseStamina(float value)
     {
-        // sets stamina bar colour to red and fades back to original colour. can adjust later but we'll need to calculate values lol
-        im.color = new Color(1, (dashTimer / dashCD) * yellow.g, (dashTimer / dashCD) * yellow.b);
+        if(currentStamina - value >= 0)
+        {
+            currentStamina -= value;
+            staminaBar.value = currentStamina;
 
-        if (dashTimer < 0.4)
-        {
-            dashTimer += Time.deltaTime;
-        }
-        if(dashTimer >= 0.4)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if(regen != null)
             {
-                dashTimer = 0;
+                StopCoroutine(regen);
             }
 
+            regen = StartCoroutine(StaminaRegen());
         }
-        currentBarScale = new Vector3((float)dashTimer / (float)dashCD, transform.localScale.y, transform.localScale.z);
-        transform.localScale = currentBarScale;
+        else
+        {
+            Debug.Log("insert_not_enough_stamina.mp3");
+        }
+    }
 
+    private IEnumerator StaminaRegen()
+    {
+        while(currentStamina < maxStamina)
+        {
+            currentStamina += maxStamina / 100 * regenRate;
+            staminaBar.value = currentStamina;
+            yield return w;
+        }
+        regen = null;
     }
 }

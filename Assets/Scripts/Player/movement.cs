@@ -158,6 +158,8 @@ public class movement : MonoBehaviour
             else yield break;
         }
 
+        StaminaBar.instance.UseStamina(33.333f);
+
         canDash = false;
         currentMovementState = movementStates.dashing;
 
