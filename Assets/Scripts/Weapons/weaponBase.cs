@@ -117,9 +117,13 @@ public class weaponBase : MonoBehaviour
                         }
 
 
+
                         //get component for enemy STATS,
                         //call deal damage function to enemy
                         //it handles the rest
+                        enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
+                        tempReference.takeDamage(weaponDamage, statusEffects.normal);
+
 
                         GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         debugObj.transform.position = shotHit.point;
@@ -176,6 +180,7 @@ public class weaponBase : MonoBehaviour
     }
 
 }
+
 
 public enum statusEffects
 {

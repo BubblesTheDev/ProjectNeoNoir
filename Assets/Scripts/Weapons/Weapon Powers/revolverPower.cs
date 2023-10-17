@@ -31,6 +31,10 @@ public class revolverPower : weaponPowerBase
                 tempRB.AddTorque(spawnPoint.transform.right * throwTorque, ForceMode.Impulse);
 
                 //add stats to the gun script upon spawning
+                revolverGrenade tempReference = tempObj.GetComponent<revolverGrenade>();
+                tempReference.explosionDmg = explosionDmg;
+                tempReference.explosionRadius = explosionRange;
+                tempReference.effectOfExplosion = statusToGive;
 
                 yield return new WaitForSeconds(0.05f);
             }
