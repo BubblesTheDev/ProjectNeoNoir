@@ -32,6 +32,7 @@ public class weaponBase : MonoBehaviour
     InteractionInputActions interactionInput;
     cameraControl camControl;
 
+
     private void Awake()
     {
         interactionInput = new InteractionInputActions();
@@ -64,10 +65,10 @@ public class weaponBase : MonoBehaviour
         {
             StartCoroutine(fireGun());
         }
-        /*if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+        if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
         {
-            print("Use Power");
-        }*/
+            StartCoroutine(currentWeaponPower.usePower());
+        }
     }
 
     
@@ -94,6 +95,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
 
 
@@ -129,6 +131,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
                     GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
                     if (tempBullet.GetComponent<Rigidbody>() != null)
@@ -171,4 +174,13 @@ public class weaponBase : MonoBehaviour
             Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(0, -multiPelletAngle, 0) * firePoint.transform.forward * 3f);
         }
     }
+
+}
+
+public enum statusEffects
+{
+    normal,
+    oil,
+    electric,
+    fire
 }

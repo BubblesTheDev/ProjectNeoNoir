@@ -53,6 +53,24 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Slide"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4b8b0ac-9cee-45f8-a034-d677016b0244"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Slam"",
+                    ""type"": ""Button"",
+                    ""id"": ""19b8547b-3277-45e7-9f72-c21da7b50b09"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +150,28 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6824ad36-fb71-451a-8b87-82ae3e25cddd"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Slide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa3ffa14-a36e-4d19-ad23-3822e00da06e"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -166,6 +206,8 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         m_playerMovment_HorizontalMovement = m_playerMovment.FindAction("Horizontal Movement", throwIfNotFound: true);
         m_playerMovment_Jump = m_playerMovment.FindAction("Jump", throwIfNotFound: true);
         m_playerMovment_Dash = m_playerMovment.FindAction("Dash", throwIfNotFound: true);
+        m_playerMovment_Slide = m_playerMovment.FindAction("Slide", throwIfNotFound: true);
+        m_playerMovment_Slam = m_playerMovment.FindAction("Slam", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -230,6 +272,8 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_playerMovment_HorizontalMovement;
     private readonly InputAction m_playerMovment_Jump;
     private readonly InputAction m_playerMovment_Dash;
+    private readonly InputAction m_playerMovment_Slide;
+    private readonly InputAction m_playerMovment_Slam;
     public struct PlayerMovmentActions
     {
         private @MovementInputActions m_Wrapper;
@@ -237,6 +281,8 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         public InputAction @HorizontalMovement => m_Wrapper.m_playerMovment_HorizontalMovement;
         public InputAction @Jump => m_Wrapper.m_playerMovment_Jump;
         public InputAction @Dash => m_Wrapper.m_playerMovment_Dash;
+        public InputAction @Slide => m_Wrapper.m_playerMovment_Slide;
+        public InputAction @Slam => m_Wrapper.m_playerMovment_Slam;
         public InputActionMap Get() { return m_Wrapper.m_playerMovment; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -255,6 +301,12 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Slide.started += instance.OnSlide;
+            @Slide.performed += instance.OnSlide;
+            @Slide.canceled += instance.OnSlide;
+            @Slam.started += instance.OnSlam;
+            @Slam.performed += instance.OnSlam;
+            @Slam.canceled += instance.OnSlam;
         }
 
         private void UnregisterCallbacks(IPlayerMovmentActions instance)
@@ -268,6 +320,12 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Slide.started -= instance.OnSlide;
+            @Slide.performed -= instance.OnSlide;
+            @Slide.canceled -= instance.OnSlide;
+            @Slam.started -= instance.OnSlam;
+            @Slam.performed -= instance.OnSlam;
+            @Slam.canceled -= instance.OnSlam;
         }
 
         public void RemoveCallbacks(IPlayerMovmentActions instance)
@@ -308,5 +366,7 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         void OnHorizontalMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnSlide(InputAction.CallbackContext context);
+        void OnSlam(InputAction.CallbackContext context);
     }
 }

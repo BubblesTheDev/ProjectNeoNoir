@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2154.9644, g: 2258.2043, b: 3279.0972, a: 1}
+  m_IndirectSpecularColor: {r: 2160.847, g: 2265.096, b: 3288.399, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +377,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1566338405}
+  - {fileID: 2114553530}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &175434481
@@ -703,6 +704,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &496099740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 496099741}
+  - component: {fileID: 496099742}
+  m_Layer: 0
+  m_Name: FMODEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &496099741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496099740}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2114553530}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &496099742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496099740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4097604b9ede52041aab4dc2998146fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <pistolShot>k__BackingField:
+    Guid:
+      Data1: -574071897
+      Data2: 1179578397
+      Data3: -1150068829
+      Data4: 579732067
+    Path: event:/Gun Sounds/Pistol Shot
+  <shotgunShotNoCock>k__BackingField:
+    Guid:
+      Data1: -503321063
+      Data2: 1082164412
+      Data3: -12904
+      Data4: -1269078503
+    Path: event:/Gun Sounds/Shotgun Shot (No Cocking)
+  <shotgunShotCock>k__BackingField:
+    Guid:
+      Data1: 1074811739
+      Data2: 1129934216
+      Data3: 1136135100
+      Data4: 247813690
+    Path: event:/Gun Sounds/Shotgun Shot (With Cocking)
 --- !u!1 &565275320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,6 +1067,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683747705545100991, guid: 28f595236b544ef40a762fd16c3d41e1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.73193556
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683747705545100991, guid: 28f595236b544ef40a762fd16c3d41e1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.68137395
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683747705545100991, guid: 28f595236b544ef40a762fd16c3d41e1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683747705545100991, guid: 28f595236b544ef40a762fd16c3d41e1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000013411044
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683747705545100991, guid: 28f595236b544ef40a762fd16c3d41e1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 85.902
       objectReference: {fileID: 0}
     - target: {fileID: 1758979397165290875, guid: 28f595236b544ef40a762fd16c3d41e1,
         type: 3}
@@ -1501,7 +1592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
+  attenuationObject: {fileID: 2085444124}
 --- !u!1 &1985090557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,10 +2020,14 @@ MonoBehaviour:
   dashDrag: 0.5
   maxDashTime: 0.15
   canDash: 1
-  slidingSpeed: 0
+  slideSpeed: 0
   slideCooldown: 0
   buttSlamForce: 0
   buttSlamCooldown: 0
+  slamReboundTime: 0
+  slamDrag: 0
+  timeToRaiseSlam: 0
+  raiseDistance: 0
   distanceToDetectWall: 0
   wallLayers:
     serializedVersion: 2
@@ -1964,6 +2059,51 @@ MonoBehaviour:
   minAngle: -70
   mouseX: 0
   mouseY: 0
+--- !u!1 &2114553529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2114553530}
+  - component: {fileID: 2114553531}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2114553530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114553529}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 496099741}
+  m_Father: {fileID: 175434480}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2114553531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114553529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a09445adfbbb6f46ac2bacf2160be34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2454827265585569832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1976,6 +2116,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gun Test Preafab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2080324174636414483, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4469394646056695688, guid: e6b020421741ae44d8c4ae139622c2da,
         type: 3}
@@ -2026,6 +2171,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Path
+      value: event:/Pistol Shot
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data1
+      value: -574071897
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data2
+      value: 1179578397
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data3
+      value: -1150068829
+      objectReference: {fileID: 0}
+    - target: {fileID: 4996526034683601827, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: pistolShotSound.Guid.Data4
+      value: 579732067
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
