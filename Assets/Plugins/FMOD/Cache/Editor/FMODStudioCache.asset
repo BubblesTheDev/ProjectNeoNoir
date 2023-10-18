@@ -42,10 +42,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Pistol.bank
   Name: Pistol
   StudioPath: bank:/Guns/Pistol
-  lastModified: 638332392345346777
+  lastModified: 638332519850948177
   FileSizes:
   - Name: Desktop
-    Value: 14272
+    Value: 12256
   Exists: 1
 --- !u!114 &-3254448398412330369
 MonoBehaviour:
@@ -122,7 +122,7 @@ MonoBehaviour:
   - {fileID: 6353305919450326461}
   StringsBanks:
   - {fileID: 1648822820709584925}
-  cacheTime: 638332392347273771
+  cacheTime: 638332519851890982
   cacheVersion: 131608
 --- !u!114 &1420649886959330789
 MonoBehaviour:
@@ -166,7 +166,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638332319438916139
+  lastModified: 638332519849599310
   FileSizes:
   - Name: Desktop
     Value: 1166
@@ -213,10 +213,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Shotgun.bank
   Name: Shotgun
   StudioPath: bank:/Guns/Shotgun
-  lastModified: 638332392347273771
+  lastModified: 638332519851890982
   FileSizes:
   - Name: Desktop
-    Value: 115200
+    Value: 20384
   Exists: 1
 --- !u!114 &6353305919450326461
 MonoBehaviour:
@@ -233,7 +233,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638332319438906135
+  lastModified: 638332519849554075
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -253,7 +253,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Gravity Switch Test.bank
   Name: Gravity Switch Test
   StudioPath: bank:/Gravity Switch/Gravity Switch Test
-  lastModified: 638332319439130943
+  lastModified: 638332519850437893
   FileSizes:
   - Name: Desktop
     Value: 11264
