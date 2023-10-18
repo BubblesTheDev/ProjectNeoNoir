@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="EventFolder" id="{8db81df9-f427-4edc-ac44-fbf4a9e63013}">
+	<object class="Bank" id="{53e864b3-e374-4ee6-8dfc-bb785c716dc9}">
 		<property name="name">
-			<value>Gun Sounds</value>
+			<value>Gravity Switch Test</value>
 		</property>
 		<relationship name="folder">
-			<destination>{a7663ecd-f25f-4a00-ae54-a41e0be68b2a}</destination>
+			<destination>{199b5c01-8cea-4798-915f-271679d5641c}</destination>
 		</relationship>
 	</object>
 </objects>

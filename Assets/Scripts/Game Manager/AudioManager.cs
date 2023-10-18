@@ -21,4 +21,9 @@ public class AudioManager : MonoBehaviour
     {
         RuntimeManager.PlayOneShot(gunShot, worldPos);
     } 
+
+    public void PlayGravitySwitchSound(EventReference gravitySwitch, Vector3 worldPos)
+    {
+        RuntimeManager.PlayOneShot(gravitySwitch, worldPos);
+    }
 }

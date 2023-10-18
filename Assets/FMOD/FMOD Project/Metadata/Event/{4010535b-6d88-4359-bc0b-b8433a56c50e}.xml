@@ -5,7 +5,7 @@
 			<value>Shotgun Shot (With Cocking)</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{8db81df9-f427-4edc-ac44-fbf4a9e63013}</destination>
@@ -82,11 +82,7 @@
 			<destination>{c79fc7a1-e728-42a3-bdce-acace8bfeb0f}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{0cee9a26-14b1-457d-a6bb-9380c3dbaf38}">
-		<relationship name="sounds">
-			<destination>{ea48ab24-128e-4b69-8d6f-2928b5039b96}</destination>
-		</relationship>
-	</object>
+	<object class="MultiSound" id="{0cee9a26-14b1-457d-a6bb-9380c3dbaf38}" />
 	<object class="MixerBusEffectChain" id="{584e3eab-4bdb-48e2-b8e1-6d4708b90ed3}">
 		<relationship name="effects">
 			<destination>{55118bd4-63a5-45c2-95bc-fa485d7fe04b}</destination>
@@ -99,11 +95,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{64162559-fb49-481a-adb2-b2414df77d0d}" />
-	<object class="SingleSound" id="{ea48ab24-128e-4b69-8d6f-2928b5039b96}">
-		<relationship name="audioFile">
-			<destination>{2144c515-d673-4b32-aba0-a15c6c116d57}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusFader" id="{55118bd4-63a5-45c2-95bc-fa485d7fe04b}" />
 	<object class="MixerBusFader" id="{9c92c33a-cbc8-4e7d-8a75-7bb28b56b590}" />
 </objects>

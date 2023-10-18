@@ -384,6 +384,7 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Gravity Switch Test
   - Pistol
   - Shotgun
   BanksToLoad: []
