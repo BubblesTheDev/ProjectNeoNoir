@@ -21,6 +21,7 @@ public class weaponBase : MonoBehaviour
 
 
     [Header("Weapon Settings")]
+    public weaponType typeOfWeapon;
     public LayerMask layersToHit;
     public bool canFire = true;
     public weaponPowerBase currentWeaponPower;
@@ -95,7 +96,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    playFireSound();
 
 
 
@@ -125,9 +126,9 @@ public class weaponBase : MonoBehaviour
                         tempReference.takeDamage(weaponDamage, statusEffects.normal);
 
 
-                        GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        /*GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         debugObj.transform.position = shotHit.point;
-                        debugObj.transform.localScale *= .1f;
+                        debugObj.transform.localScale *= .1f;*/
                     }
                 }
                 else
@@ -135,7 +136,8 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    playFireSound();
+
 
                     GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
                     if (tempBullet.GetComponent<Rigidbody>() != null)
@@ -157,6 +159,28 @@ public class weaponBase : MonoBehaviour
         yield return new WaitForSeconds(fireCooldown - (fireRate * shotsPerFire));
 
         canFire = true;
+    }
+
+    void playFireSound()
+    {
+        switch (typeOfWeapon)
+        {
+            case weaponType.revolver:
+                //Put the weapon shot for the correct weapon type here
+                break;
+            case weaponType.shotgun:
+                //Put the weapon shot for the correct weapon type here
+                break;
+            case weaponType.rocketLauncher:
+                //Put the weapon shot for the correct weapon type here
+                break;
+            case weaponType.sniper:
+                //Put the weapon shot for the correct weapon type here
+                break;
+            case weaponType.machineGun:
+                //Put the weapon shot for the correct weapon type here
+                break;
+        }
     }
 
 
