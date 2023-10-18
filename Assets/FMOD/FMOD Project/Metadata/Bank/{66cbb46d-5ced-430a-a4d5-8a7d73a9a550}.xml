@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Bank" id="{66cbb46d-5ced-430a-a4d5-8a7d73a9a550}">
+		<property name="name">
+			<value>Enemy Respawn</value>
+		</property>
+		<relationship name="folder">
+			<destination>{16908fbc-a388-4de1-8283-8200b6aeff2b}</destination>
+		</relationship>
+	</object>
+</objects>

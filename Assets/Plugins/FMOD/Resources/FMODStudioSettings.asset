@@ -384,6 +384,8 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Enemy Gun Sound
+  - Enemy Respawn
   - Gravity Switch Test
   - Pistol
   - Shotgun
