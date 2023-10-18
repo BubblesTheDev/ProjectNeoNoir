@@ -41,6 +41,7 @@ public class gravity : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.R) && canSwitch && useGravity)
         {
+            AudioManager.instance.PlayGravitySwitchSound(FMODEvents.instance.gravitySwitch, this.transform.position);
             StartCoroutine(flipGravity());
         }
     }
@@ -52,7 +53,7 @@ public class gravity : MonoBehaviour
             if (player != null && playerRb != null)
             {
                 if (playerMovement.getGroundCheck())
-                    playerRb.velocity = new Vector3(playerRb.velocity.x, currentGravityDir.y * 5f, playerRb.velocity.z);
+                    playerRb.velocity = new Vector3(playerRb.velocity.x, currentGravityDir.y, playerRb.velocity.z);
                 else playerRb.velocity = new Vector3(playerRb.velocity.x, playerRb.velocity.y + ((currentGravityDir.y * gravityForce) * Mathf.Exp(2)) * Time.deltaTime, playerRb.velocity.z);
             }
         }

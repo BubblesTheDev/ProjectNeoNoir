@@ -53,6 +53,7 @@ public class movement : MonoBehaviour
     //Sliding Variables
     [SerializeField, Space] private float slideSpeed;
     [SerializeField] private float slideCooldown;
+    private bool canSlide = true;
 
     //Buttslam Variables
     [SerializeField, Space] private float buttSlamForce;
@@ -92,7 +93,10 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
         movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
+        movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
+        movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
     }
+
 
     private void FixedUpdate()
     {
@@ -102,12 +106,12 @@ public class movement : MonoBehaviour
 
     private void Update()
     {
-        //if (getGroundCheck()) currentMovementState = movementStates.grounded;     
         controlDrag();
         if (!freeLook)
         {
             gameObject.transform.localRotation = objOrientation.transform.localRotation;
         }
+
 
     }
 
@@ -126,6 +130,7 @@ public class movement : MonoBehaviour
     IEnumerator jump()
     {
         if (!canJump) yield break;
+        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
         if (getGroundCheck() == false)
         {
             if (staminaCharges > 0)
@@ -151,6 +156,7 @@ public class movement : MonoBehaviour
     IEnumerator dash()
     {
         if (!canDash) yield break;
+        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
         if (!getGroundCheck())
         {
             if (staminaCharges > 0)
@@ -193,22 +199,41 @@ public class movement : MonoBehaviour
         rb.drag = originalDrag;
         gravity.gravityReference.useGravity = true;
 
+        if (getGroundCheck()) currentMovementState = movementStates.grounded;
+        else currentMovementState = movementStates.jumping;
+
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
 
     }
 
-    void startSlide()
+    IEnumerator startSlide()
     {
-        Vector3 slideDirection = new Vector3(0, objOrientation.transform.localEulerAngles.y, 0);
+        if (!getGroundCheck() || !canSlide || currentMovementState == movementStates.dashing || currentMovementState == movementStates.sliding || currentMovementState == movementStates.wallrunning) yield break;
+
+        Vector3 moveVector = gameObject.transform.forward * horizontalMovement.y + gameObject.transform.right * horizontalMovement.x;
         freeLook = true;
         currentMovementState = movementStates.sliding;
+        canSlide = false;
 
         while (movementInput.playerMovment.Slide.IsPressed())
         {
-            rb.AddForce((slideDirection + Vector3.down) * slideSpeed * Time.deltaTime, ForceMode.Force);
+            print("im sliding");
+            rb.AddForce(moveVector * slideSpeed * moveMulti * Time.deltaTime, ForceMode.Force);
+            yield return null;
         }
         
+        //play particle effects,
+        //play slide sound,
+    }
+
+    IEnumerator endslide()
+    {
+        freeLook = false;
+        currentMovementState = movementStates.grounded;
+
+        yield return new WaitForSeconds(slideCooldown);
+        canSlide = true;
     }
 
 

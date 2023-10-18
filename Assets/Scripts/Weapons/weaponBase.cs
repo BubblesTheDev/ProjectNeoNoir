@@ -65,10 +65,10 @@ public class weaponBase : MonoBehaviour
         {
             StartCoroutine(fireGun());
         }
-        /*if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+        if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
         {
-            print("Use Power");
-        }*/
+            StartCoroutine(currentWeaponPower.usePower());
+        }
     }
 
     
@@ -95,7 +95,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayPistolShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
 
 
@@ -117,9 +117,13 @@ public class weaponBase : MonoBehaviour
                         }
 
 
+
                         //get component for enemy STATS,
                         //call deal damage function to enemy
                         //it handles the rest
+                        enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
+                        tempReference.takeDamage(weaponDamage, statusEffects.normal);
+
 
                         GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         debugObj.transform.position = shotHit.point;
@@ -131,7 +135,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayPistolShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
 
                     GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
                     if (tempBullet.GetComponent<Rigidbody>() != null)
@@ -175,4 +179,13 @@ public class weaponBase : MonoBehaviour
         }
     }
 
+}
+
+
+public enum statusEffects
+{
+    normal,
+    oil,
+    electric,
+    fire
 }

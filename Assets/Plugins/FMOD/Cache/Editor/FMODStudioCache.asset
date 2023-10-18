@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8247807067764632487
+--- !u!114 &-5702006876699357362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Pistol Shot
+  m_Name: event:/SFX/Gun Sounds/Shotgun Shot (With Cocking)
   m_EditorClassIdentifier: 
-  Path: event:/Pistol Shot
+  Path: event:/SFX/Gun Sounds/Shotgun Shot (With Cocking)
   Guid:
-    Data1: -574071897
-    Data2: 1179578397
-    Data3: -1150068829
-    Data4: 579732067
+    Data1: 1074811739
+    Data2: 1129934216
+    Data3: 1136135100
+    Data4: 247813690
   Banks:
-  - {fileID: -5275302685932152642}
+  - {fileID: 4505616851206245846}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -41,11 +41,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Pistol.bank
   Name: Pistol
-  StudioPath: bank:/Pistol
-  lastModified: 638326698543633380
+  StudioPath: bank:/Guns/Pistol
+  lastModified: 638332319439170866
   FileSizes:
   - Name: Desktop
-    Value: 12256
+    Value: 1280
   Exists: 1
 --- !u!114 &-3254448398412330369
 MonoBehaviour:
@@ -67,6 +67,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1036
   Exists: 1
+--- !u!114 &-2171263258232170551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Gun Sounds/Shotgun Shot (No Cocking)
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Gun Sounds/Shotgun Shot (No Cocking)
+  Guid:
+    Data1: -503321063
+    Data2: 1082164412
+    Data3: -12904
+    Data4: -1269078503
+  Banks:
+  - {fileID: 4505616851206245846}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,15 +110,47 @@ MonoBehaviour:
   - {fileID: 1648822820709584925}
   - {fileID: 6353305919450326461}
   - {fileID: -5275302685932152642}
+  - {fileID: 4505616851206245846}
+  - {fileID: 7551437254334269029}
   EditorEvents:
-  - {fileID: -8247807067764632487}
+  - {fileID: 1420649886959330789}
+  - {fileID: 4128385959560015114}
+  - {fileID: -2171263258232170551}
+  - {fileID: -5702006876699357362}
   EditorParameters: []
   MasterBanks:
   - {fileID: 6353305919450326461}
   StringsBanks:
   - {fileID: 1648822820709584925}
-  cacheTime: 638326698543633380
+  cacheTime: 638332319439200786
   cacheVersion: 131608
+--- !u!114 &1420649886959330789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Gravity Switch/Test/Test Gravity Swtich Sound
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Gravity Switch/Test/Test Gravity Swtich Sound
+  Guid:
+    Data1: 1836023466
+    Data2: 1154467788
+    Data3: 1404638640
+    Data4: -1739688626
+  Banks:
+  - {fileID: 7551437254334269029}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &1648822820709584925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,10 +166,57 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638326698543003883
+  lastModified: 638332319438916139
   FileSizes:
   - Name: Desktop
-    Value: 810
+    Value: 1166
+  Exists: 1
+--- !u!114 &4128385959560015114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Gun Sounds/Pistol Shot
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Gun Sounds/Pistol Shot
+  Guid:
+    Data1: -574071897
+    Data2: 1179578397
+    Data3: -1150068829
+    Data4: 579732067
+  Banks:
+  - {fileID: -5275302685932152642}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4505616851206245846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Shotgun.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/FMOD Project/Build/Desktop/Shotgun.bank
+  Name: Shotgun
+  StudioPath: bank:/Guns/Shotgun
+  lastModified: 638332319439200786
+  FileSizes:
+  - Name: Desktop
+    Value: 2004
   Exists: 1
 --- !u!114 &6353305919450326461
 MonoBehaviour:
@@ -127,10 +233,30 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638326698542968869
+  lastModified: 638332319438906135
   FileSizes:
   - Name: Desktop
     Value: 1036
+  Exists: 1
+--- !u!114 &7551437254334269029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Gravity Switch Test.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/FMOD Project/Build/Desktop/Gravity Switch Test.bank
+  Name: Gravity Switch Test
+  StudioPath: bank:/Gravity Switch/Gravity Switch Test
+  lastModified: 638332319439130943
+  FileSizes:
+  - Name: Desktop
+    Value: 11264
   Exists: 1
 --- !u!114 &8825253387846292139
 MonoBehaviour:

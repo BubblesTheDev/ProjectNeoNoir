@@ -384,7 +384,9 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Gravity Switch Test
   - Pistol
+  - Shotgun
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0
