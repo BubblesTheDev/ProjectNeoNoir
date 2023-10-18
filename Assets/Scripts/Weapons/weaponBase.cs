@@ -77,8 +77,10 @@ public class weaponBase : MonoBehaviour
         switch (typeOfWeapon)
         {
             case weaponType.revolver:
+                AudioManager.instance.PlaySFX(FMODEvents.instance.pistolShot, this.transform.position);
                 break;
             case weaponType.shotgun:
+                AudioManager.instance.PlaySFX(FMODEvents.instance.shotgunShotNoCock, this.transform.position);
                 break;
             case weaponType.sniper:
                 break;
