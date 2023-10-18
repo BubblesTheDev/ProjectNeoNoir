@@ -22,6 +22,10 @@ public class playerHealth : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            StartCoroutine(takeDamage(1));
+        }
         if (rb.velocity.magnitude > 0 || rb.velocity.magnitude < 0) currentStaticEnergy += staticEnergyRate * Time.deltaTime;
         if (currentStaticEnergy > maxStaticEnergy && currentHP != maxHp) currentHP++;
     }
@@ -29,6 +33,7 @@ public class playerHealth : MonoBehaviour
     public IEnumerator takeDamage(int damage)
     {
         currentHP--;
+        HealthBar.instance.TakeDamage(damage);
         //Play health dmg sound
         //frame stutter
         //

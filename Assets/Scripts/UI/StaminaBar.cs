@@ -16,7 +16,7 @@ public class StaminaBar : MonoBehaviour
 
     [SerializeField]
     private float regenRate;
-    [Tooltip("The rate at which stamina is recovered per 0.1 seconds.")]
+    [Tooltip("The rate at which stamina is recovered per tick (0.1 seconds)")]
 
     public static StaminaBar instance { get; private set; }
 
@@ -37,7 +37,6 @@ public class StaminaBar : MonoBehaviour
     }
     void Start()
     {
-        maxStamina = 100;
         currentStamina = maxStamina;
         staminaBar.maxValue = maxStamina;
         staminaBar.value = maxStamina;
