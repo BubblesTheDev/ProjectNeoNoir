@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2161.8372, g: 2265.762, b: 3288.891, a: 1}
+  m_IndirectSpecularColor: {r: 2160.847, g: 2265.096, b: 3288.399, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -800,6 +800,13 @@ MonoBehaviour:
       Data3: 1136135100
       Data4: 247813690
     Path: event:/SFX/Gun Sounds/Shotgun Shot (With Cocking)
+  <enemyShot>k__BackingField:
+    Guid:
+      Data1: 539128367
+      Data2: 1168579498
+      Data3: 514425242
+      Data4: 380053724
+    Path: event:/SFX/Gun Sounds/Enemy Gun Sound/Enemy Gun Sound
   <gravitySwitch>k__BackingField:
     Guid:
       Data1: 1836023466
@@ -807,6 +814,13 @@ MonoBehaviour:
       Data3: 1404638640
       Data4: -1739688626
     Path: event:/SFX/Gravity Switch/Test/Test Gravity Swtich Sound
+  <enemySpawn>k__BackingField:
+    Guid:
+      Data1: 93584658
+      Data2: 1263675326
+      Data3: -1399696706
+      Data4: -2047675087
+    Path: event:/SFX/Enemy Respawn/Enemy Respawn
 --- !u!1 &565275320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1184,6 +1198,7 @@ MonoBehaviour:
   moveSpeed: 15
   cooldownTime: 1
   distanceToStop: 2.5
+  hurtBox: {fileID: 0}
   meleeAnimator: {fileID: 1158347150}
 --- !u!114 &1158347149
 MonoBehaviour:
@@ -1206,6 +1221,9 @@ MonoBehaviour:
   fireTickDmg: 0.5
   oilPercentSlow: 0.5
   effectsOnEnemy: 0
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &1158347150
 Animator:
   serializedVersion: 5
