@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{78e46144-0873-4f7c-a0ff-25275a82b83a}">
+		<property name="assetPath">
+			<value>Gun Sounds/Gun 1 Pistol/Pistol Shot Sound/Test Audio/shotgun-shooting-things-105837.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>9.8160000000000007</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7b97db15-e2df-4e58-a513-ffe8389781e2}</destination>
+		</relationship>
+	</object>
+</objects>
