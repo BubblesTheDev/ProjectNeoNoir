@@ -114,6 +114,8 @@ public class weaponBase : MonoBehaviour
                         if (shotHit.collider.CompareTag("Enemy"))
                         {
                             print("Hit " + shotHit.collider.gameObject.name + " enemy, dealt " + weaponDamage + " damage to it");
+                            enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
+                            tempReference.takeDamage(weaponDamage, statusEffects.normal);
                         }
 
 
@@ -121,8 +123,7 @@ public class weaponBase : MonoBehaviour
                         //get component for enemy STATS,
                         //call deal damage function to enemy
                         //it handles the rest
-                        enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
-                        tempReference.takeDamage(weaponDamage, statusEffects.normal);
+                        
 
 
                         GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
