@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class playerHealth : MonoBehaviour
 {
-    public int currentHP { private set; get; }
-    public int maxHp { private set; get; }
-    public float maxStaticEnergy { private set; get; }
-    public float currentStaticEnergy { private set; get; }
+    public int currentHP;
+    public int maxHp;
+    public float maxStaticEnergy;
+    public float currentStaticEnergy;
 
     [SerializeField] private float staticEnergyRate;
     [SerializeField] private float immunityTime;
@@ -27,7 +27,11 @@ public class playerHealth : MonoBehaviour
             StartCoroutine(takeDamage(1));
         }
         if (rb.velocity.magnitude > 0 || rb.velocity.magnitude < 0) currentStaticEnergy += staticEnergyRate * Time.deltaTime;
-        if (currentStaticEnergy > maxStaticEnergy && currentHP != maxHp) currentHP++;
+        if (currentStaticEnergy > maxStaticEnergy && currentHP != maxHp)
+        {
+            currentHP++;
+            currentStaticEnergy = 0;
+        }
     }
 
     public IEnumerator takeDamage(int damage)
@@ -36,7 +40,6 @@ public class playerHealth : MonoBehaviour
         HealthBar.instance.TakeDamage(damage);
         //Play health dmg sound
         //frame stutter
-        //
 
         yield return new WaitForSeconds(immunityTime);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class enemyStats : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class enemyStats : MonoBehaviour
     public float fireTickDmg, oilPercentSlow;
     public statusEffects effectsOnEnemy;
     private float fireTickTime;
+
     private void Update()
     {
         if(fireTickTime < fireDuration && effectsOnEnemy == statusEffects.fire)
@@ -26,7 +28,7 @@ public class enemyStats : MonoBehaviour
     public void takeDamage(float damageToTake, statusEffects effectsToGive)
     {
         currentHP -= damageToTake;
-
+        onDamageTaken?.Invoke();
 
         if (effectsOnEnemy == statusEffects.oil && effectsToGive == statusEffects.normal)
         {
@@ -36,6 +38,8 @@ public class enemyStats : MonoBehaviour
         else if (effectsOnEnemy == statusEffects.fire && effectsToGive == statusEffects.oil) fireTickTime = 0;
         else if (effectsToGive == statusEffects.electric) StartCoroutine(stunEnemy());
     }
+
+    public UnityEvent onDamageTaken;
 
     IEnumerator stunEnemy()
     {
