@@ -42,10 +42,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638332346533029006
+  lastModified: 638333152774789017
   FileSizes:
   - Name: Desktop
-    Value: 1166
+    Value: 1402
   Exists: 1
 --- !u!114 &-5015336792337287417
 MonoBehaviour:
@@ -89,10 +89,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Pistol.bank
   Name: Pistol
   StudioPath: bank:/Guns/Pistol
-  lastModified: 638332433703270649
+  lastModified: 638333152774799022
   FileSizes:
   - Name: Desktop
-    Value: 14272
+    Value: 12256
   Exists: 1
 --- !u!114 &-3729130802627528210
 MonoBehaviour:
@@ -109,11 +109,38 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Gravity Switch Test.bank
   Name: Gravity Switch Test
   StudioPath: bank:/Gravity Switch/Gravity Switch Test
-  lastModified: 638332346533009059
+  lastModified: 638333152774779016
   FileSizes:
   - Name: Desktop
     Value: 11264
   Exists: 1
+--- !u!114 &-3662064370763567371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Gun Sounds/Enemy Gun Sound/Enemy Gun Sound
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Gun Sounds/Enemy Gun Sound/Enemy Gun Sound
+  Guid:
+    Data1: 539128367
+    Data2: 1168579498
+    Data3: 514425242
+    Data4: 380053724
+  Banks:
+  - {fileID: -1266488693009538513}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3495757104142434752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,10 +156,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Shotgun.bank
   Name: Shotgun
   StudioPath: bank:/Guns/Shotgun
-  lastModified: 638332433703290596
+  lastModified: 638333152774809023
   FileSizes:
   - Name: Desktop
-    Value: 115200
+    Value: 20384
   Exists: 1
 --- !u!114 &-2723362707521055187
 MonoBehaviour:
@@ -161,6 +188,26 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-1266488693009538513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Enemy Gun Sound.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/FMOD Project/Build/Desktop/Enemy Gun Sound.bank
+  Name: Enemy Gun Sound
+  StudioPath: bank:/Guns/Enemy Gun Sound
+  lastModified: 638333152774769020
+  FileSizes:
+  - Name: Desktop
+    Value: 7808
+  Exists: 1
 --- !u!114 &-1025919611954766787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,18 +253,69 @@ MonoBehaviour:
   - {fileID: 8105392461112739896}
   - {fileID: -4653177697916925522}
   - {fileID: -3495757104142434752}
+  - {fileID: -1266488693009538513}
+  - {fileID: 6572624712402744626}
   EditorEvents:
   - {fileID: -8438286569141551515}
   - {fileID: -5015336792337287417}
   - {fileID: -1025919611954766787}
   - {fileID: -2723362707521055187}
+  - {fileID: -3662064370763567371}
+  - {fileID: 253865217176757104}
   EditorParameters: []
   MasterBanks:
   - {fileID: 8105392461112739896}
   StringsBanks:
   - {fileID: -7237450975780338620}
-  cacheTime: 638332433703290596
+  cacheTime: 638333152774809023
   cacheVersion: 131608
+--- !u!114 &253865217176757104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemy Respawn/Enemy Respawn
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemy Respawn/Enemy Respawn
+  Guid:
+    Data1: 93584658
+    Data2: 1263675326
+    Data3: -1399696706
+    Data4: -2047675087
+  Banks:
+  - {fileID: 6572624712402744626}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6572624712402744626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Enemy Respawn.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/FMOD Project/Build/Desktop/Enemy Respawn.bank
+  Name: Enemy Respawn
+  StudioPath: bank:/Enemy Respawn/Enemy Respawn
+  lastModified: 638333152774779016
+  FileSizes:
+  - Name: Desktop
+    Value: 27136
+  Exists: 1
 --- !u!114 &8105392461112739896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +331,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638320278492550262
+  lastModified: 638326256968087685
   FileSizes:
   - Name: Desktop
     Value: 1036

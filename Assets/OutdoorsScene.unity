@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2186.3723, g: 2335.0374, b: 3514.684, a: 1}
+  m_IndirectSpecularColor: {r: 2157.497, g: 2260.1138, b: 3279.5254, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -546,7 +546,7 @@ Transform:
   m_GameObject: {fileID: 284212097}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -1, w: 0.000000104308114}
-  m_LocalPosition: {x: -0, y: 11.87, z: 0}
+  m_LocalPosition: {x: 0, y: 90, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -805,6 +805,13 @@ MonoBehaviour:
       Data3: 1136135100
       Data4: 247813690
     Path: event:/SFX/Gun Sounds/Shotgun Shot (With Cocking)
+  <enemyShot>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <gravitySwitch>k__BackingField:
     Guid:
       Data1: 1836023466
@@ -812,6 +819,13 @@ MonoBehaviour:
       Data3: 1404638640
       Data4: -1739688626
     Path: event:/SFX/Gravity Switch/Test/Test Gravity Swtich Sound
+  <enemySpawn>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &565275320
 GameObject:
   m_ObjectHideFlags: 0
