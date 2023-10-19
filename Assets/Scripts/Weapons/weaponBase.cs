@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
@@ -91,7 +92,12 @@ public class weaponBase : MonoBehaviour
         }
     }
 
-    
+    public UnityEvent onWeaponFire;
+    public UnityEvent onWeaponCooldown;
+    public UnityEvent onEnviromentHit;
+    public UnityEvent onEnemyHit;
+
+
 
 
 
@@ -99,6 +105,9 @@ public class weaponBase : MonoBehaviour
     {
         //print("Starting to fire: " + gameObject.name);
         canFire = false;
+
+        onWeaponFire?.Invoke();
+
         for (int x = 0; x < shotsPerFire; x++)
         {
 
@@ -134,9 +143,11 @@ public class weaponBase : MonoBehaviour
                             print("Hit " + shotHit.collider.gameObject.name + " enemy, dealt " + weaponDamage + " damage to it");
                             enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
                             tempReference.takeDamage(weaponDamage, statusEffects.normal);
+
+                            onEnemyHit?.Invoke();
                         }
 
-
+                        onEnviromentHit?.Invoke();
 
                         //get component for enemy STATS,
                         //call deal damage function to enemy
@@ -175,7 +186,7 @@ public class weaponBase : MonoBehaviour
         }
 
         yield return new WaitForSeconds(fireCooldown - (fireRate * shotsPerFire));
-
+        onWeaponCooldown?.Invoke();
         canFire = true;
     }
 
