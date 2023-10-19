@@ -19,7 +19,7 @@ public class gravity : MonoBehaviour
     [Space, Header("Statistics")]
     public float gravitySwitchCooldownBase;
     public bool useGravity = true;
-    [SerializeField] private bool canSwitch = true;
+    [SerializeField] public bool canSwitch { get; private set; } = true;
     [SerializeField] private float gravityForce;
     [SerializeField] private float gravityMultiplier;
     public Vector3 currentGravityDir { private set; get; }
@@ -41,6 +41,8 @@ public class gravity : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.R) && canSwitch && useGravity)
         {
+            GravswitchBar.instance.UseGravity();
+            AudioManager.instance.PlaySFX(FMODEvents.instance.gravitySwitch, this.transform.position);
             StartCoroutine(flipGravity());
         }
     }
