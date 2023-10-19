@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2186.4827, g: 2335.5354, b: 3517.0083, a: 1}
+  m_IndirectSpecularColor: {r: 2186.3723, g: 2335.0374, b: 3514.684, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2189,9 +2189,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHP: 0
   maxHp: 5
-  maxStaticEnergy: 0
+  maxStaticEnergy: 100
   currentStaticEnergy: 0
-  staticEnergyRate: 0
+  staticEnergyRate: 10
   immunityTime: 0
 --- !u!114 &2085444133
 MonoBehaviour:
@@ -2210,36 +2210,10 @@ MonoBehaviour:
   healthDrain: {fileID: 1681962189}
   staticMeter: {fileID: 980274827}
   maxHealth: 100
-  curve:
+  maxCharge: 100
+  healthDrainCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5433989
-      value: 0.9839584
-      inSlope: 0.10139339
-      outSlope: 0.101368874
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.2653284
-      outWeight: 0.1427584
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -2352,6 +2326,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Resource Container
+      objectReference: {fileID: 0}
+    - target: {fileID: 4291896891393516130, guid: 49337d02adfb6e146aaee877d3fab14c,
+        type: 3}
+      propertyPath: m_Value
+      value: 0.448
       objectReference: {fileID: 0}
     - target: {fileID: 5609369789345634471, guid: 49337d02adfb6e146aaee877d3fab14c,
         type: 3}

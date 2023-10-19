@@ -13,6 +13,8 @@ public class playerHealth : MonoBehaviour
     [SerializeField] private float immunityTime;
     private Rigidbody rb;
 
+    public static playerHealth healthRef { get; private set; }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -22,6 +24,7 @@ public class playerHealth : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(currentStaticEnergy);
         if (Input.GetKeyDown(KeyCode.F1))
         {
             StartCoroutine(takeDamage(1));
@@ -31,6 +34,7 @@ public class playerHealth : MonoBehaviour
         {
             currentHP++;
             currentStaticEnergy = 0;
+            HealthBar.instance.StaticHeal(1);
         }
     }
 

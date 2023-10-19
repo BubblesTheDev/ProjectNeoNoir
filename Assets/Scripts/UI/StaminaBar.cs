@@ -20,7 +20,7 @@ public class StaminaBar : MonoBehaviour
 
     public static StaminaBar instance { get; private set; }
 
-    private WaitForSeconds w = new WaitForSeconds(0.1f);
+    private WaitForSeconds w = new(0.1f);
 
     private Coroutine regen;
 

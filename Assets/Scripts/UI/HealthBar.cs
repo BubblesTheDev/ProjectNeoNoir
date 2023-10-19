@@ -11,6 +11,7 @@ public class HealthBar : MonoBehaviour
     //private GameObject text;
     //private TextMeshProUGUI tm;
 
+    [Header("Scene Objects")]
     [SerializeField]
     private GameObject HUD;
     private Image im;
@@ -23,12 +24,14 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private Slider staticMeter;
 
-    [SerializeField] private int maxHealth;
+    [Space,Header("Health UI Variables")]
 
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int maxCharge;
     private Coroutine dmgLerp;
 
     [SerializeField]
-    private AnimationCurve curve;
+    private AnimationCurve healthDrainCurve;
 
     [SerializeField]
     private float healthDrainWaitTime;
@@ -67,6 +70,8 @@ public class HealthBar : MonoBehaviour
         healthDrain.value = maxHealth;
         im = HUD.GetComponent<Image>();
         startPos = HUD.transform.position;
+        staticMeter.maxValue = maxCharge;
+        staticMeter.value = maxCharge;
         //    tm = text.GetComponent<TextMeshProUGUI>();
         //    tm.text = currentHealth + "/" + maxHealth;
         //StartCoroutine("test");
@@ -91,6 +96,11 @@ public class HealthBar : MonoBehaviour
         }
     }*/
 
+    void Update()
+    {
+        //staticMeter.value = playerHealth.healthRef.currentStaticEnergy;
+    }
+
     public void TakeDamage(int dmg)
     {
         dmg *= 20;
@@ -109,6 +119,11 @@ public class HealthBar : MonoBehaviour
 
     }
 
+    public void StaticHeal(int amount)
+    {
+        healthBar.value += amount * 20;
+    }
+
     private IEnumerator LerpHealth(int dmg, int startHP)
     {
         yield return new WaitForSeconds(healthDrainWaitTime);
@@ -116,7 +131,7 @@ public class HealthBar : MonoBehaviour
         while(t < 1)
         {
             t += Time.deltaTime * 5;
-            healthDrain.value = Mathf.Lerp(startHP, startHP - dmg, curve.Evaluate(t));
+            healthDrain.value = Mathf.Lerp(startHP, startHP - dmg, healthDrainCurve.Evaluate(t));
             //Debug.Log(healthBar.value);
             yield return null;
         }
