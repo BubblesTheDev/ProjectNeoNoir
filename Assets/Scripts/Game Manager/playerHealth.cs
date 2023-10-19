@@ -13,8 +13,6 @@ public class playerHealth : MonoBehaviour
     [SerializeField] private float immunityTime;
     private Rigidbody rb;
 
-    public static playerHealth healthRef { get; private set; }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();

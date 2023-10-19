@@ -98,7 +98,7 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        //staticMeter.value = playerHealth.healthRef.currentStaticEnergy;
+        staticMeter.value = gameObject.GetComponent<playerHealth>().currentStaticEnergy;
     }
 
     public void TakeDamage(int dmg)
