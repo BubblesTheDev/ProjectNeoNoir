@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Pistol.bank
   Name: Pistol
   StudioPath: bank:/Guns/Pistol
-  lastModified: 638332320142038491
+  lastModified: 638331504447772984
   FileSizes:
   - Name: Desktop
     Value: 12256
@@ -93,7 +93,7 @@ MonoBehaviour:
   - {fileID: 6353305919450326461}
   StringsBanks:
   - {fileID: 1648822820709584925}
-  cacheTime: 638332320142048462
+  cacheTime: 638331504447792986
   cacheVersion: 131608
 --- !u!114 &1648822820709584925
 MonoBehaviour:
@@ -110,7 +110,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638332320142028517
+  lastModified: 638331504447772984
   FileSizes:
   - Name: Desktop
     Value: 1000
@@ -184,7 +184,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Shotgun.bank
   Name: Shotgun
   StudioPath: bank:/Guns/Shotgun
-  lastModified: 638332320142048462
+  lastModified: 638331504447792986
   FileSizes:
   - Name: Desktop
     Value: 40256
@@ -204,7 +204,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638332320142018544
+  lastModified: 638326552302765290
   FileSizes:
   - Name: Desktop
     Value: 1036
