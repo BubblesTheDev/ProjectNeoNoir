@@ -5,7 +5,7 @@
 			<value>Gun Sounds</value>
 		</property>
 		<relationship name="folder">
-			<destination>{7235cfc8-e4a0-49ed-982d-f883c04f2809}</destination>
+			<destination>{a7663ecd-f25f-4a00-ae54-a41e0be68b2a}</destination>
 		</relationship>
 	</object>
 </objects>

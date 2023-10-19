@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
@@ -21,6 +22,7 @@ public class weaponBase : MonoBehaviour
 
 
     [Header("Weapon Settings")]
+    public weaponType typeOfWeapon;
     public LayerMask layersToHit;
     public bool canFire = true;
     public weaponPowerBase currentWeaponPower;
@@ -71,9 +73,31 @@ public class weaponBase : MonoBehaviour
         }
     }
 
-    
+    void playFireSound()
+    {
+        switch (typeOfWeapon)
+        {
+            case weaponType.revolver:
+                AudioManager.instance.PlaySFX(FMODEvents.instance.pistolShot, this.transform.position);
+                break;
+            case weaponType.shotgun:
+                AudioManager.instance.PlaySFX(FMODEvents.instance.shotgunShotNoCock, this.transform.position);
+                break;
+            case weaponType.sniper:
+                break;
+            case weaponType.rocketLauncher:
+                break;
+            case weaponType.machineGun:
+                break;
+        }
+    }
 
-    
+    public UnityEvent onWeaponFire;
+    public UnityEvent onWeaponCooldown;
+    public UnityEvent onEnviromentHit;
+    public UnityEvent onEnemyHit;
+
+
 
 
 
@@ -81,6 +105,9 @@ public class weaponBase : MonoBehaviour
     {
         //print("Starting to fire: " + gameObject.name);
         canFire = false;
+
+        onWeaponFire?.Invoke();
+
         for (int x = 0; x < shotsPerFire; x++)
         {
 
@@ -95,7 +122,7 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    playFireSound();
 
 
 
@@ -114,12 +141,19 @@ public class weaponBase : MonoBehaviour
                         if (shotHit.collider.CompareTag("Enemy"))
                         {
                             print("Hit " + shotHit.collider.gameObject.name + " enemy, dealt " + weaponDamage + " damage to it");
+                            enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
+                            tempReference.takeDamage(weaponDamage, statusEffects.normal);
+
+                            onEnemyHit?.Invoke();
                         }
 
+                        onEnviromentHit?.Invoke();
 
                         //get component for enemy STATS,
                         //call deal damage function to enemy
                         //it handles the rest
+                        
+
 
                         GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         debugObj.transform.position = shotHit.point;
@@ -131,7 +165,8 @@ public class weaponBase : MonoBehaviour
                     //Play muzzle flash particle effect
                     //play gun sound here
                     //play fire animation
-                    AudioManager.instance.PlayGunShot(FMODEvents.instance.pistolShot, this.transform.position);
+                    playFireSound();
+
 
                     GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
                     if (tempBullet.GetComponent<Rigidbody>() != null)
@@ -151,7 +186,7 @@ public class weaponBase : MonoBehaviour
         }
 
         yield return new WaitForSeconds(fireCooldown - (fireRate * shotsPerFire));
-
+        onWeaponCooldown?.Invoke();
         canFire = true;
     }
 
@@ -176,6 +211,7 @@ public class weaponBase : MonoBehaviour
     }
 
 }
+
 
 public enum statusEffects
 {

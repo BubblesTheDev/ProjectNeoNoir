@@ -54,6 +54,7 @@ public class movement : MonoBehaviour
     [SerializeField, Space] private float slideSpeed;
     [SerializeField] private float slideCooldown;
     private bool canSlide = true;
+    private CapsuleCollider playerCollider;
 
     //Buttslam Variables
     [SerializeField, Space] private float buttSlamForce;
@@ -89,6 +90,7 @@ public class movement : MonoBehaviour
     {
         movementInput = new MovementInputActions();
         rb = GetComponent<Rigidbody>();
+        playerCollider = GetComponent<CapsuleCollider>();
         movementInput.playerMovment.HorizontalMovement.performed += HorizontalMovement_performed => movePlayer();
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
@@ -164,6 +166,8 @@ public class movement : MonoBehaviour
             else yield break;
         }
 
+        StaminaBar.instance.UseStamina(33.333f);
+
         canDash = false;
         currentMovementState = movementStates.dashing;
 
@@ -213,10 +217,10 @@ public class movement : MonoBehaviour
         freeLook = true;
         currentMovementState = movementStates.sliding;
         canSlide = false;
-
+        playerCollider.height /= 2f;
+        transform.position = new Vector3(transform.position.x, transform.position.y - .5f, transform.position.z);
         while (movementInput.playerMovment.Slide.IsPressed())
         {
-            print("im sliding");
             rb.AddForce(moveVector * slideSpeed * moveMulti * Time.deltaTime, ForceMode.Force);
             yield return null;
         }
@@ -229,6 +233,8 @@ public class movement : MonoBehaviour
     {
         freeLook = false;
         currentMovementState = movementStates.grounded;
+        playerCollider.height *= 2f;
+
 
         yield return new WaitForSeconds(slideCooldown);
         canSlide = true;

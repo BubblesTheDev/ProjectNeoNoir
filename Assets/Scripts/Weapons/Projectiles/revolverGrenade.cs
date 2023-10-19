@@ -8,6 +8,7 @@ public class revolverGrenade : MonoBehaviour
     public int explosionDmg;
     public float explosionRadius;
     public float timeToExplode;
+    public statusEffects effectOfExplosion;
     public statusEffects effectsToGive;
     [SerializeField] private LayerMask layersToHit;
 
