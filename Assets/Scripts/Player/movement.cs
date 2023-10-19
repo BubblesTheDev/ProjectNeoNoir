@@ -139,6 +139,7 @@ public class movement : MonoBehaviour
             {
                 //print("jumping 3");
                 staminaCharges--;
+                PlayerHUD.instance.UseStamina(1);
             }
             else yield break;
         }
@@ -162,11 +163,13 @@ public class movement : MonoBehaviour
         if (!getGroundCheck())
         {
             if (staminaCharges > 0)
+            {
                 staminaCharges--;
+                PlayerHUD.instance.UseStamina(1);
+            }
             else yield break;
         }
 
-        StaminaBar.instance.UseStamina(33.333f);
 
         canDash = false;
         currentMovementState = movementStates.dashing;

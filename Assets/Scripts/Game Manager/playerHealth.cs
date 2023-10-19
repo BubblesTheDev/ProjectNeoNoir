@@ -15,6 +15,7 @@ public class playerHealth : MonoBehaviour
 
     private void Awake()
     {
+        currentHP = maxHp;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -32,14 +33,14 @@ public class playerHealth : MonoBehaviour
         {
             currentHP++;
             currentStaticEnergy = 0;
-            HealthBar.instance.StaticHeal(1);
+            PlayerHUD.instance.StaticHeal(1);
         }
     }
 
     public IEnumerator takeDamage(int damage)
     {
         currentHP--;
-        HealthBar.instance.TakeDamage(damage);
+        PlayerHUD.instance.TakeDamage(damage);
         //Play health dmg sound
         //frame stutter
 
