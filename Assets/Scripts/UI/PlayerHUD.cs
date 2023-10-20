@@ -5,7 +5,7 @@ using UnityEngine.UI;
 //using TMPro;
 using System.Text.RegularExpressions;
 
-public class HealthBar : MonoBehaviour
+public class PlayerHUD : MonoBehaviour
 {
     //[SerializeField]
     //private GameObject text;
@@ -14,21 +14,29 @@ public class HealthBar : MonoBehaviour
     [Header("Scene Objects")]
     [SerializeField]
     private GameObject HUD;
-    private Image im;
 
     [SerializeField]
     private Slider healthBar;
+
     [SerializeField]
     private Slider healthDrain;
 
     [SerializeField]
     private Slider staticMeter;
 
+    [SerializeField]
+    private Slider gravSwitch;
+
+    [SerializeField]
+    private Slider staminaBar;
+
+
     [Space,Header("Health UI Variables")]
 
     [SerializeField] private int maxHealth;
-    [SerializeField] private int maxCharge;
+    [SerializeField] private int maxStaticCharge;
     private Coroutine dmgLerp;
+    private Image im_HUD;
 
     [SerializeField]
     private AnimationCurve healthDrainCurve;
@@ -45,7 +53,40 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private AnimationCurve screenshakeAnimationCurve;
 
-    public static HealthBar instance { get; private set; }
+
+    [Space, Header("Gravswitch UI Variables")]
+
+    [SerializeField]
+    private float maxGravCharge;
+    [SerializeField]
+    private float currentGravCharge;
+
+    private WaitForSeconds w = new(0.1f);
+
+    [SerializeField]
+    private float arrowGlowTime;
+    private Image im_gravSwitch;
+    private Color gravSwitchColour;
+
+    private Coroutine gravCD;
+
+
+    [Space,Header("Stamina UI Variables")]
+
+    [SerializeField]
+    private float maxStamina;
+
+    [SerializeField]
+    private float currentStamina;
+
+    [SerializeField]
+    private float regenRate;
+    [Tooltip("The rate at which stamina is recovered per tick (0.1 seconds)")]
+
+    private Coroutine regenStamina;
+
+
+    public static PlayerHUD instance { get; private set; }
 
     //private WaitForSeconds waitInterval = new WaitForSeconds(3);
 
@@ -68,10 +109,21 @@ public class HealthBar : MonoBehaviour
         healthBar.value = maxHealth;
         healthDrain.maxValue = maxHealth;
         healthDrain.value = maxHealth;
-        im = HUD.GetComponent<Image>();
+        im_HUD = HUD.GetComponent<Image>();
         startPos = HUD.transform.position;
-        staticMeter.maxValue = maxCharge;
-        staticMeter.value = maxCharge;
+        staticMeter.maxValue = maxStaticCharge;
+        staticMeter.value = maxStaticCharge;
+
+        currentGravCharge = maxGravCharge;
+        gravSwitch.maxValue = maxGravCharge;
+        gravSwitch.value = maxGravCharge;
+        im_gravSwitch = gravSwitch.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+        gravSwitchColour = im_gravSwitch.color;
+
+        currentStamina = maxStamina;
+        staminaBar.maxValue = maxStamina;
+        staminaBar.value = maxStamina;
+
         //    tm = text.GetComponent<TextMeshProUGUI>();
         //    tm.text = currentHealth + "/" + maxHealth;
         //StartCoroutine("test");
@@ -147,11 +199,76 @@ public class HealthBar : MonoBehaviour
             timer += Time.deltaTime;
             float shakeCurve = screenshakeAnimationCurve.Evaluate(timer / screenshakeDuration);
             HUD.transform.position = startPos + shakeCurve * shakeStrength * Random.insideUnitSphere;
-            im.color = Color.Lerp(Color.black, Color.red, shakeCurve);
+            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve);
             yield return null;
         }
-        im.color = Color.black;
+        im_HUD.color = Color.black;
         HUD.transform.position = startPos;
     }
 
+    public void UseGravity()
+    {
+        if (gravity.gravityReference.canSwitch)
+        {
+            currentGravCharge = 0;
+            if (gravCD != null)
+            {
+                StopCoroutine(gravCD);
+            }
+
+            gravCD = StartCoroutine(GravityCooldown());
+
+        }
+        else
+        {
+            Debug.Log("grav_switch_on_CD.mp3");
+        }
+    }
+    private IEnumerator GravityCooldown()
+    {
+        //float timer = 0;
+        im_gravSwitch.color = Color.white;
+        yield return new WaitForSeconds(arrowGlowTime);
+        im_gravSwitch.color = gravSwitchColour;
+        gravSwitch.value = 0;
+        while (currentGravCharge < maxGravCharge)
+        {
+            //timer += Time.deltaTime;
+            currentGravCharge += 100 / (gravity.gravityReference.gravitySwitchCooldownBase - arrowGlowTime) * Time.deltaTime;
+            gravSwitch.value = currentGravCharge;
+            // Debug.Log("HUD value = " + gravSwitch.value + " at " + timer);
+            yield return null;
+        }
+        gravCD = null;
+    }
+    public void UseStamina(float value)
+    {
+        value *= (100 / 3);
+        if (currentStamina - value >= 0)
+        {
+            currentStamina -= value;
+            staminaBar.value = currentStamina;
+
+            if (regenStamina != null)
+            {
+                StopCoroutine(regenStamina);
+            }
+
+            regenStamina = StartCoroutine(StaminaRegen());
+        }
+        else
+        {
+            Debug.Log("insert_not_enough_stamina.mp3");
+        }
+    }
+    private IEnumerator StaminaRegen()
+    {
+        while (currentStamina < maxStamina)
+        {
+            currentStamina += maxStamina / 100 * regenRate;
+            staminaBar.value = currentStamina;
+            yield return w;
+        }
+        regenStamina = null;
+    }
 }

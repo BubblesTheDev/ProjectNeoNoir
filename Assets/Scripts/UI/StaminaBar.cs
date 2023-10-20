@@ -44,6 +44,7 @@ public class StaminaBar : MonoBehaviour
 
     public void UseStamina(float value)
     {
+        value *= (100 / 3);
         if(currentStamina - value >= 0)
         {
             currentStamina -= value;

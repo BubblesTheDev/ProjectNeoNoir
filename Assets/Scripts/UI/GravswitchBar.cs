@@ -19,6 +19,8 @@ public class GravswitchBar : MonoBehaviour
 
     [SerializeField]
     private float arrowGlowTime;
+    private Image im;
+    private Color gravSwitchColour;
 
     private Coroutine gravCD;
     public static GravswitchBar instance { get; private set; }
@@ -41,6 +43,9 @@ public class GravswitchBar : MonoBehaviour
         currentCharge = maxCharge;
         gravSwitch.maxValue = maxCharge;
         gravSwitch.value = maxCharge;
+        im = gravSwitch.transform.Find("Fill Area").Find("Fill").GetComponent<Image>();
+        gravSwitchColour = im.color;
+
     }
 
     public void UseGravity()
@@ -65,7 +70,9 @@ public class GravswitchBar : MonoBehaviour
     private IEnumerator GravityCooldown()
     {
         //float timer = 0;
+        im.color = Color.white;
         yield return new WaitForSeconds(arrowGlowTime);
+        im.color = gravSwitchColour;
         gravSwitch.value = 0;
         while (currentCharge < maxCharge)
         {
