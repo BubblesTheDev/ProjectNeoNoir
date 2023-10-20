@@ -12,6 +12,10 @@ public class basicProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(collision.collider.CompareTag("Player"))
+        {
+            StartCoroutine(collision.gameObject.GetComponent<playerHealth>().takeDamage(1));
+        }
         Destroy(gameObject);
     }
 }
