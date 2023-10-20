@@ -89870,35 +89870,35 @@ MonoBehaviour:
       Data2: 1179578397
       Data3: -1150068829
       Data4: 579732067
-    Path: event:/Gun Sounds/Pistol Shot
+    Path: event:/SFX/Gun Sounds/Pistol Shot
   <shotgunShotNoCock>k__BackingField:
     Guid:
       Data1: -503321063
       Data2: 1082164412
       Data3: -12904
       Data4: -1269078503
-    Path: event:/Gun Sounds/Shotgun Shot (No Cocking)
+    Path: event:/SFX/Gun Sounds/Shotgun Shot (No Cocking)
   <shotgunShotCock>k__BackingField:
     Guid:
       Data1: 1074811739
       Data2: 1129934216
       Data3: 1136135100
       Data4: 247813690
-    Path: event:/Gun Sounds/Shotgun Shot (With Cocking)
+    Path: event:/SFX/Gun Sounds/Shotgun Shot (With Cocking)
   <enemyShot>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 539128367
+      Data2: 1168579498
+      Data3: 514425242
+      Data4: 380053724
+    Path: event:/SFX/Gun Sounds/Enemy Gun Sound/Enemy Gun Sound
   <gravitySwitch>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1836023466
+      Data2: 1154467788
+      Data3: 1404638640
+      Data4: -1739688626
+    Path: event:/SFX/Gravity Switch/Test/Test Gravity Swtich Sound
   <enemySpawn>k__BackingField:
     Guid:
       Data1: 0
