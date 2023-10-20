@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 3172060704439436467}
   enemyBullet: {fileID: 881081634084067109, guid: 4ef16a1b50c8887438f43dd7da06dbe1,
     type: 3}
+  bulletVelocity: 50
   currentAnimator: {fileID: 2944867237593679562}
 --- !u!114 &2366724535427029739
 MonoBehaviour:

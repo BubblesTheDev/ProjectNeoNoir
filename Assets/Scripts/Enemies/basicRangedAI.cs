@@ -13,6 +13,8 @@ public class basicRangedAI : MonoBehaviour
     [SerializeField] private float rangeAroundPlayer;
     [SerializeField] private List<GameObject> firePoints;
     [SerializeField] private GameObject enemyBullet;
+    [SerializeField] private float bulletVelocity;
+
     private bool canShoot;
 
     private GameObject playerObj;
@@ -67,7 +69,9 @@ public class basicRangedAI : MonoBehaviour
         {
             for (int i = 0; i < (int)Random.Range(1,3); i++)
             {
-                Instantiate(enemyBullet, firePoint.transform.position, Quaternion.LookRotation((playerObj.transform.position - firePoint.transform.position).normalized, Vector3.up), GameObject.Find("Bullet Storage").transform);
+                GameObject b = Instantiate(enemyBullet, firePoint.transform.position, Quaternion.LookRotation((playerObj.transform.position - firePoint.transform.position).normalized, Vector3.up), GameObject.Find("Bullet Storage").transform);
+                Rigidbody rb = b.gameObject.GetComponent<Rigidbody>();
+                rb.AddForce(transform.forward * bulletVelocity, ForceMode.Impulse);
                 //Play enemy shot here
 
                 yield return new WaitForSeconds(0.1f);
