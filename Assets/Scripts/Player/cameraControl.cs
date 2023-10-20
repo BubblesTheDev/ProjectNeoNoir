@@ -48,7 +48,16 @@ public class cameraControl : MonoBehaviour
     private void Update()
     {
         CameraObj.transform.localRotation = Quaternion.Euler(yRot, CameraObj.transform.localRotation.y, CameraObj.transform.localRotation.z);
-        Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, xRot, Orientation.transform.localRotation.z);
+        
+        if(!playerGravReference.gravityIsFlipped )
+        {
+            Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, xRot, 0);
+        } else if (playerGravReference.gravityIsFlipped)
+        {
+            Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, -xRot, 180);
+
+        }
+
 
         Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity);
     }
