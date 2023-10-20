@@ -57,6 +57,9 @@ public class basicRangedAI : MonoBehaviour
         agent.isStopped = true;
         canShoot = false;
         currentAnimator.Play("BasicRangedShoot");
+
+        Vector3 targetPos = new Vector3(playerObj.transform.position.x, transform.position.y, playerObj.transform.position.z);
+        transform.LookAt(targetPos);
         yield return new WaitForSeconds(0.1f);
 
         currentAnimator.speed = 0;

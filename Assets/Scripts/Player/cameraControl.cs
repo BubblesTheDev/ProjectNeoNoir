@@ -48,7 +48,7 @@ public class cameraControl : MonoBehaviour
     private void Update()
     {
         CameraObj.transform.localRotation = Quaternion.Euler(yRot, CameraObj.transform.localRotation.y, CameraObj.transform.localRotation.z);
-        Orientation.transform.localRotation = Quaternion.Euler(0, xRot, 0);
+        Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, xRot, Orientation.transform.localRotation.z);
 
         Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity);
     }

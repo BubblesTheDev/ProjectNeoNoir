@@ -23,6 +23,13 @@ public class enemyStats : MonoBehaviour
             fireTickTime += Time.deltaTime;
             currentHP -= fireTickDmg;
         }
+
+        if (currentHP <= 0) die();
+    }
+
+    void die()
+    {
+        Destroy(gameObject);
     }
 
     public void takeDamage(float damageToTake, statusEffects effectsToGive)

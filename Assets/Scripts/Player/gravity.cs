@@ -14,6 +14,7 @@ public class gravity : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Rigidbody playerRb;
     private movement playerMovement;
+    private GameObject playerCam;
     public bool gravityIsFlipped { private set; get; }
 
     [Space, Header("Statistics")]
@@ -32,6 +33,7 @@ public class gravity : MonoBehaviour
     private void Awake()
     {
         playerMovement = player.GetComponent<movement>();
+        playerCam = GameObject.Find("Orientation");
 
         gravityReference = GameObject.Find("Game Manager").GetComponent<gravity>();
         currentGravityDir = -Vector3.up;
@@ -68,24 +70,26 @@ public class gravity : MonoBehaviour
 
         if (instantFlip)
         {
-            player.transform.localRotation =
-                Quaternion.Euler(player.transform.localRotation.eulerAngles.x,
-                    player.transform.localRotation.eulerAngles.y,
-                    player.transform.localRotation.eulerAngles.z + (180 * currentGravityDir.y));
+            playerCam.transform.localRotation =
+                Quaternion.Euler(playerCam.transform.localRotation.eulerAngles.x,
+                    playerCam.transform.localRotation.eulerAngles.y,
+                    playerCam.transform.localRotation.eulerAngles.z + (180 * currentGravityDir.y));
         }
         else
         {
             float currentTime = 0;
             while (currentTime <= timeToFlipGravity)
             {
-                player.transform.localRotation = Quaternion.Euler(player.transform.localRotation.eulerAngles.x,
-                    player.transform.localRotation.eulerAngles.y,
-                    player.transform.localRotation.eulerAngles.z + (180 / timeToFlipGravity * Time.deltaTime));
+                playerCam.transform.localRotation = Quaternion.Euler(playerCam.transform.localRotation.eulerAngles.x,
+                    playerCam.transform.localRotation.eulerAngles.y,
+                    playerCam.transform.localRotation.eulerAngles.z + (180 / timeToFlipGravity * Time.deltaTime));
                 currentTime += Time.deltaTime;
                 yield return null;
             }
-            if (currentGravityDir.y == -1) player.transform.localRotation = Quaternion.Euler(player.transform.localRotation.eulerAngles.x, player.transform.localRotation.eulerAngles.y, 0);
-            else player.transform.localRotation = Quaternion.Euler(player.transform.localRotation.eulerAngles.x, player.transform.localRotation.eulerAngles.y, 180);
+
+            if(gravityIsFlipped) playerCam.transform.localRotation = Quaternion.Euler(playerCam.transform.localRotation.x, playerCam.transform.localRotation.y, 180);
+            else playerCam.transform.localRotation = Quaternion.Euler(playerCam.transform.localRotation.x, playerCam.transform.localRotation.y, 0);
+
         }
 
         gravityIsFlipped = !gravityIsFlipped;
