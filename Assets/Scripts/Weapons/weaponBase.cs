@@ -155,9 +155,6 @@ public class weaponBase : MonoBehaviour
                         
 
 
-                        GameObject debugObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                        debugObj.transform.position = shotHit.point;
-                        debugObj.transform.localScale *= .1f;
                     }
                 }
                 else

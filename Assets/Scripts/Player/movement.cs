@@ -114,7 +114,14 @@ public class movement : MonoBehaviour
             gameObject.transform.localRotation = objOrientation.transform.localRotation;
         }
 
-
+        if(currentMovementState != movementStates.jumping || currentMovementState != movementStates.dashing)
+        {
+            if (getGroundCheck())
+            {
+                currentMovementState = movementStates.grounded;
+                staminaCharges = 3;
+            }
+        }
     }
 
     

@@ -23,7 +23,7 @@ public class playerHealth : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(currentStaticEnergy);
+        //Debug.Log(currentStaticEnergy);
         if (Input.GetKeyDown(KeyCode.F1))
         {
             StartCoroutine(takeDamage(1));
