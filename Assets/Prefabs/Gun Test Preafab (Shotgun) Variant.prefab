@@ -112,6 +112,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun Test Preafab (Shotgun) Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2080324174636414483, guid: e6b020421741ae44d8c4ae139622c2da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4469394646056695688, guid: e6b020421741ae44d8c4ae139622c2da,
         type: 3}
       propertyPath: m_LocalPosition.x
