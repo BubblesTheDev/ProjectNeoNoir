@@ -43,7 +43,7 @@ public class weaponBase : MonoBehaviour
         if (currentWeaponPower == null || firePoint == null)
         {
             Debug.LogWarning("You are either missing a <b>FirePoint</b> game object decleration \n Or, you are missing a <b>current weapon power</b> decleration");
-            Debug.Break();
+           // Debug.Break();
         }
 
         camControl = GameObject.Find("Player").GetComponent<cameraControl>();
