@@ -44,6 +44,60 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""scrollWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""17c73a68-b433-4733-a4b7-c9acc9862d03"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""WeaponSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc7d5a35-ebb0-4876-a6c7-c24c3dfc15d6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""5397f6b4-0e68-4ff5-9ab3-771603542973"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc4a7b04-3d6d-4155-8bcb-9e24478b3bbd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot4"",
+                    ""type"": ""Button"",
+                    ""id"": ""42b5d09b-6593-4ba4-a145-912027e7493a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot5"",
+                    ""type"": ""Button"",
+                    ""id"": ""b688a40b-7714-4651-91c0-cb54ef449a57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +122,72 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
                     ""action"": ""Fire 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b341b186-2181-4ade-bb8b-8bbb04c60b6e"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""scrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b861bd83-9f4d-4a84-98ce-5ab6e7efb16d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""WeaponSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a74d593b-cf84-4045-96b2-9244267bc4cb"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""WeaponSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b89de621-7053-40a5-831e-48aa581b6797"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""WeaponSlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""777e482b-53bf-48d5-ae64-2c5f72274f3d"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""WeaponSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d149e453-7c92-4574-8832-93d919f24872"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""WeaponSlot5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -84,6 +204,12 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_Fire1 = m_Combat.FindAction("Fire 1", throwIfNotFound: true);
         m_Combat_Fire2 = m_Combat.FindAction("Fire 2", throwIfNotFound: true);
+        m_Combat_scrollWheel = m_Combat.FindAction("scrollWheel", throwIfNotFound: true);
+        m_Combat_WeaponSlot1 = m_Combat.FindAction("WeaponSlot1", throwIfNotFound: true);
+        m_Combat_WeaponSlot2 = m_Combat.FindAction("WeaponSlot2", throwIfNotFound: true);
+        m_Combat_WeaponSlot3 = m_Combat.FindAction("WeaponSlot3", throwIfNotFound: true);
+        m_Combat_WeaponSlot4 = m_Combat.FindAction("WeaponSlot4", throwIfNotFound: true);
+        m_Combat_WeaponSlot5 = m_Combat.FindAction("WeaponSlot5", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -147,12 +273,24 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
     private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
     private readonly InputAction m_Combat_Fire1;
     private readonly InputAction m_Combat_Fire2;
+    private readonly InputAction m_Combat_scrollWheel;
+    private readonly InputAction m_Combat_WeaponSlot1;
+    private readonly InputAction m_Combat_WeaponSlot2;
+    private readonly InputAction m_Combat_WeaponSlot3;
+    private readonly InputAction m_Combat_WeaponSlot4;
+    private readonly InputAction m_Combat_WeaponSlot5;
     public struct CombatActions
     {
         private @InteractionInputActions m_Wrapper;
         public CombatActions(@InteractionInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Fire1 => m_Wrapper.m_Combat_Fire1;
         public InputAction @Fire2 => m_Wrapper.m_Combat_Fire2;
+        public InputAction @scrollWheel => m_Wrapper.m_Combat_scrollWheel;
+        public InputAction @WeaponSlot1 => m_Wrapper.m_Combat_WeaponSlot1;
+        public InputAction @WeaponSlot2 => m_Wrapper.m_Combat_WeaponSlot2;
+        public InputAction @WeaponSlot3 => m_Wrapper.m_Combat_WeaponSlot3;
+        public InputAction @WeaponSlot4 => m_Wrapper.m_Combat_WeaponSlot4;
+        public InputAction @WeaponSlot5 => m_Wrapper.m_Combat_WeaponSlot5;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -168,6 +306,24 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
             @Fire2.started += instance.OnFire2;
             @Fire2.performed += instance.OnFire2;
             @Fire2.canceled += instance.OnFire2;
+            @scrollWheel.started += instance.OnScrollWheel;
+            @scrollWheel.performed += instance.OnScrollWheel;
+            @scrollWheel.canceled += instance.OnScrollWheel;
+            @WeaponSlot1.started += instance.OnWeaponSlot1;
+            @WeaponSlot1.performed += instance.OnWeaponSlot1;
+            @WeaponSlot1.canceled += instance.OnWeaponSlot1;
+            @WeaponSlot2.started += instance.OnWeaponSlot2;
+            @WeaponSlot2.performed += instance.OnWeaponSlot2;
+            @WeaponSlot2.canceled += instance.OnWeaponSlot2;
+            @WeaponSlot3.started += instance.OnWeaponSlot3;
+            @WeaponSlot3.performed += instance.OnWeaponSlot3;
+            @WeaponSlot3.canceled += instance.OnWeaponSlot3;
+            @WeaponSlot4.started += instance.OnWeaponSlot4;
+            @WeaponSlot4.performed += instance.OnWeaponSlot4;
+            @WeaponSlot4.canceled += instance.OnWeaponSlot4;
+            @WeaponSlot5.started += instance.OnWeaponSlot5;
+            @WeaponSlot5.performed += instance.OnWeaponSlot5;
+            @WeaponSlot5.canceled += instance.OnWeaponSlot5;
         }
 
         private void UnregisterCallbacks(ICombatActions instance)
@@ -178,6 +334,24 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
             @Fire2.started -= instance.OnFire2;
             @Fire2.performed -= instance.OnFire2;
             @Fire2.canceled -= instance.OnFire2;
+            @scrollWheel.started -= instance.OnScrollWheel;
+            @scrollWheel.performed -= instance.OnScrollWheel;
+            @scrollWheel.canceled -= instance.OnScrollWheel;
+            @WeaponSlot1.started -= instance.OnWeaponSlot1;
+            @WeaponSlot1.performed -= instance.OnWeaponSlot1;
+            @WeaponSlot1.canceled -= instance.OnWeaponSlot1;
+            @WeaponSlot2.started -= instance.OnWeaponSlot2;
+            @WeaponSlot2.performed -= instance.OnWeaponSlot2;
+            @WeaponSlot2.canceled -= instance.OnWeaponSlot2;
+            @WeaponSlot3.started -= instance.OnWeaponSlot3;
+            @WeaponSlot3.performed -= instance.OnWeaponSlot3;
+            @WeaponSlot3.canceled -= instance.OnWeaponSlot3;
+            @WeaponSlot4.started -= instance.OnWeaponSlot4;
+            @WeaponSlot4.performed -= instance.OnWeaponSlot4;
+            @WeaponSlot4.canceled -= instance.OnWeaponSlot4;
+            @WeaponSlot5.started -= instance.OnWeaponSlot5;
+            @WeaponSlot5.performed -= instance.OnWeaponSlot5;
+            @WeaponSlot5.canceled -= instance.OnWeaponSlot5;
         }
 
         public void RemoveCallbacks(ICombatActions instance)
@@ -208,5 +382,11 @@ public partial class @InteractionInputActions: IInputActionCollection2, IDisposa
     {
         void OnFire1(InputAction.CallbackContext context);
         void OnFire2(InputAction.CallbackContext context);
+        void OnScrollWheel(InputAction.CallbackContext context);
+        void OnWeaponSlot1(InputAction.CallbackContext context);
+        void OnWeaponSlot2(InputAction.CallbackContext context);
+        void OnWeaponSlot3(InputAction.CallbackContext context);
+        void OnWeaponSlot4(InputAction.CallbackContext context);
+        void OnWeaponSlot5(InputAction.CallbackContext context);
     }
 }

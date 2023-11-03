@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,41 +13,39 @@ public class weaponBase : MonoBehaviour
 {
     [Header("Weapon Stats")]
     public float weaponDamage = 30;
-    public int shotsPerFire = 1;
-    public float fireRate = .1f;
+    public float maxShotDistance;
     public int numOfPellets = 1;
-    public float fireCooldown = 0.25f;
+    public float fireRateInSeconds = 0.25f;
+    public int bulletPeirce;
     [Range(0, 15)]
     public float multiPelletAngle = 0;
-    public float muzzleVelocity = 250f;
+    public float projectileSpeed = 250f;
 
 
     [Header("Weapon Settings")]
-    public weaponType typeOfWeapon;
-    public LayerMask layersToHit;
+    public bool weaponIsEquipped;
+    public LayerMask layersToIgnore;
     public bool canFire = true;
     public weaponPowerBase currentWeaponPower;
     public GameObject firePoint;
     public GameObject bulletPrefab;
     public GameObject gunGFX;
 
-    RaycastHit shotHit;
     InteractionInputActions interactionInput;
     cameraControl camControl;
+    weaponVFXHandler weaponVFX;
 
+    [HideInInspector] public UnityEvent gunFiredEvent;
+    [HideInInspector] public UnityEvent powerActivated;
 
     private void Awake()
     {
         interactionInput = new InteractionInputActions();
-
-        if (GetComponent<weaponPowerBase>() != null) currentWeaponPower = GetComponent<weaponPowerBase>();
-        if (currentWeaponPower == null || firePoint == null)
-        {
-            Debug.LogWarning("You are either missing a <b>FirePoint</b> game object decleration \n Or, you are missing a <b>current weapon power</b> decleration");
-           // Debug.Break();
-        }
-
         camControl = GameObject.Find("Player").GetComponent<cameraControl>();
+        if (GetComponent<weaponVFXHandler>() != null) weaponVFX = GetComponent<weaponVFXHandler>();
+        if (GetComponent<weaponPowerBase>() != null) currentWeaponPower = GetComponent<weaponPowerBase>();
+
+        layersToIgnore = ~layersToIgnore;
     }
 
     private void OnEnable()
@@ -61,159 +60,100 @@ public class weaponBase : MonoBehaviour
 
     private void Update()
     {
-        if (camControl.lookingDir.point != null) firePoint.transform.LookAt(camControl.lookingDir.point);
+        if (weaponIsEquipped)
+        {
+            gunGFX.SetActive(true);
+            if (camControl.lookingDir.point != null) firePoint.transform.LookAt(camControl.lookingDir.point);
 
-        if(canFire && interactionInput.Combat.Fire1.IsPressed())
-        {
-            StartCoroutine(fireGun());
+            if (canFire && interactionInput.Combat.Fire1.IsPressed())
+            {
+                if (firePoint == null)
+                {
+                    Debug.LogWarning("You are missing a <b>Firepoint</b> object decleration");
+                    Debug.Break();
+                }
+                StartCoroutine(fireGun());
+            }
+            if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+            {
+                if (currentWeaponPower == null)
+                {
+                    Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
+                    Debug.Break();
+                }
+                powerActivated.Invoke();
+                StartCoroutine(currentWeaponPower.usePower());
+            }
         }
-        if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+        else if (!weaponIsEquipped)
         {
-            StartCoroutine(currentWeaponPower.usePower());
+            gunGFX.SetActive(false);
         }
     }
-
-    void playFireSound()
-    {
-        switch (typeOfWeapon)
-        {
-            case weaponType.revolver:
-                AudioManager.instance.PlaySFX(FMODEvents.instance.pistolShot, this.transform.position);
-                break;
-            case weaponType.shotgun:
-                AudioManager.instance.PlaySFX(FMODEvents.instance.shotgunShotNoCock, this.transform.position);
-                break;
-            case weaponType.sniper:
-                break;
-            case weaponType.rocketLauncher:
-                break;
-            case weaponType.machineGun:
-                break;
-        }
-    }
-
-    public UnityEvent onWeaponFire;
-    public UnityEvent onWeaponCooldown;
-    public UnityEvent onEnviromentHit;
-    public UnityEvent onEnemyHit;
-
-
-
-
 
     IEnumerator fireGun()
     {
-        //print("Starting to fire: " + gameObject.name);
         canFire = false;
 
-        onWeaponFire?.Invoke();
+        gunFiredEvent.Invoke();
+        weaponVFX.playMuzzleFlash();
+        weaponVFX.playFireAnimation(fireRateInSeconds);
 
-        for (int x = 0; x < shotsPerFire; x++)
+        for (int y = 0; y < numOfPellets; y++)
         {
 
-            //print("Firing shot " + x + " of " + shotsPerFire);
-            for (int y = 0; y < numOfPellets; y++)
+            //Detects if the weapon is firing a projectile by seeing if there is a prefab to fire or not
+            if (bulletPrefab == null)
             {
-                //print("Shooting pellet " + y + " of " + numOfPellets);
+                
+                List<RaycastHit> thingsHit = new List<RaycastHit>();
 
-                //Detects if the weapon is firing a projectile by seeing if there is a prefab to fire or not
-                if (bulletPrefab == null)
-                {
-                    //Play muzzle flash particle effect
-                    //play gun sound here
-                    //play fire animation
-                    playFireSound();
-
-
-
-                    if (multiPelletAngle == 0) Physics.Raycast(firePoint.transform.position, firePoint.transform.forward, out shotHit, Mathf.Infinity, layersToHit);
-                    else
-                    {
-                        Physics.Raycast(firePoint.transform.position,  Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0) * firePoint.transform.forward , out shotHit, Mathf.Infinity, layersToHit);
-                    }
-
-                    if (shotHit.collider != null)
-                    {
-                        //play bullet hit particle,
-                        //spawn decal for bullet hole
-
-
-                        if (shotHit.collider.CompareTag("Enemy"))
-                        {
-                            print("Hit " + shotHit.collider.gameObject.name + " enemy, dealt " + weaponDamage + " damage to it");
-                            enemyStats tempReference = shotHit.collider.GetComponent<enemyStats>();
-                            tempReference.takeDamage(weaponDamage, statusEffects.normal);
-
-                            onEnemyHit?.Invoke();
-                        }
-
-                        onEnviromentHit?.Invoke();
-
-                        //get component for enemy STATS,
-                        //call deal damage function to enemy
-                        //it handles the rest
-                        
-
-
-                    }
-                }
+                if (multiPelletAngle == 0 || y == 0) thingsHit.AddRange(Physics.RaycastAll(camControl.CameraObj.transform.position, camControl.CameraObj.transform.forward, maxShotDistance, layersToIgnore).ToList());
                 else
                 {
-                    //Play muzzle flash particle effect
-                    //play gun sound here
-                    //play fire animation
-                    playFireSound();
+                    thingsHit.AddRange(Physics.RaycastAll(camControl.CameraObj.transform.position, Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0) * camControl.CameraObj.transform.forward, maxShotDistance, layersToIgnore).ToList());
+                }
 
+                if(thingsHit.Count > 0)
+                {
+                    thingsHit.OrderBy(RaycastHit => Vector3.Distance(this.transform.localPosition, RaycastHit.point)).ToList();
 
-                    GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
-                    if (tempBullet.GetComponent<Rigidbody>() != null)
+                    for (int i = 0; i < bulletPeirce+1; i++)
                     {
-                        Rigidbody bulletRb = tempBullet.GetComponent<Rigidbody>();
-                        bulletRb.useGravity = false;
-                        bulletRb.AddForce(tempBullet.transform.forward * muzzleVelocity, ForceMode.Impulse);
+                        if (thingsHit.Count - 1 == i) break;
+                        if (thingsHit[i].collider.CompareTag("Enemy"))
+                        {
+                            enemyStats tempReference = thingsHit[i].collider.GetComponent<enemyStats>();
+                            tempReference.takeDamage(weaponDamage);
+                        }
+                        else if (thingsHit[i].collider.gameObject.layer == LayerMask.NameToLayer("Walkable"))
+                        {
+                            break;
+                        }
                     }
 
-                    //Get bullet stats script
-                    //add stats and modifiers
-                    //Dmg, modifiers, etc
+                    if (thingsHit.Count > bulletPeirce)
+                    {
+                        StartCoroutine(weaponVFX.spawnTrail(thingsHit[bulletPeirce]));
+                    } else if(thingsHit.Count == 0) StartCoroutine(weaponVFX.spawnTrail(camControl.lookingDir));
+                    else StartCoroutine(weaponVFX.spawnTrail(thingsHit[thingsHit.Count-1]));
+                    //Call spawntrail function from weaponVFX scripts
                 }
             }
+            else if (bulletPrefab != null)
+            {
+                GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
 
-            yield return new WaitForSeconds(fireRate);
+                tempBullet.GetComponent<playerProjectileBase>().loadStats(weaponDamage, projectileSpeed, maxShotDistance, bulletPeirce); 
+            }
         }
 
-        yield return new WaitForSeconds(fireCooldown - (fireRate * shotsPerFire));
-        onWeaponCooldown?.Invoke();
+        yield return new WaitForSeconds(fireRateInSeconds);
         canFire = true;
     }
 
 
     private void OnDrawGizmosSelected()
     {
-        if (canFire) Gizmos.color = Color.green;
-        else Gizmos.color = Color.red;
-        if(camControl != null)
-        {
-            if (camControl.lookingDir.point != null) Gizmos.DrawLine(firePoint.transform.position, camControl.lookingDir.point);
-        }
-
-        Gizmos.color = Color.white;
-        if (multiPelletAngle > 0)
-        {
-            Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(multiPelletAngle, 0, 0) * firePoint.transform.forward * 3f);
-            Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(-multiPelletAngle, 0, 0) * firePoint.transform.forward * 3f);
-            Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(0, multiPelletAngle, 0) * firePoint.transform.forward * 3f);
-            Gizmos.DrawLine(firePoint.transform.position, Quaternion.Euler(0, -multiPelletAngle, 0) * firePoint.transform.forward * 3f);
-        }
     }
-
-}
-
-
-public enum statusEffects
-{
-    normal,
-    oil,
-    electric,
-    fire
 }

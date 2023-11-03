@@ -5,14 +5,15 @@ using System.ComponentModel;
 using Unity.VisualScripting;
 //using UnityEditor.ShaderGraph.Drawing.Inspector.PropertyDrawers;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class movement : MonoBehaviour
 {
+
     [Header("Assignables")]
-    public movementStates movmentState;
     [SerializeField] private Rigidbody rb;
     public GameObject objOrientation;
     [SerializeField] private bool freeLook;
@@ -24,7 +25,6 @@ public class movement : MonoBehaviour
     [SerializeField] private float drag = 6f;
     [SerializeField] private float airDrag = .95f;
     [SerializeField] private movementStates currentMovementState;
-    [SerializeField] private bool isGrounded;
 
 
     [Header("Ground Check Stats")]
@@ -33,9 +33,10 @@ public class movement : MonoBehaviour
     [SerializeField] private LayerMask groundCheckLayers;
 
     [Header("External Movement Stats")]
-    [SerializeField, Space] private int staminaCharges;
-    [SerializeField] private bool instantRecharge;
-    [SerializeField] private float rechargeRate;
+    public int staminaCharges;
+    public bool instantRecharge;
+    public float currentCharge;
+    public float rechargeRate;
 
     //Jump variables
     [SerializeField, Space] private float jumpForce;
@@ -59,23 +60,14 @@ public class movement : MonoBehaviour
     //Buttslam Variables
     [SerializeField, Space] private float buttSlamForce;
     [SerializeField] private float buttSlamCooldown;
-    [SerializeField] private float slamReboundTime;
     [SerializeField] private float slamDrag;
     [SerializeField] private float timeToRaiseSlam;
     [SerializeField] private float raiseDistance;
-    private bool slamRebound;
     private bool canSlam = true;
 
-    //Wallrun Variables
-    [SerializeField, Space] private float distanceToDetectWall;
-    [SerializeField] private LayerMask wallLayers;
-    [SerializeField] private float maxWallrunTime;
-    [SerializeField] private float wallRunGravity;
-    [SerializeField] private float wallRunJumpAngle;
-    [SerializeField] private float wallRunDistance;
-    [SerializeField] private float cameraAngleTilt;
-
     private Vector2 horizontalMovement;
+
+    [HideInInspector] public UnityEvent usedStamina;
 
     private void OnEnable()
     {
@@ -95,8 +87,8 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
         movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
-        movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
-        movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
+        //movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
+        //movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
     }
 
 
@@ -109,18 +101,20 @@ public class movement : MonoBehaviour
     private void Update()
     {
         controlDrag();
+
+        handleStamina();
+
         if (!freeLook)
         {
             gameObject.transform.localRotation = objOrientation.transform.localRotation;
         }
-
         if(currentMovementState != movementStates.jumping || currentMovementState != movementStates.dashing)
         {
             if (getGroundCheck())
             {
                 currentMovementState = movementStates.grounded;
-                staminaCharges = 3;
-            }
+                
+            } else currentMovementState = movementStates.jumping;
         }
     }
 
@@ -136,6 +130,27 @@ public class movement : MonoBehaviour
         rb.AddForce(moveVector.normalized * moveSpeed * moveMulti * Time.deltaTime, ForceMode.Force);
     }
 
+    void handleStamina()
+    {
+        if (instantRecharge){
+            if(getGroundCheck()) staminaCharges = 3;
+        } else if (getGroundCheck())
+        {
+            currentCharge += Time.deltaTime;
+            if (currentCharge > rechargeRate * staminaCharges)
+            {
+                staminaCharges++;
+                currentCharge = 0;
+            }
+            
+        }
+
+        if (staminaCharges > 3)
+        {
+            staminaCharges = 3;
+        }
+    }
+
     IEnumerator jump()
     {
         if (!canJump) yield break;
@@ -146,7 +161,6 @@ public class movement : MonoBehaviour
             {
                 //print("jumping 3");
                 staminaCharges--;
-                PlayerHUD.instance.UseStamina(1);
             }
             else yield break;
         }
@@ -172,7 +186,6 @@ public class movement : MonoBehaviour
             if (staminaCharges > 0)
             {
                 staminaCharges--;
-                PlayerHUD.instance.UseStamina(1);
             }
             else yield break;
         }
@@ -285,34 +298,24 @@ public class movement : MonoBehaviour
 
         //Waits till certain seconds, or till the player hits the ground
         tempTime = 0;
-        while(tempTime < 0.5f || getGroundCheck())
+        while(tempTime > 0.5f || getGroundCheck())
         {
             tempTime += Time.deltaTime;
             yield return null;
         }
 
 
-        freeLook = false;
         gravity.gravityReference.useGravity = true;
         rb.drag = drag;
-        currentMovementState = movementStates.grounded;
-
+        freeLook = false;
+        if (getGroundCheck()) currentMovementState = movementStates.grounded;
+        else currentMovementState = movementStates.jumping;
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         //if slam hits the ground,
         //deal dmg to enemies and knock them back,
         //screenshake
-        //Start the rebound timer
 
-        if (getGroundCheck())
-        {
-            slamRebound = true;
-            yield return new WaitForSeconds(slamReboundTime);
-        }
-
-        
-
-        float tempSlamCooldown = buttSlamCooldown;
-        if (getGroundCheck()) tempSlamCooldown = buttSlamCooldown - slamReboundTime;
-        yield return new WaitForSeconds(tempSlamCooldown);
+        yield return new WaitForSeconds(buttSlamCooldown);
         canSlam = true;
     }
 

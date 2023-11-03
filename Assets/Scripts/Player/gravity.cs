@@ -43,7 +43,6 @@ public class gravity : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.R) && canSwitch && useGravity)
         {
-            PlayerHUD.instance.UseGravity();
             AudioManager.instance.PlaySFX(FMODEvents.instance.gravitySwitch, this.transform.position);
             StartCoroutine(flipGravity());
         }

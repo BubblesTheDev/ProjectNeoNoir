@@ -10,7 +10,7 @@ public class cameraControl : MonoBehaviour
 {
     [Header("Assignables")]
     [SerializeField] private GameObject Orientation;
-    [SerializeField] private GameObject CameraObj;
+    public GameObject CameraObj;
     CameraInputActions controls;
     gravity playerGravReference;
     public RaycastHit lookingDir;
@@ -33,6 +33,8 @@ public class cameraControl : MonoBehaviour
         controls.CameraControls.CameraRotation.performed += CameraRotation_performed;
 
         playerGravReference = GameObject.Find("Game Manager").GetComponent<gravity>();
+
+        layersToIgnoreForAimingDir = ~layersToIgnoreForAimingDir;
     }
 
     private void OnEnable()
@@ -59,7 +61,7 @@ public class cameraControl : MonoBehaviour
         }
 
 
-        Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity);
+        Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity, layersToIgnoreForAimingDir);
     }
 
 
@@ -72,5 +74,13 @@ public class cameraControl : MonoBehaviour
         yRot -= mouseY * mouseSensitivity * Time.deltaTime;
 
         yRot = Mathf.Clamp(yRot, minAngle, maxAngle);
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Vector3 tempDir = CameraObj.transform.forward * 100f;
+        Gizmos.DrawRay(CameraObj.transform.position, tempDir);
     }
 }

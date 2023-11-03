@@ -64,12 +64,12 @@ AnimatorController:
   m_Name: ShotgunBlockOut
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: TrShoot
-    m_Type: 9
-    m_DefaultFloat: 0
+  - m_Name: AnimSpeed
+    m_Type: 1
+    m_DefaultFloat: 0.75
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -105,7 +105,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: af433ed01ce5df842beea88ad235aa39, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: AnimSpeed
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -126,13 +126,13 @@ AnimatorState:
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
   m_Mirror: 0
-  m_SpeedParameterActive: 0
+  m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: fc8c8fdd516ce7143a9689ca3706785f, type: 2}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: AnimSpeed
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -150,9 +150,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.16666663
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0.9499999
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

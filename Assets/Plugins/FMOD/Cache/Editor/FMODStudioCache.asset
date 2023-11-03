@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638332538588493394
+  lastModified: 638333450026046416
   FileSizes:
   - Name: Desktop
     Value: 1402
@@ -89,7 +89,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Pistol.bank
   Name: Pistol
   StudioPath: bank:/Guns/Pistol
-  lastModified: 638332519850948177
+  lastModified: 638333450026046416
   FileSizes:
   - Name: Desktop
     Value: 12256
@@ -109,7 +109,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Gravity Switch Test.bank
   Name: Gravity Switch Test
   StudioPath: bank:/Gravity Switch/Gravity Switch Test
-  lastModified: 638332519850437893
+  lastModified: 638333450026036416
   FileSizes:
   - Name: Desktop
     Value: 11264
@@ -156,7 +156,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Shotgun.bank
   Name: Shotgun
   StudioPath: bank:/Guns/Shotgun
-  lastModified: 638332519851890982
+  lastModified: 638333450026056420
   FileSizes:
   - Name: Desktop
     Value: 20384
@@ -203,7 +203,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Enemy Gun Sound.bank
   Name: Enemy Gun Sound
   StudioPath: bank:/Guns/Enemy Gun Sound
-  lastModified: 638332538589796787
+  lastModified: 638333450026016408
   FileSizes:
   - Name: Desktop
     Value: 7808
@@ -267,7 +267,7 @@ MonoBehaviour:
   - {fileID: 8105392461112739896}
   StringsBanks:
   - {fileID: -7237450975780338620}
-  cacheTime: 638332538589796787
+  cacheTime: 638333450026056420
   cacheVersion: 131608
 --- !u!114 &253865217176757104
 MonoBehaviour:
@@ -311,7 +311,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Enemy Respawn.bank
   Name: Enemy Respawn
   StudioPath: bank:/Enemy Respawn/Enemy Respawn
-  lastModified: 638332538589256532
+  lastModified: 638333450026026417
   FileSizes:
   - Name: Desktop
     Value: 27136
@@ -331,7 +331,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638332538588448184
+  lastModified: 638321906358405567
   FileSizes:
   - Name: Desktop
     Value: 1036
