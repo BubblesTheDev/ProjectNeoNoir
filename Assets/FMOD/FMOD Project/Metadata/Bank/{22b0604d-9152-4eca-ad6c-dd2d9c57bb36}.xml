@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Bank" id="{22b0604d-9152-4eca-ad6c-dd2d9c57bb36}">
+		<property name="name">
+			<value>Gravity Switch</value>
+		</property>
+		<relationship name="folder">
+			<destination>{199b5c01-8cea-4798-915f-271679d5641c}</destination>
+		</relationship>
+	</object>
+</objects>
