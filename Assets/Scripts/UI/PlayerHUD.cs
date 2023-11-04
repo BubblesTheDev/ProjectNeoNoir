@@ -39,7 +39,6 @@ public class PlayerHUD : MonoBehaviour
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
-
     }
 
     private void Update()
@@ -52,6 +51,9 @@ public class PlayerHUD : MonoBehaviour
     {
         healthBar.maxValue = healthStats.maxHp;
         healthBar.value = healthStats.maxHp;
+        healthDrain.maxValue = healthStats.maxHp;
+        healthDrain.value = healthStats.maxHp;
+
         staticMeter.maxValue = healthStats.maxStaticEnergy;
         staminaBar.maxValue = 3;
     }
@@ -66,7 +68,7 @@ public class PlayerHUD : MonoBehaviour
         healthBar.value = healthStats.currentHP;
 
         StartCoroutine(ShakeHUD());
-        while(healthDrain.value < healthBar.value)
+        while(healthDrain.value > healthBar.value)
         {
             healthDrain.value -= healthStats.immunityTime * Time.deltaTime;
             yield return null;
