@@ -386,6 +386,7 @@ MonoBehaviour:
   Banks:
   - Enemy Gun Sound
   - Enemy Respawn
+  - Gravity Switch
   - Gravity Switch Test
   - Pistol
   - Shotgun
