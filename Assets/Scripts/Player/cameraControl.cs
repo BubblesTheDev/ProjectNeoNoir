@@ -17,9 +17,12 @@ public class cameraControl : MonoBehaviour
     public LayerMask layersToIgnoreForAimingDir;
 
     [Space, Header("Stats")]
-    [SerializeField] private float mouseSensitivity;
-    [SerializeField] private float maxAngle;
-    [SerializeField] private float minAngle;
+    public float mouseSensitivityHorizontal;
+    public float mouseSensitivityVertical;
+    public bool flipHoirzontal;
+    public bool flipVertical;
+    public float maxAngle;
+    public float minAngle;
 
     public float mouseX;
     public float mouseY;
@@ -28,6 +31,9 @@ public class cameraControl : MonoBehaviour
 
     private void Awake()
     {
+        getSettings();
+
+
         Cursor.lockState = CursorLockMode.Locked;
         controls = new CameraInputActions();
         controls.CameraControls.CameraRotation.performed += CameraRotation_performed;
@@ -64,14 +70,25 @@ public class cameraControl : MonoBehaviour
         Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity, layersToIgnoreForAimingDir);
     }
 
+    void getSettings()
+    {
+        mouseSensitivityHorizontal = gameSettings.gameSettingsReference.HorizontalSensDefault;
+        mouseSensitivityVertical = gameSettings.gameSettingsReference.VerticalSensDefault;
+        flipHoirzontal = gameSettings.gameSettingsReference.flipHorizontalDefault;
+        flipVertical = gameSettings.gameSettingsReference.flipVerticalDefault;
+
+        Camera.main.fieldOfView = gameSettings.gameSettingsReference.FOVSettingDefault;
+    }
 
     private void CameraRotation_performed(InputAction.CallbackContext obj)
     {
         mouseX = obj.ReadValue<Vector2>().x;
         mouseY = obj.ReadValue<Vector2>().y;
 
-        xRot += mouseX * mouseSensitivity * Time.deltaTime;
-        yRot -= mouseY * mouseSensitivity * Time.deltaTime;
+        if (flipHoirzontal) xRot -= mouseX * mouseSensitivityHorizontal * Time.deltaTime;
+        else xRot += mouseX * mouseSensitivityHorizontal * Time.deltaTime;
+        if (flipVertical) yRot += mouseY * mouseSensitivityVertical * Time.deltaTime;
+        else yRot -= mouseY * mouseSensitivityVertical * Time.deltaTime;
 
         yRot = Mathf.Clamp(yRot, minAngle, maxAngle);
     }
