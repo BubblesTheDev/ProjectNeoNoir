@@ -87,8 +87,8 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
         movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
-        //movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
-        //movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
+        movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
+        movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
     }
 
 

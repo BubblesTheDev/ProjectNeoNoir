@@ -31,8 +31,9 @@ public class cameraControl : MonoBehaviour
 
     private void Awake()
     {
+#if !UNITY_EDITOR
         getSettings();
-
+#endif
 
         Cursor.lockState = CursorLockMode.Locked;
         controls = new CameraInputActions();
@@ -72,12 +73,14 @@ public class cameraControl : MonoBehaviour
 
     void getSettings()
     {
-        mouseSensitivityHorizontal = gameSettings.gameSettingsReference.HorizontalSensDefault;
-        mouseSensitivityVertical = gameSettings.gameSettingsReference.VerticalSensDefault;
-        flipHoirzontal = gameSettings.gameSettingsReference.flipHorizontalDefault;
-        flipVertical = gameSettings.gameSettingsReference.flipVerticalDefault;
+        mouseSensitivityHorizontal = PlayerPrefs.GetFloat("horizontalMouseSensitivitySetting");
+        mouseSensitivityVertical = PlayerPrefs.GetFloat("verticalMouseSensitivitySetting");
+        if (PlayerPrefs.GetString("flipHoizontalMouseSetting") == "true") flipHoirzontal = true;
+        else flipHoirzontal = false;
+        if (PlayerPrefs.GetString("flipVerticalMouseSetting") == "true") flipVertical = true;
+        else flipVertical = false;
 
-        Camera.main.fieldOfView = gameSettings.gameSettingsReference.FOVSettingDefault;
+        Camera.main.fieldOfView = PlayerPrefs.GetFloat("FOVSettings");
     }
 
     private void CameraRotation_performed(InputAction.CallbackContext obj)
