@@ -384,12 +384,8 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
-  - Enemy Gun Sound
-  - Enemy Respawn
-  - Gravity Switch
-  - Gravity Switch Test
-  - Pistol
-  - Shotgun
+  - Music
+  - SFX
   BanksToLoad: []
   LiveUpdatePort: 9264
   EnableMemoryTracking: 0

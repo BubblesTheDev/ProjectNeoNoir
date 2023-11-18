@@ -87849,6 +87849,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4097604b9ede52041aab4dc2998146fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <battleMusic>k__BackingField:
+    Guid:
+      Data1: -78251982
+      Data2: 1083087641
+      Data3: -1943385688
+      Data4: -152275262
+    Path: event:/Music/Battle Music
   <pistolShot>k__BackingField:
     Guid:
       Data1: -574071897

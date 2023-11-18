@@ -5,6 +5,9 @@ using FMODUnity;
 
 public class FMODEvents : MonoBehaviour
 {
+    [field: Header("Music")]
+    [field: SerializeField] public EventReference battleMusic { get; private set; }
+
     [field: Header("GUN SFX")]
     [field: SerializeField] public EventReference pistolShot { get; private set; }
     [field: SerializeField] public EventReference shotgunShotNoCock { get; private set; }
