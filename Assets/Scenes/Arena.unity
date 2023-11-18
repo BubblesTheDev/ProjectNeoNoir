@@ -40828,6 +40828,11 @@ PrefabInstance:
       propertyPath: weapons.Array.data[1]
       value: 
       objectReference: {fileID: 4189695184525789351}
+    - target: {fileID: 6203337868170993210, guid: a38b280081c49a1469c8b09f78bba2d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6444336363677427109, guid: a38b280081c49a1469c8b09f78bba2d6,
         type: 3}
       propertyPath: m_IsActive
@@ -95934,6 +95939,16 @@ PrefabInstance:
       propertyPath: Orientation
       value: 
       objectReference: {fileID: 1894324640}
+    - target: {fileID: 4270610093244792077, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: mouseSensitivityVertical
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4270610093244792077, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: mouseSensitivityHorizontal
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
         type: 3}
       propertyPath: objOrientation
