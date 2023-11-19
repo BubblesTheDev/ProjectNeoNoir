@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using FMOD.Studio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -25,10 +26,10 @@ public class AudioManager : MonoBehaviour
         RuntimeManager.PlayOneShot(SFX, worldPos);
     } 
 
-    public EventInstance CreateEventInstance(EventReference eventReference)
+    public EventInstance EventInstance(EventReference eventReference)
     {
-        eventInstances eventInstance = RunTimeManager.CreateInstance(eventReference);
-        evenetInstances.Add(eventInstance);
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
+        eventInstances.Add(eventInstance);
         return eventInstance;
     }
 
