@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour
 {
     private List<EventInstance> eventInstances;
 
+    private EventInstance musicEventInstance;
+
     public static AudioManager instance { get; private set; }
 
     private void Awake()
@@ -21,10 +23,21 @@ public class AudioManager : MonoBehaviour
         eventInstances = new List<EventInstance>();
     }
 
+    private void Start()
+    {
+        InitializeMusic(FMODEvents.instance.battleMusic);
+    }
+
     public void PlaySFX(EventReference SFX, Vector3 worldPos)
     {
         RuntimeManager.PlayOneShot(SFX, worldPos);
     } 
+
+    private void InitializeMusic(EventReference musicEventReference)
+    {
+        musicEventInstance = EventInstance(musicEventReference);
+        musicEventInstance.start();
+    }
 
     public EventInstance EventInstance(EventReference eventReference)
     {
