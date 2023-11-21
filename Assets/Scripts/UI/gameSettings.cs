@@ -41,25 +41,40 @@ public class gameSettings : MonoBehaviour
 
     [Header("Mouse Settings")]
     [Space] public Toggle flipHorizontalMouseSetting;
-    public bool flipHorizontalDefault;
+    public bool flipHorizontalDefault = false;
+
     public Toggle flipVerticalMouseSetting;
-    public bool flipVerticalDefault;
+    public bool flipVerticalDefault = false;
+    
     public Slider horizontalMouseSensitivitySetting;
-    public float maxHorizontalSensDefault, minHorizontalSensDefault, HorizontalSensDefault;
+    public float maxHorizontalSensDefault = 100, minHorizontalSensDefault = 1, HorizontalSensDefault = 25;
+    
     public Slider verticalMouseSensitivitySetting;
-    public float maxVerticalSensDefault, minVerticalSensDefault, VerticalSensDefault;
+    public float maxVerticalSensDefault = 100, minVerticalSensDefault = 1, VerticalSensDefault = 25;
 
     [Header("CameraSettings")]
     [Space] public Slider FOVSetting;
-    public float maxFOVSettingDefault, minFOVSettingDefault, FOVSettingDefault;
+    public float maxFOVSettingDefault = 90, minFOVSettingDefault = 20, FOVSettingDefault= 60;
+    
     public Slider screenShakeSetting;
     public float maxScreenShakeSettingDefault, minScreenShakeSettingDefault, screenShakeSettingDefault;
+
+    public Toggle headbobEnableSetting;
+    public bool headbobEnable = true;
+
+    public Slider headbobIntensitySetting;
+    public float minHeadbobIntensity = 0f, maxHeadbobIntensity = 2f, headBobIntensity = 1f;
+
+    public Toggle weaponBounceEnableSetting;
+    public bool weaponBounceEnable = true;
 
     [Header("Volume Settings")]
     [Space] public Slider soundEffectsVolumeSetting;
     public float maxSoundEffectVolumeSettingDefault, minSoundEffectVolumeSettingDefault, soundEffectVolumeSettingDefault;
+    
     public Slider musicVolumeSetting;
     public float maxMusicVolumeSettingDefault, minMusicVolumeSettingDefault, musicVolumeSettingDefault;
+    
     public Slider voicesVolumeSetting;
     public float maxVoicesVolumeSettingDefault, minVoicesVolumeSettingDefault, voicesVolumeSettingDefault;
 
@@ -67,11 +82,8 @@ public class gameSettings : MonoBehaviour
     private void Awake()
     {
         resolutionSetup();
-    }
-
-    private void Start()
-    {
         setupPlayerPrefs();
+
     }
 
 
@@ -83,8 +95,8 @@ public class gameSettings : MonoBehaviour
         #endregion
 
         #region Mouse Player Prefs
-        if (!PlayerPrefs.HasKey("flipHoizontalMouseSetting")) PlayerPrefs.SetString("flipHoizontalMouseSetting", flipHorizontalMouseSetting.spriteState.ToString());
-        if (!PlayerPrefs.HasKey("flipVerticalMouseSetting")) PlayerPrefs.SetString("flipVerticalMouseSetting", flipVerticalMouseSetting.spriteState.ToString()); ;
+        if (!PlayerPrefs.HasKey("flipHoizontalMouseSetting")) PlayerPrefs.SetString("flipHoizontalMouseSetting", flipHorizontalDefault.ToString());
+        if (!PlayerPrefs.HasKey("flipVerticalMouseSetting")) PlayerPrefs.SetString("flipVerticalMouseSetting", flipVerticalDefault.ToString()); ;
         if (!PlayerPrefs.HasKey("horizontalMouseSensitivitySetting")) PlayerPrefs.SetFloat("horizontalMouseSensitivitySetting", horizontalMouseSensitivitySetting.value);
         if (!PlayerPrefs.HasKey("verticalMouseSensitivitySetting")) PlayerPrefs.SetFloat("verticalMouseSensitivitySetting", verticalMouseSensitivitySetting.value);
         #endregion
@@ -92,6 +104,10 @@ public class gameSettings : MonoBehaviour
         #region Camera Settings Player Prefs
         if (!PlayerPrefs.HasKey("FOVSettings")) PlayerPrefs.SetFloat("FOVSettings", FOVSetting.value);
         if (!PlayerPrefs.HasKey("ScreenShakeSettings")) PlayerPrefs.SetFloat("screenShakeSettings", screenShakeSetting.value);
+        if (!PlayerPrefs.HasKey("headbobEnableSettings")) PlayerPrefs.SetString("headbobEnableSettings", headbobEnable.ToString());
+        if (!PlayerPrefs.HasKey("headbobIntensitySettings")) PlayerPrefs.SetFloat("headbobIntensitySettings", headBobIntensity);
+        if (!PlayerPrefs.HasKey("weaponBounceEnableSetting")) PlayerPrefs.SetString("weaponBounceEnableSetting", weaponBounceEnable.ToString());
+
         #endregion
 
         #region Volume Setting Player Prefs
@@ -200,125 +216,6 @@ enum screenState
 }
 
 
-[CustomEditor(typeof(gameSettings))]
-public class gameSettingsEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        gameSettings currentGameSettings = (gameSettings)target;
 
-
-        EditorGUILayout.LabelField("Resolution Settings", EditorStyles.boldLabel);
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.resolutionSetting = (TMP_Dropdown)EditorGUILayout.ObjectField("Resolution Dropdown Obj", currentGameSettings.resolutionSetting, typeof(TMP_Dropdown), true);
-        currentGameSettings.screenStateSetting = (TMP_Dropdown)EditorGUILayout.ObjectField("Screenstate Dropdown Obj", currentGameSettings.screenStateSetting, typeof(TMP_Dropdown), true);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.Space();
-
-        EditorGUILayout.LabelField("Mouse Settings", EditorStyles.boldLabel);
-        EditorGUILayout.BeginVertical();
-
-        #region Mouse Toggle Settings
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.flipHorizontalMouseSetting = (Toggle)EditorGUILayout.ObjectField("Flip H mouse Toggle Obj", currentGameSettings.flipHorizontalMouseSetting, typeof(Toggle), true);
-        currentGameSettings.flipHorizontalDefault = (bool)EditorGUILayout.Toggle("Flip H mouse Bool", currentGameSettings.flipHorizontalDefault);
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.flipVerticalMouseSetting = (Toggle)EditorGUILayout.ObjectField("Flip V mouse Toggle Obj", currentGameSettings.flipVerticalMouseSetting, typeof(Toggle), true);
-        currentGameSettings.flipVerticalDefault = (bool)EditorGUILayout.Toggle("Flip V mouse Bool", currentGameSettings.flipVerticalDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        #region Horizontal Mouse Sensitivity Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.horizontalMouseSensitivitySetting = (Slider)EditorGUILayout.ObjectField("H Mouse Sens SLider", currentGameSettings.horizontalMouseSensitivitySetting, typeof(Slider), true);
-        currentGameSettings.HorizontalSensDefault = (float)EditorGUILayout.FloatField("H Mouse Sens Value", currentGameSettings.HorizontalSensDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxHorizontalSensDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxHorizontalSensDefault);
-        currentGameSettings.minHorizontalSensDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minHorizontalSensDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        #region Vertical Mouse Sensitivity Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.verticalMouseSensitivitySetting = (Slider)EditorGUILayout.ObjectField("V Mouse Sens SLider", currentGameSettings.verticalMouseSensitivitySetting, typeof(Slider), true);
-        currentGameSettings.VerticalSensDefault = (float)EditorGUILayout.FloatField("V Mouse Sens Value", currentGameSettings.HorizontalSensDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxVerticalSensDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxVerticalSensDefault);
-        currentGameSettings.minVerticalSensDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minVerticalSensDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.Space();
-
-
-        EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
-        EditorGUILayout.BeginVertical();
-        #region FOV Settings Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.FOVSetting = (Slider)EditorGUILayout.ObjectField("Fov Slider", currentGameSettings.FOVSetting, typeof(Slider), true);
-        currentGameSettings.FOVSettingDefault = (float)EditorGUILayout.FloatField("Fov Value", currentGameSettings.FOVSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxFOVSettingDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxFOVSettingDefault);
-        currentGameSettings.minFOVSettingDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minFOVSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        #region Screen shake Settings Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.screenShakeSetting = (Slider)EditorGUILayout.ObjectField("Screenshake Slider", currentGameSettings.screenShakeSetting, typeof(Slider), true);
-        currentGameSettings.screenShakeSettingDefault = (float)EditorGUILayout.FloatField("Screenshake Value", currentGameSettings.screenShakeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxScreenShakeSettingDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxScreenShakeSettingDefault);
-        currentGameSettings.minScreenShakeSettingDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minScreenShakeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.Space();
-
-        EditorGUILayout.LabelField("Volume Settings", EditorStyles.boldLabel);
-        EditorGUILayout.BeginVertical();
-        #region Sound Effect Volume Settings Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.soundEffectsVolumeSetting = (Slider)EditorGUILayout.ObjectField("SFX Slider", currentGameSettings.soundEffectsVolumeSetting, typeof(Slider), true);
-        currentGameSettings.soundEffectVolumeSettingDefault = (float)EditorGUILayout.FloatField("SFX Volume", currentGameSettings.soundEffectVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxSoundEffectVolumeSettingDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxSoundEffectVolumeSettingDefault);
-        currentGameSettings.minSoundEffectVolumeSettingDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minSoundEffectVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        #region Music Volume Settings Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.musicVolumeSetting = (Slider)EditorGUILayout.ObjectField("Music Slider", currentGameSettings.musicVolumeSetting, typeof(Slider), true);
-        currentGameSettings.musicVolumeSettingDefault = (float)EditorGUILayout.FloatField("Music Volume", currentGameSettings.musicVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxMusicVolumeSettingDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxMusicVolumeSettingDefault);
-        currentGameSettings.minMusicVolumeSettingDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minMusicVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-
-        #region Voice Volume Settings Block
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.voicesVolumeSetting = (Slider)EditorGUILayout.ObjectField("Voice Slider", currentGameSettings.voicesVolumeSetting, typeof(Slider), true);
-        currentGameSettings.voicesVolumeSettingDefault = (float)EditorGUILayout.FloatField("Voice Volume", currentGameSettings.voicesVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        currentGameSettings.maxVoicesVolumeSettingDefault = (float)EditorGUILayout.FloatField("Max", currentGameSettings.maxVoicesVolumeSettingDefault);
-        currentGameSettings.minVoicesVolumeSettingDefault = (float)EditorGUILayout.FloatField("Min", currentGameSettings.minVoicesVolumeSettingDefault);
-        EditorGUILayout.EndHorizontal();
-        #endregion
-        EditorGUILayout.EndVertical();
-    }
-
-}
 
 
