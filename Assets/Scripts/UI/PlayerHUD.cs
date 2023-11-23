@@ -19,6 +19,7 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private float shakeStrength;
     [SerializeField] private AnimationCurve screenshakeAnimationCurve;
     private Vector3 startPos;
+    private Image im_HUD;
 
 
     [Space, Header("Gravswitch UI Variables")]
@@ -28,6 +29,13 @@ public class PlayerHUD : MonoBehaviour
 
     private playerHealth healthStats;
     private movement movementStats;
+
+
+    [Space, Header("Weapon HUD")]
+    [SerializeField] private Image pistolIcon;
+    [SerializeField] private Image shotgunIcon;
+    [SerializeField] private GameObject pistol;
+    [SerializeField] private GameObject shotgun;
 
     private void Awake()
     {
@@ -39,11 +47,17 @@ public class PlayerHUD : MonoBehaviour
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
+        im_HUD = HUD.GetComponent<Image>();
     }
 
     private void Update()
     {
         constantStats();
+        if (pistol.GetComponent<weaponBase>().weaponIsEquipped) pistolIcon.enabled = true;
+        else pistolIcon.enabled = false;
+        if (shotgun.GetComponent<weaponBase>().weaponIsEquipped) shotgunIcon.enabled = true;
+        else shotgunIcon.enabled = false;
+
     }
 
 
@@ -100,8 +114,10 @@ public class PlayerHUD : MonoBehaviour
             timer += Time.deltaTime;
             float shakeCurve = screenshakeAnimationCurve.Evaluate(timer / healthStats.immunityTime);
             HUD.transform.position = startPos + shakeCurve * shakeStrength * Random.insideUnitSphere;
+            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve);
             yield return null;
         }
         HUD.transform.position = startPos;
+        im_HUD.color = Color.black;
     }   
 }

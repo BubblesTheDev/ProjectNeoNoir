@@ -70,7 +70,7 @@ public class pistolPower : weaponPowerBase
         GameObject temp = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation, GameObject.Find("Bullet Storage").transform);
         float chargePercent = currentChargeTime / maxChargeTime;
 
-        shakingObj.transform.position = startingPos;
+        shakingObj.transform.localPosition = startingPos;
 
         temp.transform.localScale *= 1 + (chargeScaleMulti * chargePercent);
         temp.GetComponent<implosionBullet>().bulletEffect.SetFloat("Start Size", 1 + (chargeScaleMulti * chargePercent));
