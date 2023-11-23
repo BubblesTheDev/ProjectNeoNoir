@@ -40,80 +40,78 @@ public class gameSettings : MonoBehaviour
     private List<string> screenStateOptions;
 
     [Header("Mouse Settings")]
-    [Space] public Toggle flipHorizontalMouseSetting;
+    [Space] public bool flipHorizontalMouseSetting;
     public bool flipHorizontalDefault = false;
 
-    public Toggle flipVerticalMouseSetting;
+    public bool flipVerticalMouseSetting;
     public bool flipVerticalDefault = false;
     
-    public Slider horizontalMouseSensitivitySetting;
+    public float horizontalMouseSensitivitySetting;
     public float maxHorizontalSensDefault = 100, minHorizontalSensDefault = 1, HorizontalSensDefault = 25;
     
-    public Slider verticalMouseSensitivitySetting;
+    public float verticalMouseSensitivitySetting;
     public float maxVerticalSensDefault = 100, minVerticalSensDefault = 1, VerticalSensDefault = 25;
 
     [Header("CameraSettings")]
-    [Space] public Slider FOVSetting;
+    [Space] public float FOVSetting;
     public float maxFOVSettingDefault = 90, minFOVSettingDefault = 20, FOVSettingDefault= 60;
     
-    public Slider screenShakeSetting;
+    public float screenShakeSetting;
     public float maxScreenShakeSettingDefault, minScreenShakeSettingDefault, screenShakeSettingDefault;
 
-    public Toggle headbobEnableSetting;
-    public bool headbobEnable = true;
+    public bool headbobEnableSetting;
+    public bool headbobEnableDefault = true;
 
-    public Slider headbobIntensitySetting;
+    public float headbobIntensitySetting;
     public float minHeadbobIntensity = 0f, maxHeadbobIntensity = 2f, headBobIntensity = 1f;
 
-    public Toggle weaponBounceEnableSetting;
+    public bool weaponBounceEnableSetting;
     public bool weaponBounceEnable = true;
 
     [Header("Volume Settings")]
-    [Space] public Slider soundEffectsVolumeSetting;
+    [Space] public float soundEffectsVolumeSetting;
     public float maxSoundEffectVolumeSettingDefault, minSoundEffectVolumeSettingDefault, soundEffectVolumeSettingDefault;
     
-    public Slider musicVolumeSetting;
+    public float musicVolumeSetting;
     public float maxMusicVolumeSettingDefault, minMusicVolumeSettingDefault, musicVolumeSettingDefault;
     
-    public Slider voicesVolumeSetting;
+    public float voicesVolumeSetting;
     public float maxVoicesVolumeSettingDefault, minVoicesVolumeSettingDefault, voicesVolumeSettingDefault;
 
 
     private void Awake()
     {
-        resolutionSetup();
-        setupPlayerPrefs();
-
+        if(!PlayerPrefs.HasKey("initializedSettings"))
+        {
+            PlayerPrefs.SetString("initializedSettings", "true");
+            setupPlayerPrefs();
+            resolutionSetup();
+        }
     }
 
 
     void setupPlayerPrefs()
     {
-        #region Resolution Player Prefs
-        if (!PlayerPrefs.HasKey("resolutionSetting")) PlayerPrefs.SetString("resolutionSetting", resolutionSetting.options[resolutionSetting.value].ToString());
-        if (!PlayerPrefs.HasKey("screenStateSetting")) PlayerPrefs.SetString("screenStateSetting", screenStateSetting.options[screenStateSetting.value].ToString());
-        #endregion
-
         #region Mouse Player Prefs
         if (!PlayerPrefs.HasKey("flipHoizontalMouseSetting")) PlayerPrefs.SetString("flipHoizontalMouseSetting", flipHorizontalDefault.ToString());
         if (!PlayerPrefs.HasKey("flipVerticalMouseSetting")) PlayerPrefs.SetString("flipVerticalMouseSetting", flipVerticalDefault.ToString()); ;
-        if (!PlayerPrefs.HasKey("horizontalMouseSensitivitySetting")) PlayerPrefs.SetFloat("horizontalMouseSensitivitySetting", horizontalMouseSensitivitySetting.value);
-        if (!PlayerPrefs.HasKey("verticalMouseSensitivitySetting")) PlayerPrefs.SetFloat("verticalMouseSensitivitySetting", verticalMouseSensitivitySetting.value);
+        if (!PlayerPrefs.HasKey("horizontalMouseSensitivitySetting")) PlayerPrefs.SetFloat("horizontalMouseSensitivitySetting", horizontalMouseSensitivitySetting);
+        if (!PlayerPrefs.HasKey("verticalMouseSensitivitySetting")) PlayerPrefs.SetFloat("verticalMouseSensitivitySetting", verticalMouseSensitivitySetting);
         #endregion
 
         #region Camera Settings Player Prefs
-        if (!PlayerPrefs.HasKey("FOVSettings")) PlayerPrefs.SetFloat("FOVSettings", FOVSetting.value);
-        if (!PlayerPrefs.HasKey("ScreenShakeSettings")) PlayerPrefs.SetFloat("screenShakeSettings", screenShakeSetting.value);
-        if (!PlayerPrefs.HasKey("headbobEnableSettings")) PlayerPrefs.SetString("headbobEnableSettings", headbobEnable.ToString());
+        if (!PlayerPrefs.HasKey("FOVSettings")) PlayerPrefs.SetFloat("FOVSettings", FOVSetting);
+        if (!PlayerPrefs.HasKey("ScreenShakeSettings")) PlayerPrefs.SetFloat("screenShakeSettings", screenShakeSetting);
+        if (!PlayerPrefs.HasKey("headbobEnableSettings")) PlayerPrefs.SetString("headbobEnableSettings", headbobEnableDefault.ToString());
         if (!PlayerPrefs.HasKey("headbobIntensitySettings")) PlayerPrefs.SetFloat("headbobIntensitySettings", headBobIntensity);
         if (!PlayerPrefs.HasKey("weaponBounceEnableSetting")) PlayerPrefs.SetString("weaponBounceEnableSetting", weaponBounceEnable.ToString());
 
         #endregion
 
         #region Volume Setting Player Prefs
-        if (!PlayerPrefs.HasKey("soundEffectVolumeSetting")) PlayerPrefs.SetFloat("soundEffectVolumeSetting", soundEffectsVolumeSetting.value);
-        if (!PlayerPrefs.HasKey("musicVolumeSetting")) PlayerPrefs.SetFloat("musicVolumeSetting", musicVolumeSetting.value);
-        if (!PlayerPrefs.HasKey("voicesVolumeSetting")) PlayerPrefs.SetFloat("voicesVolumeSetting", voicesVolumeSetting.value);
+        if (!PlayerPrefs.HasKey("soundEffectVolumeSetting")) PlayerPrefs.SetFloat("soundEffectVolumeSetting", soundEffectVolumeSettingDefault);
+        if (!PlayerPrefs.HasKey("musicVolumeSetting")) PlayerPrefs.SetFloat("musicVolumeSetting", musicVolumeSettingDefault);
+        if (!PlayerPrefs.HasKey("voicesVolumeSetting")) PlayerPrefs.SetFloat("voicesVolumeSetting", voicesVolumeSettingDefault);
         #endregion
     }
 
@@ -142,7 +140,7 @@ public class gameSettings : MonoBehaviour
             resolutionSetting.value = usableResolutions.IndexOf(usableResolutions.Find(x => x.height == Screen.height && x.width == Screen.width));
             resolutionSetting.RefreshShownValue();
 
-            PlayerPrefs.SetString("resolutionSetting", resolutionSetting.options[resolutionSetting.value].ToString());
+            PlayerPrefs.SetString("resolutionSetting", usableResolutions.IndexOf(usableResolutions.Find(x => x.height == Screen.height && x.width == Screen.width)).ToString());
         }
         else
         {
@@ -159,7 +157,7 @@ public class gameSettings : MonoBehaviour
             screenStateSetting.AddOptions(screenStateOptions);
             screenStateSetting.value = screenStateSetting.options.FindIndex(x => x.text == Screen.fullScreenMode.ToString());
 
-            PlayerPrefs.SetString("screenStateSetting", screenStateSetting.options[screenStateSetting.value].ToString());
+            PlayerPrefs.SetString("screenStateSetting", screenStateSetting.options.FindIndex(x => x.text == Screen.fullScreenMode.ToString()).ToString());
         }
         else
         {
@@ -206,6 +204,8 @@ public class gameSettings : MonoBehaviour
 
         PlayerPrefs.SetString("screenStateSetting", fullscreenState.ToString());
     }
+
+    
 }
 
 enum screenState

@@ -5,24 +5,7 @@ using UnityEngine;
 public class playerJuice : MonoBehaviour
 {
 
-    public static playerJuice playerJuiceReference
-    {
-        get
-        {
-            if (playerJuiceReference == null)
-            {
-                if (GameObject.FindObjectOfType<playerJuice>() != null)
-                    GameObject.FindObjectOfType<playerJuice>();
-                else
-                {
-                    Debug.LogError("There is no player juice script in the scene \n <b>Please Add One To The Scene </b>");
-                    Debug.Break();
-                }
-            }
-            return playerJuiceReference;
-
-        }
-    }
+    public static playerJuice playerJuiceReference;
 
     [Space, SerializeField] private bool enableHeadbob = true;
     [SerializeField] private Vector2 amplitude = new Vector2(0.03f, 0.015f), frequency = new Vector2(12f, 12f);
@@ -33,17 +16,19 @@ public class playerJuice : MonoBehaviour
     [SerializeField] private float smoothness;
     [SerializeField] private GameObject objThatFollows;
 
-    [Space, SerializeField] private float screenshakeIntensity;
-    [SerializeField] private AnimationCurve intensityCurve;
+    [Space, SerializeField] private AnimationCurve intensityCurve;
     [SerializeField] private GameObject objToShake;
 
+
+    private Vector3 headbobOriginalPosition;
     private Rigidbody rb;
     private cameraControl camControl;
     private void Awake()
     {
         rb = GameObject.Find("Player").GetComponent<Rigidbody>();
         camControl = GameObject.Find("Player").GetComponent<cameraControl>();
-
+        headbobOriginalPosition = objThatFollows.transform.localPosition;
+        playerJuiceReference = this;
 
 #if !UNITY_EDITOR
         getSettings();
@@ -73,7 +58,7 @@ public class playerJuice : MonoBehaviour
         pos.x += Mathf.Sin(Time.time * frequency.x * headbobIntensity) * amplitude.x * headbobIntensity;
 
         if (rb.velocity.magnitude > headbobActivateLimit) objThatFollows.transform.localPosition += pos;
-        objThatFollows.transform.LookAt(camControl.lookingDir.point);
+        //objThatFollows.transform.LookAt(camControl.lookingDir.point);
     }
 
     void smoothFollow()
@@ -89,17 +74,17 @@ public class playerJuice : MonoBehaviour
         objThatFollows.transform.localPosition = Vector3.Lerp(objThatFollows.transform.localPosition, targetPos, smoothness);
     }
 
-    public IEnumerator screenshake(float duration)
+    public IEnumerator screenshake(float duration, float intensity)
     {
-        Vector3 startPos = objToShake.transform.position;
+        Vector3 startPos = objToShake.transform.localPosition;
         float currentTime = 0f;
 
         while (currentTime < duration)
         {
             currentTime += Time.deltaTime;
-            objToShake.transform.position = startPos + (Random.insideUnitSphere * (intensityCurve.Evaluate(currentTime/duration) * screenshakeIntensity));
+            objToShake.transform.localPosition = startPos + (Random.insideUnitSphere * (intensityCurve.Evaluate(currentTime/duration) * intensity));
             yield return null;
         }
-        objToShake.transform.position = startPos;
+        objToShake.transform.localPosition = startPos;
     }
 }

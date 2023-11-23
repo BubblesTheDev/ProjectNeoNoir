@@ -65,7 +65,7 @@ public class weaponBase : MonoBehaviour
             gunGFX.SetActive(true);
             if (camControl.lookingDir.point != null) firePoint.transform.LookAt(camControl.lookingDir.point);
 
-            if (canFire && interactionInput.Combat.Fire1.IsPressed())
+            if (canFire && interactionInput.Combat.Fire1.IsPressed() && !interactionInput.Combat.Fire2.IsPressed())
             {
                 if (firePoint == null)
                 {
@@ -74,15 +74,15 @@ public class weaponBase : MonoBehaviour
                 }
                 StartCoroutine(fireGun());
             }
-            if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+            if (currentWeaponPower == null)
             {
-                if (currentWeaponPower == null)
+                Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
+                return;
+                if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.WasPressedThisFrame() && !interactionInput.Combat.Fire1.IsPressed())
                 {
-                    Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
-                    Debug.Break();
+                    powerActivated.Invoke();
+                    StartCoroutine(currentWeaponPower.usePower());
                 }
-                powerActivated.Invoke();
-                StartCoroutine(currentWeaponPower.usePower());
             }
         }
         else if (!weaponIsEquipped)
