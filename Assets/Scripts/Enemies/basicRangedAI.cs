@@ -8,12 +8,10 @@ public class basicRangedAI : MonoBehaviour
 {
     private NavMeshAgent agent;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float startupTime = 5f;
     [SerializeField] private float cooldownTime;
     [SerializeField] private float rangeAroundPlayer;
     [SerializeField] private List<GameObject> firePoints;
     [SerializeField] private GameObject enemyBullet;
-    [SerializeField] private float bulletVelocity;
 
     private bool canShoot;
 
@@ -28,16 +26,17 @@ public class basicRangedAI : MonoBehaviour
         stats = GetComponent<enemyStats>();
         agent = GetComponent<NavMeshAgent>();
         canShoot = true;
-
         stats.onDamageTaken.AddListener(startTakeDamage);
-        StartCoroutine(startUpAI());
     }
 
     private void Update()
     {
-
-        if (agent.velocity.magnitude > 0 && currentState == rangeStates.walking) currentAnimator.Play("BasicRangedWalk");
-        if (agent.remainingDistance < 1f && canShoot) StartCoroutine(shootPlayer()); 
+        if(currentState != rangeStates.stunned) 
+        {
+            if (agent.velocity.magnitude > 0 && currentState == rangeStates.walking) currentAnimator.Play("BasicRangedWalk");
+            if (agent.remainingDistance < 1f && canShoot) StartCoroutine(shootPlayer());
+        }
+         
     }
 
     void findDestination()
@@ -47,39 +46,30 @@ public class basicRangedAI : MonoBehaviour
         agent.SetDestination(tempDestination);
     }
 
-    IEnumerator startUpAI()
-    {
-        yield return new WaitForSeconds(startupTime);
-        findDestination();
-    }
+    
 
     IEnumerator shootPlayer()
     {
         currentState = rangeStates.shooting;
         agent.isStopped = true;
         canShoot = false;
-        currentAnimator.Play("BasicRangedShoot");
+        currentAnimator.Play("gunnerStartShoot");
 
         Vector3 targetPos = new Vector3(playerObj.transform.position.x, transform.position.y, playerObj.transform.position.z);
         transform.LookAt(targetPos);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(currentAnimator.GetCurrentAnimatorStateInfo(0).length + 0.25f);
 
-        currentAnimator.speed = 0;
         foreach (GameObject firePoint in firePoints)
         {
-            for (int i = 0; i < (int)Random.Range(1,3); i++)
+            for (int i = 0; i < (int)Random.Range(1,4); i++)
             {
                 GameObject b = Instantiate(enemyBullet, firePoint.transform.position, Quaternion.LookRotation((playerObj.transform.position - firePoint.transform.position).normalized, Vector3.up), GameObject.Find("Bullet Storage").transform);
-                Rigidbody rb = b.gameObject.GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * bulletVelocity, ForceMode.Impulse);
-                //Play enemy shot here
 
                 yield return new WaitForSeconds(0.1f);
             }
         }
-        currentAnimator.speed = 1;
-
-        yield return new WaitForSeconds(1.5f);
+        currentAnimator.Play("gunnerEndShoot");
+        yield return new WaitForSeconds(currentAnimator.GetCurrentAnimatorStateInfo(0).length);
         currentState = rangeStates.walking;
         agent.isStopped = false;
 
@@ -87,7 +77,8 @@ public class basicRangedAI : MonoBehaviour
         canShoot = true;
         findDestination();
     }
-    
+
+
     void startTakeDamage()
     {
         StartCoroutine(takeDamage());
@@ -95,16 +86,16 @@ public class basicRangedAI : MonoBehaviour
 
     IEnumerator takeDamage()
     {
-        currentState = rangeStates.hitstun;
+        currentState = rangeStates.stunned;
         StopCoroutine(shootPlayer());
         canShoot = true;
         agent.isStopped = true;
-        currentAnimator.Play("BasicRangedHit");
-        yield return new WaitForSeconds(1.33f);
+        currentAnimator.Play("gunnerHitstun");
+        yield return new WaitForSeconds(currentAnimator.GetCurrentAnimatorStateInfo(0).length);
         agent.isStopped = false;
         currentState = rangeStates.walking;
-    }
 
+    }
 }
 
 public enum rangeStates

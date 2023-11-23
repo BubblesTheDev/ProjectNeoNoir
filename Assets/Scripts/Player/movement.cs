@@ -88,13 +88,12 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
         movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
         movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
-        movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
     }
 
 
     private void FixedUpdate()
     {
-        if(!freeLook) movePlayer();
+        if (!freeLook) movePlayer();
 
     }
 
@@ -108,17 +107,8 @@ public class movement : MonoBehaviour
         {
             gameObject.transform.localRotation = objOrientation.transform.localRotation;
         }
-        if(currentMovementState != movementStates.jumping || currentMovementState != movementStates.dashing)
-        {
-            if (getGroundCheck())
-            {
-                currentMovementState = movementStates.grounded;
-                
-            } else currentMovementState = movementStates.jumping;
-        }
+        if (movementInput.playerMovment.Slide.WasReleasedThisFrame() && currentMovementState == movementStates.sliding) StartCoroutine(endslide());
     }
-
-    
 
     void movePlayer()
     {
@@ -132,9 +122,11 @@ public class movement : MonoBehaviour
 
     void handleStamina()
     {
-        if (instantRecharge){
-            if(getGroundCheck()) staminaCharges = 3;
-        } else if (getGroundCheck())
+        if (instantRecharge)
+        {
+            if (getGroundCheck()) staminaCharges = 3;
+        }
+        else if (getGroundCheck())
         {
             currentCharge += Time.deltaTime;
             if (currentCharge > rechargeRate * staminaCharges)
@@ -142,7 +134,7 @@ public class movement : MonoBehaviour
                 staminaCharges++;
                 currentCharge = 0;
             }
-            
+
         }
 
         if (staminaCharges > 3)
@@ -153,8 +145,12 @@ public class movement : MonoBehaviour
 
     IEnumerator jump()
     {
-        if (!canJump) yield break;
-        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
+        if (!canJump || currentMovementState == movementStates.dashing || currentMovementState == movementStates.slamming) yield break;
+        if (currentMovementState == movementStates.sliding)
+        {
+            StopCoroutine(startSlide());
+            StartCoroutine(endslide());
+        }
         if (getGroundCheck() == false)
         {
             if (staminaCharges > 0)
@@ -179,8 +175,12 @@ public class movement : MonoBehaviour
 
     IEnumerator dash()
     {
-        if (!canDash) yield break;
-        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
+        if (!canDash || currentMovementState == movementStates.slamming) yield break;
+        if (currentMovementState == movementStates.sliding)
+        {
+            StopCoroutine(startSlide());
+            StartCoroutine(endslide());
+        }
         if (!getGroundCheck())
         {
             if (staminaCharges > 0)
@@ -234,27 +234,30 @@ public class movement : MonoBehaviour
 
     IEnumerator startSlide()
     {
-        if (!getGroundCheck() || !canSlide || currentMovementState == movementStates.dashing || currentMovementState == movementStates.sliding || movementInput.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) yield break;
+        if (!getGroundCheck() || !canSlide || currentMovementState == movementStates.dashing
+            || currentMovementState == movementStates.sliding
+            || movementInput.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) yield break;
 
-        Vector3 moveVector = gameObject.transform.forward * horizontalMovement.y + gameObject.transform.right * horizontalMovement.x;
-        freeLook = true;
+
         currentMovementState = movementStates.sliding;
         canSlide = false;
+        freeLook = true;
+        Vector3 moveVector = gameObject.transform.forward * horizontalMovement.y + gameObject.transform.right * horizontalMovement.x;
         playerCollider.height /= 2f;
         transform.position = new Vector3(transform.position.x, transform.position.y - .5f, transform.position.z);
         while (movementInput.playerMovment.Slide.IsPressed())
         {
             rb.AddForce(moveVector * slideSpeed * moveMulti * Time.deltaTime, ForceMode.Force);
+
             yield return null;
         }
-        
+
         //play particle effects,
         //play slide sound,
     }
 
     IEnumerator endslide()
     {
-        if (currentMovementState != movementStates.sliding) yield break;
         freeLook = false;
         currentMovementState = movementStates.grounded;
         playerCollider.height *= 2f;
@@ -268,7 +271,7 @@ public class movement : MonoBehaviour
     IEnumerator buttSlam()
     {
         //Detects if the player can slam
-        if (getGroundCheck() || currentMovementState == movementStates.dashing || currentMovementState == movementStates.slamming || !canSlam) yield break;
+        if (getGroundCheck() || currentMovementState == movementStates.dashing || currentMovementState == movementStates.slamming || currentMovementState == movementStates.sliding || !canSlam) yield break;
 
         //Sets the player to start slamming, turns off gravity and stops any vertical movement while
         //causing the player to slow a lot with a high drag 
@@ -281,7 +284,7 @@ public class movement : MonoBehaviour
 
         //The player will then raise into the air slightly before slamming
         float tempTime = 0;
-        while(tempTime < timeToRaiseSlam)
+        while (tempTime < timeToRaiseSlam)
         {
             tempTime += Time.deltaTime;
             rb.Move(transform.position + -gravity.gravityReference.currentGravityDir * raiseDistance, transform.rotation);

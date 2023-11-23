@@ -31,8 +31,7 @@ public class basicMeleeAI : MonoBehaviour
     private void Update()
     {
 
-        if (agent.pathStatus != NavMeshPathStatus.PathComplete) meleeAnimator.Play("BasicMeleeAngy");
-        else if (agent.velocity.magnitude > 0 && currentMeleeState == meleeStates.walking) meleeAnimator.Play("BasicMeleeWalk");
+        if (agent.velocity.magnitude > 0 && currentMeleeState == meleeStates.walking) meleeAnimator.Play("BasicMeleeWalk");
         if(Vector3.Distance(playerObj.transform.position, transform.position) < distanceToStop && canHitPlayer)
         {
             StartCoroutine(hitPlayer());   
@@ -54,8 +53,10 @@ public class basicMeleeAI : MonoBehaviour
         if (Vector3.Distance(playerObj.transform.position, transform.position) < distanceToStop) StartCoroutine(playerObj.GetComponent<playerHealth>().takeDamage(1));
         yield return new WaitForSeconds(.9f);
         agent.isStopped = false;
-        canHitPlayer = true;
         currentMeleeState = meleeStates.walking;
+
+        yield return new WaitForSeconds(.5f);
+        canHitPlayer = true;
 
     }
 
@@ -71,7 +72,7 @@ public class basicMeleeAI : MonoBehaviour
         canHitPlayer = true;
         agent.isStopped = true;
         meleeAnimator.Play("BasicMeleeHit");
-        yield return new WaitForSeconds(1.33f);
+        yield return new WaitForSeconds(meleeAnimator.GetCurrentAnimatorStateInfo(0).length);
         agent.isStopped = false;
         currentMeleeState = meleeStates.walking;
 
