@@ -25,7 +25,7 @@ public class enemyStats : MonoBehaviour
 
 
         StartCoroutine(ragDollEnemy(15f));
-        Destroy(gameObject, 15f);
+        Destroy(gameObject, 0f);
     }
 
     public void takeDamage(float damageToTake)
