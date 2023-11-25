@@ -31,9 +31,10 @@ public class cameraControl : MonoBehaviour
 
     private void Awake()
     {
+        /*
 #if !UNITY_EDITOR
         getSettings();
-#endif
+#endif*/
 
         Cursor.lockState = CursorLockMode.Locked;
         controls = new CameraInputActions();

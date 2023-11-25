@@ -75,7 +75,7 @@ public class weaponBase : MonoBehaviour
             }
             if (currentWeaponPower == null)
             {
-                Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
+                //Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
                 return;
 
             }
