@@ -20,6 +20,9 @@ public class FMODEvents : MonoBehaviour
     [field: Header("Enemy Spawn")]
     [field: SerializeField] public EventReference enemySpawn { get; private set; }
 
+    [field: Header("Jump SFX")]
+    [field: SerializeField] public EventReference jumpSFX { get; private set; }
+
     public static FMODEvents instance {  get; private set; }
 
     private void Awake()
