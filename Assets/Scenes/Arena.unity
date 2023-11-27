@@ -83780,7 +83780,7 @@ MonoBehaviour:
   playerRb: {fileID: 1664105043}
   gravitySwitchCooldownBase: 3
   useGravity: 1
-  gravityForce: 10
+  gravityForce: 30
   gravityMultiplier: 1
   timeToFlipGravity: 0.4
   instantFlip: 1
@@ -89117,6 +89117,13 @@ MonoBehaviour:
       Data4: 971747040
     Path: event:/SFX/Gravity Switch/Game Ready/Gravity Switch 2
   <enemySpawn>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <jumpSFX>k__BackingField:
     Guid:
       Data1: 0
       Data2: 0
@@ -97403,14 +97410,89 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
         type: 3}
+      propertyPath: drag
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: airDrag
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: canDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: dashDrag
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: dashForce
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: jumpForce
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: moveMulti
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: slideSpeed
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: maxDashTime
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: dashDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: jumpCooldown
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
       propertyPath: buttSlamForce
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: slideCooldown
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
         type: 3}
       propertyPath: objOrientation
       value: 
       objectReference: {fileID: 7155153606994026763}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: timeToRaiseSlam
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7227051426348592630, guid: 8800f936798eee448b6aa8cbdf64f69b,
+        type: 3}
+      propertyPath: buttSlamCooldown
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
