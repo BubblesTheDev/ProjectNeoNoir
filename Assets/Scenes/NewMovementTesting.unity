@@ -81989,6 +81989,7 @@ MonoBehaviour:
   gravityAffected: 1
   canAffectMovement: 1
   canAffectRotation: 1
+  dragAffected: 1
   action_jumpCooldownTime: 0.1
   action_CanJump: 1
   action_dashCooldownTime: 0.1
@@ -82016,6 +82017,7 @@ MonoBehaviour:
   terminalVelocity_Gravity: 15
   terminalVelocity_Jump: 12
   dashDistance: 10
+  dashDuration: 0.15
   acceleration_Slide: 1000
   acceleration_EndSlideJump: 0
   terminalVelocity_Slide: 28

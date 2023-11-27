@@ -14,6 +14,7 @@ public class playerMovement : MonoBehaviour
     public bool gravityAffected = true;
     public bool canAffectMovement = true;
     public bool canAffectRotation = true;
+    public bool dragAffected = true;
     [Space]
 
     #region Action Cooldowns
@@ -58,6 +59,7 @@ public class playerMovement : MonoBehaviour
 
     #region Action Dash
     [SerializeField] private float dashDistance;
+    [SerializeField] private float dashDuration;
     [Space]
     #endregion
 
@@ -94,7 +96,6 @@ public class playerMovement : MonoBehaviour
 
     #region control variables
     private Vector3 current_playerDirectionalVector;
-    private float currentDragForce;
     #endregion
 
     #region Action Events
@@ -110,6 +111,7 @@ public class playerMovement : MonoBehaviour
 
     #region Debug Variables
     private Vector3 positionLastFrame;
+    private float currentDragForce;
     #endregion
 
     private void OnEnable()
@@ -148,7 +150,7 @@ public class playerMovement : MonoBehaviour
         }
 
         rb.velocity = horizontal_playerVelocity + vertical_playerVelocity;
-        applyDrag();
+        if(dragAffected) applyDrag();
         positionLastFrame = transform.position;
     }
 
@@ -211,7 +213,6 @@ public class playerMovement : MonoBehaviour
     {
         #region horizontal drag
         float idealHDragForce = 0;
-        currentDragForce = 0;
         if (grounded)
         {
             switch (current_playerMovementAction)
@@ -226,7 +227,8 @@ public class playerMovement : MonoBehaviour
         }
         else idealHDragForce = acceleration / terminalVelocity_Air;
 
-        horizontal_playerVelocity *= 1 - Time.deltaTime * idealHDragForce;
+        currentDragForce = idealHDragForce;
+        horizontal_playerVelocity *= 1 - Time.deltaTime * currentDragForce;
         if (horizontal_playerVelocity.magnitude < speedStopThreshold) horizontal_playerVelocity *= 0;
         #endregion
 
@@ -293,16 +295,30 @@ public class playerMovement : MonoBehaviour
         if (!action_CanDash || current_playerMovementAction != playerMovementAction.moving) yield break;
         current_playerMovementAction = playerMovementAction.dashing;
         action_CanDash = false;
+        dragAffected = false;
+        canAffectMovement = false;
 
         Vector3 tempDashDirectionalVector = Vector3.zero;
         if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) tempDashDirectionalVector = directionalOrientation.transform.forward.normalized;
         else tempDashDirectionalVector = current_playerDirectionalVector.normalized;
-
+        Vector3 dashStartPos = transform.position;
 
         horizontal_playerVelocity *= 0;
-        float dashVelocity = Mathf.Sqrt(-2 * -acceleration * dashDistance * 3.25f);
+        float dashVelocity = dashDistance / dashDuration;
         horizontal_playerVelocity += tempDashDirectionalVector * dashVelocity;
+        
+        float dashOverride = 0f;
+        while(Vector3.Distance(dashStartPos, transform.position) < dashDistance || dashOverride < dashDuration)
+        {
+            if (Vector3.Distance(dashStartPos, transform.position) > dashDistance) break;
+            dragAffected = false;
+            dashOverride += Time.deltaTime;
+            yield return null;
+        }
 
+        print(Vector3.Distance(dashStartPos, transform.position));
+        dragAffected = true;
+        canAffectMovement = true;
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_dashCooldownTime);
         action_CanDash = true;
