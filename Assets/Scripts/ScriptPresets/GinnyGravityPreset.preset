@@ -6,10 +6,10 @@ Preset:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GinnyMovementScriptPreset
+  m_Name: GinnyGravityPreset
   m_TargetType:
     m_NativeTypeID: 114
-    m_ManagedTypePPtr: {fileID: 11500000, guid: 2dc117bc225aa514fb9bed59b74564c7,
+    m_ManagedTypePPtr: {fileID: 11500000, guid: f5e7a2407b9f86049a2bdda19ef9d769,
       type: 3}
     m_ManagedTypeFallback: 
   m_Properties:
@@ -26,47 +26,35 @@ Preset:
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: Orientation
+    propertyPath: player
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: CameraObj
+    propertyPath: playerRb
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: layersToIgnoreForAimingDir.m_Bits
-    value: 160
+    propertyPath: gravitySwitchCooldownBase
+    value: 3
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: mouseSensitivityHorizontal
-    value: 50
+    propertyPath: useGravity
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: mouseSensitivityVertical
-    value: 50
+    propertyPath: gravityForce
+    value: 30
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: flipHoirzontal
-    value: 0
+    propertyPath: gravityMultiplier
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: flipVertical
-    value: 0
+    propertyPath: timeToFlipGravity
+    value: 0.4
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: maxAngle
-    value: 90
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: minAngle
-    value: -90
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: mouseX
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: mouseY
-    value: 0
+    propertyPath: instantFlip
+    value: 1
     objectReference: {fileID: 0}
   m_ExcludedProperties: []
