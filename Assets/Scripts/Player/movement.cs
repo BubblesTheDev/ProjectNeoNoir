@@ -190,7 +190,7 @@ public class movement : MonoBehaviour
             }
             else yield break;
         }
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
 
         canDash = false;
         currentMovementState = movementStates.dashing;
@@ -230,7 +230,7 @@ public class movement : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
-
+        
     }
 
     IEnumerator startSlide()
