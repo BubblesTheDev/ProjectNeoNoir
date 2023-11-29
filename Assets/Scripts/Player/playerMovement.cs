@@ -231,7 +231,11 @@ public class playerMovement : MonoBehaviour
     private void groundDetection()
     {
         if (current_playerMovementAction == playerMovementAction.jumping || current_playerMovementAction == playerMovementAction.flipping) return;
-        if (Physics.Raycast(transform.position + groundCheck_PositionalOffset, -transform.up, out groundCheck_HitInformation, groundCheck_Distance, groundCheck_LayersToHit))
+
+        Vector3 tempPositionaloffSet = groundCheck_PositionalOffset;
+        if (current_PlayerRotationState == playerRotationState.nonFlipped) tempPositionaloffSet *= directionalVector_Flipped.y;
+        else tempPositionaloffSet *= directionalVector_NonFlipped.y;
+        if (Physics.Raycast(transform.position + tempPositionaloffSet, -transform.up, out groundCheck_HitInformation, groundCheck_Distance, groundCheck_LayersToHit))
         {
             float tempAngle = Vector3.Angle(transform.up, groundCheck_HitInformation.normal);
             if (tempAngle < maxSlopeAngle)
