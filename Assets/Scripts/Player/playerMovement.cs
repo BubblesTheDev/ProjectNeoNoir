@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.Properties;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +12,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(CapsuleCollider))]
 public class playerMovement : MonoBehaviour
 {
+    [Header("Important Information")]
     public playerMovementAction current_playerMovementAction;
     public bool grounded;
     public bool onAcceptableSlope;
@@ -15,76 +20,78 @@ public class playerMovement : MonoBehaviour
     public bool canAffectMovement = true;
     public bool canAffectRotation = true;
     public bool dragAffected = true;
-    [Space]
 
     #region Action Cooldowns
-    [SerializeField] private float action_jumpCooldownTime;
-    [SerializeField] private bool action_CanJump;
-    [SerializeField] private float action_dashCooldownTime;
-    [SerializeField] private bool action_CanDash;
-    [SerializeField] private float action_slideCooldownTime;
-    [SerializeField] private bool action_CanSlide;
-    [SerializeField] private float action_slamCooldownTime;
-    [SerializeField] private bool action_CanSlam;
-    [SerializeField] private float action_flipCooldownTime;
-    [SerializeField] private bool action_CanFlip;
-    [Space]
+    public float action_jumpCooldownTime = 0.1f;
+    public float action_dashCooldownTime = 0.1f;
+    public float action_slideCooldownTime = 0.1f;
+    public float action_slamCooldownTime = 0.1f;
+    public float action_flipCooldownTime = 0.1f;
+    public bool action_CanJump { private set; get; } = true;
+    public bool action_CanDash { private set; get; } = true;
+    public bool action_CanSlide { private set; get; } = true;
+    public bool action_CanSlam { private set; get; } = true;
+    public bool action_CanFlip { private set; get; } = true;
     #endregion
 
     #region Ground Check Calculations
-    [SerializeField] private Vector3 groundCheck_PositionalOffset;
-    [SerializeField] private RaycastHit groundCheck_HitInformation;
-    [SerializeField] private float groundCheck_Distance;
-    [SerializeField] private LayerMask groundCheck_LayersToHit;
-    [Space]
+    public Vector3 groundCheck_PositionalOffset;
+    public float timeInSeconds_GroundedCoyoteTime;
+    public float current_CoyoteTime;
+    private RaycastHit groundCheck_HitInformation;
+    public float groundCheck_Distance;
+    public LayerMask groundCheck_LayersToHit;
     #endregion
 
     #region horizontal Movement
     [SerializeField] private Vector3 horizontal_playerVelocity;
-    [SerializeField] private float acceleration;
-    [SerializeField] private float terminalVelocity_Ground, terminalVelocity_Air;
-    [SerializeField] private float speedStopThreshold;
-    [SerializeField] private float maxSlopeAngle;
-    [Space]
+    public float acceleration_Ground, acceleration_Air;
+    public float terminalVelocity_Ground, terminalVelocity_Air;
+    public float speedStopThreshold;
+    public float maxSlopeAngle;
     #endregion
 
     #region Vertical Movement
     [SerializeField] private Vector3 vertical_playerVelocity;
-    [SerializeField] private float jumpHeight;
-    [SerializeField] private float gravityAcceleration;
-    [SerializeField] private float terminalVelocity_Gravity;
-    [SerializeField] private float terminalVelocity_Jump;
-    [Space]
+    public float jumpHeight;
+    public int numberOf_MidairJumps = 1;
+    private int current_NumberOfMidairJumps;
+    public float gravityAcceleration;
+    public float terminalVelocity_Gravity;
+    public float terminalVelocity_Jump;
     #endregion
 
     #region Action Dash
-    [SerializeField] private float dashDistance;
-    [SerializeField] private float dashDuration;
-    [Space]
+    public float dashDistance;
+    public float dashDuration;
+    public int numberOf_MaximumDashCharges = 3;
+    public float current_NumberOfDashCharges { private set; get; }
+    public float timeInSeconds_ForASingleCharge = 1f;
     #endregion
 
     #region Action Slide
-    [SerializeField] private float acceleration_Slide;
-    [SerializeField] private float acceleration_EndSlideJump;
-    [SerializeField] private float terminalVelocity_Slide;
-    [SerializeField] private float colliderHeight_normal, colliderHeight_Slide;
-    [Space]
+    public float acceleration_Slide;
+    public float acceleration_EndSlideJump;
+    public float timeInSeconds_ExtraJumpCoyoteTime;
+    private float current_ExtraJumpCoyoteTime;
+    public float terminalVelocity_Slide;
+    public float colliderHeight_normal;
+    public float colliderHeight_Slide;
     #endregion
 
     #region Action Slam
-    [SerializeField] private float raiseDistance_Slam;
-    [SerializeField] private float timeInSeconds_ToRaise;
-    [SerializeField] private float acceleration_Slam_Downward;
-    [SerializeField] private float terminalVelocity_Slam_Downward;
-    [Space]
+    public float raiseDistance_Slam;
+    public float timeInSeconds_ToRaise;
+    public float acceleration_Slam_Downward;
+    public float terminalVelocity_Slam_Downward;
     #endregion
 
     #region Action Flip
-    [SerializeField] private playerRotationState current_PlayerRotationState;
-    [SerializeField] private float timeInSeconds_ToFlip;
-    [SerializeField] private Vector3 directionalVector_NonFlipped = new Vector3(0, -1, 0);
-    [SerializeField] private Vector3 directionalVector_Flipped = new Vector3(0, 1, 0);
-    [Space]
+    public playerRotationState current_PlayerRotationState;
+    public float timeInSeconds_ToFlip;
+    public Vector3 directionalVector_NonFlipped = new Vector3(0, -1, 0);
+    public Vector3 directionalVector_Flipped = new Vector3(0, 1, 0);
+    [HideInInspector] public Vector3 rotationalOffset;
     #endregion
 
     #region Assignables
@@ -111,7 +118,16 @@ public class playerMovement : MonoBehaviour
 
     #region Debug Variables
     private Vector3 positionLastFrame;
-    private float currentDragForce;
+    private float current_DragForce;
+    Vector3 tempJumpStartVector;
+    #endregion
+
+    #region Editor Options
+    [HideInInspector] public bool debug_ShowGroundedRay;
+    [HideInInspector] public bool debug_ShowJumpHeight;
+    [HideInInspector] public bool debug_ShowDashDistance;
+    [HideInInspector] public bool debug_showPlayerSpeed;
+    [HideInInspector] public bool debug_showAllowedActions;
     #endregion
 
     private void OnEnable()
@@ -131,6 +147,8 @@ public class playerMovement : MonoBehaviour
         playerCollider = GetComponent<CapsuleCollider>();
         colliderHeight_normal = playerCollider.height;
         groundCheck_HitInformation = new RaycastHit();
+        colliderHeight_normal = playerCollider.height;
+        groundCheck_LayersToHit = ~groundCheck_LayersToHit;
         if (GameObject.Find("Orientation").gameObject) directionalOrientation = GameObject.Find("Orientation").gameObject;
         else Debug.LogWarning("There is no object in the scene named 'Orientation'. \nThe player movement script will not function properly without one. Please create one and try again.");
     }
@@ -139,11 +157,13 @@ public class playerMovement : MonoBehaviour
     {
         getPlayerInput();
         groundDetection();
+        rechargeDashCharges();
     }
 
     private void FixedUpdate()
     {
         if (gravityAffected) applyGravity();
+        if (canAffectRotation) transform.rotation = directionalOrientation.transform.rotation;
         if (canAffectMovement)
         {
             applyHorizontalAcceleration();
@@ -156,10 +176,44 @@ public class playerMovement : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (grounded && onAcceptableSlope) Gizmos.color = Color.green;
-        else if(grounded && !onAcceptableSlope) Gizmos.color = Color.yellow;
-        else Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position + groundCheck_PositionalOffset, -transform.up * groundCheck_Distance);
+        #region Ground check raycast gizmo
+        if (debug_ShowGroundedRay)
+        {
+            if (grounded && onAcceptableSlope) Gizmos.color = Color.green;
+            else if (grounded && !onAcceptableSlope) Gizmos.color = Color.yellow;
+            else Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position + groundCheck_PositionalOffset, -transform.up * groundCheck_Distance);
+        }
+        #endregion
+
+        #region Dash Distance Gizmo
+        if (debug_ShowDashDistance)
+        {
+            if (current_NumberOfDashCharges > 0) Handles.color = Color.green;
+            else Handles.color = Color.red;
+            Handles.DrawWireDisc(transform.position, transform.up, dashDistance);
+        }
+        #endregion
+
+        #region Draw Jump Heigt
+        if(debug_ShowJumpHeight)
+        {
+            if (current_playerMovementAction != playerMovementAction.jumping && grounded) tempJumpStartVector = transform.position;
+            if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) tempJumpStartVector = transform.position;
+            if (action_CanJump)
+            {
+                if (grounded || !grounded && current_NumberOfMidairJumps > 0)
+                {
+                    Gizmos.color = Color.green;
+                }
+            }
+            else Gizmos.color = Color.red;
+            for (int i = 0; i < jumpHeight-1; i++)
+            {
+                Handles.DrawWireDisc(tempJumpStartVector + (transform.up * (i - 0.75f)), transform.up, playerCollider.radius);
+            }
+        }
+        #endregion
     }
 
     private void OnGUI()
@@ -167,9 +221,11 @@ public class playerMovement : MonoBehaviour
         GUIStyle tempstyle = new GUIStyle();
         tempstyle.fontSize = 30;
         tempstyle.normal.textColor = Color.white;
-        GUI.Label(new Rect(10, 10+100, 100*4, 20 * 4), "Speed: " + Mathf.Round((Vector3.Distance(transform.position, positionLastFrame) / Time.deltaTime)).ToString() + "Ups", tempstyle);
-        GUI.Label(new Rect(10, 40+100, 100 * 4, 20 * 4), "Velocity Magnitude: " + Mathf.Abs(Vector3.Scale(horizontal_playerVelocity, current_playerDirectionalVector.normalized).magnitude).ToString(), tempstyle);
-
+        if (debug_showPlayerSpeed)
+        {
+            GUI.Label(new Rect(10, 10 + 100, 100 * 4, 20 * 4), "Speed: " + Mathf.Round((Vector3.Distance(transform.position, positionLastFrame) / Time.deltaTime)).ToString() + "Ups", tempstyle);
+            GUI.Label(new Rect(10, 40 + 100, 100 * 4, 20 * 4), "Velocity Magnitude: " + directionalOrientation.transform.InverseTransformDirection(rb.velocity).magnitude.ToString(), tempstyle);
+        }
     }
 
     private void groundDetection()
@@ -181,32 +237,62 @@ public class playerMovement : MonoBehaviour
             {
                 grounded = true;
                 onAcceptableSlope = true;
+                if (current_CoyoteTime == 0 && current_playerMovementAction != playerMovementAction.jumping)
+                {
+                    current_CoyoteTime = timeInSeconds_GroundedCoyoteTime;
+                    current_NumberOfMidairJumps = numberOf_MidairJumps;
+                }
                 return;
             }
             else
             {
                 grounded = true;
                 onAcceptableSlope = false;
+                if (current_CoyoteTime == 0 && current_playerMovementAction != playerMovementAction.jumping)
+                {
+                    current_CoyoteTime = timeInSeconds_GroundedCoyoteTime;
+                    current_NumberOfMidairJumps = numberOf_MidairJumps;
+                }
                 return;
             }
-        } else
+        } else if(current_CoyoteTime > 0) 
+        {
+            current_CoyoteTime -= Time.deltaTime;
+            grounded = true;
+            onAcceptableSlope = false;
+            return;
+        }
+        else
         {
             grounded = false;
             onAcceptableSlope = false;
+            return;
         }
     }
 
     private void getPlayerInput()
     {
-        current_playerDirectionalVector = directionalOrientation.transform.forward *
+        
+
+        if(current_PlayerRotationState == playerRotationState.nonFlipped)
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
             directionalOrientation.transform.right *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
+        } else
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
+            directionalOrientation.transform.right *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x * -1;
+        }
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
         if (current_PlayerInputActions.playerMovment.Slide.WasPressedThisFrame()) StartCoroutine(action_Slide());
-        if (current_PlayerInputActions.playerMovment.Jump.IsPressed()) StartCoroutine(action_Jump());
+        if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) StartCoroutine(action_Jump());
+        if (current_PlayerInputActions.playerMovment.FlipGravity.WasPressedThisFrame()) StartCoroutine(action_Flip());
     }
 
     private void applyDrag()
@@ -218,17 +304,17 @@ public class playerMovement : MonoBehaviour
             switch (current_playerMovementAction)
             {
                 case playerMovementAction.moving:
-                    idealHDragForce = acceleration / terminalVelocity_Ground;
+                    idealHDragForce = acceleration_Ground / terminalVelocity_Ground;
                     break;
                 case playerMovementAction.sliding:
                     idealHDragForce = acceleration_Slide / terminalVelocity_Slide;
                     break;
             }
         }
-        else idealHDragForce = acceleration / terminalVelocity_Air;
+        else idealHDragForce = acceleration_Air / terminalVelocity_Air;
 
-        currentDragForce = idealHDragForce;
-        horizontal_playerVelocity *= 1 - Time.deltaTime * currentDragForce;
+        current_DragForce = idealHDragForce;
+        horizontal_playerVelocity *= 1 - Time.deltaTime * current_DragForce;
         if (horizontal_playerVelocity.magnitude < speedStopThreshold) horizontal_playerVelocity *= 0;
         #endregion
 
@@ -271,18 +357,30 @@ public class playerMovement : MonoBehaviour
     private void applyHorizontalAcceleration()
     {
         if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) return;
-        horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration * Time.deltaTime;
+        if(grounded) horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration_Ground * Time.deltaTime;
+        else horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration_Air * Time.deltaTime;
+    }
+
+    private void rechargeDashCharges()
+    {
+        if (current_NumberOfDashCharges < numberOf_MaximumDashCharges && action_CanDash)
+        {
+            current_NumberOfDashCharges += timeInSeconds_ForASingleCharge * Time.deltaTime;
+        }
+        else if(current_NumberOfDashCharges > numberOf_MaximumDashCharges) current_NumberOfDashCharges = numberOf_MaximumDashCharges;
     }
 
     private IEnumerator action_Jump()
     {
-        if (!grounded || !action_CanJump || current_playerMovementAction != playerMovementAction.moving) yield break;
+        if (!action_CanJump || current_playerMovementAction != playerMovementAction.moving) yield break;
+        else if (!grounded && current_NumberOfMidairJumps <= 0) yield break;
+        else if(!grounded && current_NumberOfMidairJumps > 0) current_NumberOfMidairJumps--;
         current_playerMovementAction = playerMovementAction.jumping;
         action_CanJump = false;
+        current_CoyoteTime = 0;
 
-
-        float jumpVelocity = Mathf.Sqrt(-2 * -(gravityAcceleration * Mathf.Exp(2)) * jumpHeight);
         vertical_playerVelocity = Vector3.zero;
+        float jumpVelocity = Mathf.Sqrt(-2 * -(gravityAcceleration * Mathf.Exp(2)) * jumpHeight);
         vertical_playerVelocity += transform.up * jumpVelocity;
 
         yield return new WaitForSeconds(0.015f);
@@ -292,32 +390,35 @@ public class playerMovement : MonoBehaviour
     }
     private IEnumerator action_Dash()
     {
-        if (!action_CanDash || current_playerMovementAction != playerMovementAction.moving) yield break;
+        if (!action_CanDash || current_playerMovementAction != playerMovementAction.moving || current_NumberOfDashCharges <= 0) yield break;
         current_playerMovementAction = playerMovementAction.dashing;
         action_CanDash = false;
         dragAffected = false;
         canAffectMovement = false;
+        gravityAffected = false;
+        current_NumberOfDashCharges--;
 
         Vector3 tempDashDirectionalVector = Vector3.zero;
-        if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) tempDashDirectionalVector = directionalOrientation.transform.forward.normalized;
+        if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) tempDashDirectionalVector = Vector3.Scale(directionalOrientation.transform.forward, new Vector3(1,0,1)).normalized;
         else tempDashDirectionalVector = current_playerDirectionalVector.normalized;
         Vector3 dashStartPos = transform.position;
 
-        horizontal_playerVelocity *= 0;
+        vertical_playerVelocity *= 0;
         float dashVelocity = dashDistance / dashDuration;
-        horizontal_playerVelocity += tempDashDirectionalVector * dashVelocity;
-        
+        horizontal_playerVelocity = tempDashDirectionalVector * dashVelocity;
+
+
         float dashOverride = 0f;
-        while(Vector3.Distance(dashStartPos, transform.position) < dashDistance || dashOverride < dashDuration)
+        while(Vector3.Distance(dashStartPos, transform.position) < dashDistance && dashOverride < dashDuration)
         {
-            if (Vector3.Distance(dashStartPos, transform.position) > dashDistance) break;
             dragAffected = false;
             dashOverride += Time.deltaTime;
             yield return null;
         }
+        horizontal_playerVelocity *= 0;
 
-        print(Vector3.Distance(dashStartPos, transform.position));
         dragAffected = true;
+        gravityAffected = true;
         canAffectMovement = true;
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_dashCooldownTime);
@@ -382,8 +483,274 @@ public class playerMovement : MonoBehaviour
         yield return new WaitForSeconds(action_slamCooldownTime);
         action_CanSlam = true;
     }
+    private IEnumerator action_Flip()
+    {
+        if (!action_CanFlip || current_playerMovementAction != playerMovementAction.moving) yield break;
+        current_playerMovementAction = playerMovementAction.flipping;
+        action_CanFlip = false;
+        gravityAffected = false; 
+        canAffectMovement = false;
+        canAffectRotation = false;
+        vertical_playerVelocity = Vector3.zero;
+        float tempTimer = 0;
+        while(tempTimer < timeInSeconds_ToFlip)
+        {
+            directionalOrientation.transform.localEulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
+            current_CoyoteTime = 0;
+            tempTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        if(current_PlayerRotationState == playerRotationState.nonFlipped) current_PlayerRotationState = playerRotationState.flipped;
+        else current_PlayerRotationState = playerRotationState.nonFlipped;
+        gravityAffected = true;
+        canAffectRotation = true;
+        canAffectMovement = true;
+        current_playerMovementAction = playerMovementAction.moving;
+        yield return new WaitForSeconds(action_flipCooldownTime);
+        action_CanFlip = true;
+    }
 
 }
+#if UNITY_EDITOR
+[CustomEditor(typeof(playerMovement)), CanEditMultipleObjects]
+public class playerMovementEditor: Editor
+{
+    private bool showDebug = false;
+    private bool showCooldowns = false;
+    private bool showHorizontalMovement = false;
+    private bool showVerticalMovement = false;
+    private bool showGroundedCalculations = false;
+    private bool showActions = false;
+    private bool showActionJump = false;
+    private bool showActionDash = false;
+    private bool showActionSlide = false;
+    private bool showActionSlam = false;
+    private bool showActionFlip = false;
+    public override void OnInspectorGUI()
+    {
+        playerMovement reference = (playerMovement)target;
+
+        GUILayout.Label("Important Information", EditorStyles.boldLabel);
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Is Grounded");
+        EditorGUILayout.Toggle(reference.grounded);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Is On acceptable Slope");
+        EditorGUILayout.Toggle(reference.onAcceptableSlope);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Is Affected By Drag");
+        EditorGUILayout.Toggle(reference.dragAffected);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Is Affected By Gravity");
+        EditorGUILayout.Toggle(reference.gravityAffected);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Can Affect Movement");
+        EditorGUILayout.Toggle(reference.canAffectMovement);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Player Can Affect Rotation");
+        EditorGUILayout.Toggle(reference.canAffectRotation);
+        EditorGUILayout.EndHorizontal();
+
+
+        EditorGUILayout.Space();
+        EditorGUILayout.BeginVertical();
+        showDebug = EditorGUILayout.Foldout(showDebug, "Show Debug Menu", true, EditorStyles.foldoutHeader);
+        if(showDebug)
+        {
+            EditorGUILayout.BeginVertical();
+            reference.debug_showAllowedActions = EditorGUILayout.Toggle("Enable Show Allowed Actions", reference.debug_showAllowedActions);
+            reference.debug_ShowDashDistance = EditorGUILayout.Toggle("Enable Show Dash Distance", reference.debug_ShowDashDistance);
+            reference.debug_ShowGroundedRay = EditorGUILayout.Toggle("Enable Show Ground Check Ray", reference.debug_ShowGroundedRay);
+            reference.debug_ShowJumpHeight = EditorGUILayout.Toggle("Enable Show Jump Height", reference.debug_ShowJumpHeight);
+            reference.debug_showPlayerSpeed = EditorGUILayout.Toggle("Enable Show Current Player Speed", reference.debug_showPlayerSpeed);
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.Space();
+
+        showCooldowns = EditorGUILayout.Foldout(showCooldowns, "Show Action Cooldowns", true, EditorStyles.foldoutHeader);
+        if (showCooldowns)
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Toggle("Player Can Jump", reference.action_CanJump);
+            reference.action_jumpCooldownTime = EditorGUILayout.FloatField("Player Jump Cooldown", reference.action_jumpCooldownTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Toggle("Player Can Dash", reference.action_CanDash);
+            reference.action_dashCooldownTime = EditorGUILayout.FloatField("Player Dash Cooldown", reference.action_dashCooldownTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Toggle("Player Can Slide", reference.action_CanSlide);
+            reference.action_slideCooldownTime = EditorGUILayout.FloatField("Player Slide Cooldown", reference.action_slideCooldownTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Toggle("Player Can Buttslam", reference.action_CanSlam);
+            reference.action_slamCooldownTime = EditorGUILayout.FloatField("Player Buttslam Cooldown", reference.action_slamCooldownTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Toggle("Player Can Flip Gravity", reference.action_CanFlip);
+            reference.action_flipCooldownTime = EditorGUILayout.FloatField("Player Gravity Flip Cooldown", reference.action_flipCooldownTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.Space();
+
+        showHorizontalMovement = EditorGUILayout.Foldout(showHorizontalMovement, "Show Horizontal Movement Variables", true, EditorStyles.foldoutHeader);
+        if (showHorizontalMovement)
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Terminal velocity on The ground");
+            GUILayout.Label("Terminal velocity in The Air");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.terminalVelocity_Ground = EditorGUILayout.FloatField(reference.terminalVelocity_Ground);
+            reference.terminalVelocity_Air = EditorGUILayout.FloatField(reference.terminalVelocity_Air);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Acceleration on The ground");
+            GUILayout.Label("Acceleration in The Air");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.acceleration_Ground = EditorGUILayout.FloatField(reference.acceleration_Ground);
+            reference.acceleration_Air = EditorGUILayout.FloatField(reference.acceleration_Air);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
+
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Maximum Slope Angle Player Can Climb");
+            GUILayout.Label("Minimum Speed Threshold to fully stop");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.maxSlopeAngle = EditorGUILayout.FloatField(reference.maxSlopeAngle);
+            reference.speedStopThreshold = EditorGUILayout.FloatField(reference.speedStopThreshold);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.Space();
+
+        showVerticalMovement = EditorGUILayout.Foldout(showVerticalMovement, "Show Vertical Movement Variables", true, EditorStyles.foldoutHeader);
+        if (showVerticalMovement)
+        {
+            EditorGUILayout.BeginHorizontal();
+            reference.gravityAcceleration = EditorGUILayout.FloatField("Gravity Acceleration", reference.gravityAcceleration);
+            reference.terminalVelocity_Gravity = EditorGUILayout.FloatField("Gravity Terminal Velocity", reference.terminalVelocity_Gravity);
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.Space();
+
+        showGroundedCalculations = EditorGUILayout.Foldout(showGroundedCalculations, "Show Ground Calculations", true, EditorStyles.foldoutHeader);
+        if (showGroundedCalculations)
+        {
+            reference.groundCheck_PositionalOffset = EditorGUILayout.Vector3Field("Groundcheck Start Position Offset", reference.groundCheck_PositionalOffset);
+            reference.groundCheck_Distance = EditorGUILayout.FloatField("Ground Check Max Distance", reference.groundCheck_Distance);
+            reference.groundCheck_LayersToHit = EditorGUILayout.LayerField("Layers Ground Check Will Look For", reference.groundCheck_LayersToHit);
+            EditorGUILayout.BeginHorizontal();
+            reference.timeInSeconds_GroundedCoyoteTime = EditorGUILayout.FloatField("Max Coyote Time", reference.timeInSeconds_GroundedCoyoteTime);
+            EditorGUILayout.FloatField("Coyote Time Reimaining", reference.current_CoyoteTime);
+            EditorGUILayout.EndHorizontal();
+
+        }
+        EditorGUILayout.Space();
+
+        showActions = EditorGUILayout.Foldout(showActions, "Show Actions", true, EditorStyles.foldoutHeader);
+        if (showActions)
+        {
+            EditorGUILayout.BeginHorizontal();
+            showActionDash = EditorGUILayout.Toggle("Show Dash Variables", showActionDash);
+            showActionSlide = EditorGUILayout.Toggle("Show Slide Variables", showActionSlide);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            showActionJump = EditorGUILayout.Toggle("Show Jump Variables", showActionJump);
+            showActionSlam = EditorGUILayout.Toggle("Show Buttslam Variables", showActionSlam);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            showActionFlip = EditorGUILayout.Toggle("Show Gravity Flip Variables", showActionFlip);
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.Space();
+        if (showActionDash)
+        {
+            GUILayout.Label("Dash Varialbes", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            reference.numberOf_MaximumDashCharges = EditorGUILayout.IntField("Max Number Of Dash Charges", reference.numberOf_MaximumDashCharges);
+            EditorGUILayout.FloatField("Current Number Of Dash Charges Available", Mathf.Round(reference.current_NumberOfDashCharges));
+            EditorGUILayout.EndHorizontal();
+            reference.timeInSeconds_ForASingleCharge = EditorGUILayout.FloatField("Charge Rate Per charge", reference.timeInSeconds_ForASingleCharge);
+            EditorGUILayout.BeginHorizontal();
+            reference.dashDistance = EditorGUILayout.FloatField("Maximum Dash Distance", reference.dashDistance);
+            reference.dashDuration = EditorGUILayout.FloatField("Time To Complete Dash", reference.dashDuration);
+            EditorGUILayout.EndHorizontal();
+        }
+        if (showActionSlide)
+        {
+            GUILayout.Label("Slide Varialbes", EditorStyles.boldLabel);
+
+            EditorGUILayout.BeginHorizontal();
+            reference.acceleration_Slide = EditorGUILayout.FloatField("Acceleration During Slide", reference.acceleration_Slide);
+            reference.terminalVelocity_Slide = EditorGUILayout.FloatField("Terminal Velocity During Slide", reference.terminalVelocity_Slide);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.acceleration_EndSlideJump = EditorGUILayout.FloatField("Extra Height Given For Slide Jump", reference.acceleration_EndSlideJump);
+            reference.timeInSeconds_ExtraJumpCoyoteTime = EditorGUILayout.FloatField("Time In Seconds Given To Do Slide Jump", reference.timeInSeconds_ExtraJumpCoyoteTime);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.colliderHeight_Slide = EditorGUILayout.FloatField("Player Height When Sliding", reference.colliderHeight_Slide);
+            EditorGUILayout.FloatField("Player Height When Not Sliding", reference.colliderHeight_normal);
+            EditorGUILayout.EndHorizontal();
+
+        }
+        if (showActionJump)
+        {
+            GUILayout.Label("Jump Varialbes", EditorStyles.boldLabel);
+            reference.numberOf_MidairJumps = EditorGUILayout.IntField("Number Of Jumps Allowed In Midair", reference.numberOf_MidairJumps);
+            reference.jumpHeight = EditorGUILayout.FloatField("Jump Height In Units", reference.jumpHeight);
+            reference.terminalVelocity_Jump = EditorGUILayout.FloatField("Terminal Velocity Player Is allowed To Jump", reference.terminalVelocity_Jump);
+        }
+        if (showActionSlam)
+        {
+            GUILayout.Label("Slam Varialbes", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            reference.raiseDistance_Slam = EditorGUILayout.FloatField("Distance To Raise at beginning of Slam", reference.raiseDistance_Slam);
+            reference.timeInSeconds_ToRaise = EditorGUILayout.FloatField("Time In Seconds To Raise To Max Slam Height", reference.timeInSeconds_ToRaise);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.acceleration_Slam_Downward = EditorGUILayout.FloatField("Slam Acceleration", reference.acceleration_Slam_Downward);
+            reference.terminalVelocity_Slam_Downward = EditorGUILayout.FloatField("Slam Terminal Velocity", reference.terminalVelocity_Slam_Downward);
+            EditorGUILayout.EndHorizontal();
+        }
+        if (showActionFlip)
+        {
+            GUILayout.Label("Gravity Flip Varialbes", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Current Player Rotation State");
+            EditorGUILayout.EnumPopup(reference.current_PlayerRotationState );
+            EditorGUILayout.EndHorizontal ();
+            reference.timeInSeconds_ToFlip = EditorGUILayout.FloatField("Time In Seconds To Flip gravity", reference.timeInSeconds_ToFlip);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Normal Gravity Directional Vector");
+            GUILayout.Label("Flipped Gravity Directional Vector");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            reference.directionalVector_NonFlipped = EditorGUILayout.Vector3Field("",reference.directionalVector_NonFlipped);
+            reference.directionalVector_Flipped = EditorGUILayout.Vector3Field("",reference.directionalVector_Flipped);
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndVertical();
+    }
+}
+#endif
 
 [System.Serializable]
 public enum playerMovementAction
