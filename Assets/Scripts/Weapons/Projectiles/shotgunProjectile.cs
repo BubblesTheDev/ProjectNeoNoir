@@ -28,10 +28,9 @@ public class shotgunProjectile : playerProjectileBase
         if(!projectileDead) rb.velocity = transform.forward * projectileSpeed * Time.deltaTime;
     }
 
-    public override void loadStats(float damage, float speed, float distance, int peirce)
+    public override void loadStats(float damage, float speed, float distance)
     {
         projectileDamage = damage;
-        projectilePeirce = peirce;
         projectileSpeed = speed;
         maxShotDistance = distance;
     }
@@ -52,8 +51,7 @@ public class shotgunProjectile : playerProjectileBase
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<enemyStats>().takeDamage(projectileDamage);
-            if (projectilePeirce > 0) projectilePeirce--;
-            else if (projectilePeirce <= 0) killProjectile();
+            killProjectile();
         }
         else if (other.gameObject.layer == LayerMask.NameToLayer("Walkable")) killProjectile();
     }

@@ -115,16 +115,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 15
-  startupTime: 5
   cooldownTime: 2
   rangeAroundPlayer: 5
   firePoints:
   - {fileID: 5994387895646305079}
   - {fileID: 1643885975955445734}
   - {fileID: 3172060704439436467}
-  enemyBullet: {fileID: 881081634084067109, guid: 4ef16a1b50c8887438f43dd7da06dbe1,
+  enemyBullet: {fileID: 3191494505589844887, guid: 934116d06ecd0ed45ad7f0e5cccd08dc,
     type: 3}
-  bulletVelocity: 50
   currentAnimator: {fileID: 2944867237593679562}
 --- !u!114 &2366724535427029739
 MonoBehaviour:
@@ -141,12 +139,7 @@ MonoBehaviour:
   currentHP: 2
   maxHp: 2
   moveSpeed: 15
-  fireDuration: 4
-  oilDuration: 6
-  stunDuration: 1
-  fireTickDmg: 0.5
-  oilPercentSlow: 0.5
-  effectsOnEnemy: 0
+  ragDollTime: 3
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []

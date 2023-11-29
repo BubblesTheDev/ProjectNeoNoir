@@ -19,6 +19,7 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private float shakeStrength;
     [SerializeField] private AnimationCurve screenshakeAnimationCurve;
     private Vector3 startPos;
+    private Image im_HUD;
 
 
     [Space, Header("Gravswitch UI Variables")]
@@ -27,23 +28,36 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private float arrowGlowTime;
 
     private playerHealth healthStats;
-    private movement movementStats;
+    private playerMovement movementStats;
+
+
+    [Space, Header("Weapon HUD")]
+    [SerializeField] private Image pistolIcon;
+    [SerializeField] private Image shotgunIcon;
+    [SerializeField] private GameObject pistol;
+    [SerializeField] private GameObject shotgun;
 
     private void Awake()
     {
         healthStats = GameObject.Find("Player").GetComponent<playerHealth>();
-        movementStats = GameObject.Find("Player").GetComponent<movement>();
+        movementStats = GameObject.Find("Player").GetComponent<playerMovement>();
         startPos = HUD.transform.position;
 
         setupStats();
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
+        im_HUD = HUD.GetComponent<Image>();
     }
 
     private void Update()
     {
         constantStats();
+        if (pistol.GetComponent<weaponBase>().weaponIsEquipped) pistolIcon.enabled = true;
+        else pistolIcon.enabled = false;
+        if (shotgun.GetComponent<weaponBase>().weaponIsEquipped) shotgunIcon.enabled = true;
+        else shotgunIcon.enabled = false;
+
     }
 
 
@@ -55,7 +69,7 @@ public class PlayerHUD : MonoBehaviour
         healthDrain.value = healthStats.maxHp;
 
         staticMeter.maxValue = healthStats.maxStaticEnergy;
-        staminaBar.maxValue = 3;
+        staminaBar.maxValue = movementStats.numberOf_MaximumDashCharges;
     }
 
     void startDecreasingHP()
@@ -83,11 +97,7 @@ public class PlayerHUD : MonoBehaviour
 
     void constantStats()
     {
-        if (!movementStats.instantRecharge)
-        {
-            staminaBar.value = movementStats.staminaCharges + movementStats.currentCharge;
-        }
-        else staminaBar.value = movementStats.staminaCharges;
+        staminaBar.value = movementStats.current_NumberOfDashCharges;
         staticMeter.value = healthStats.currentStaticEnergy;
     }
 
@@ -100,8 +110,10 @@ public class PlayerHUD : MonoBehaviour
             timer += Time.deltaTime;
             float shakeCurve = screenshakeAnimationCurve.Evaluate(timer / healthStats.immunityTime);
             HUD.transform.position = startPos + shakeCurve * shakeStrength * Random.insideUnitSphere;
+            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve);
             yield return null;
         }
         HUD.transform.position = startPos;
+        im_HUD.color = Color.black;
     }   
 }

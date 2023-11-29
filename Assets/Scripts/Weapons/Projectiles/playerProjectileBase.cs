@@ -15,5 +15,5 @@ public class playerProjectileBase : MonoBehaviour
     [HideInInspector] public bool projectileDead;
     public LayerMask layersToIgnore;
 
-    public virtual void loadStats(float damage, float speed, float distance, int peirce) { }
+    public virtual void loadStats(float damage, float speed, float distance) { }
 }

@@ -16,7 +16,6 @@ public class weaponBase : MonoBehaviour
     public float maxShotDistance;
     public int numOfPellets = 1;
     public float fireRateInSeconds = 0.25f;
-    public int bulletPeirce;
     [Range(0, 15)]
     public float multiPelletAngle = 0;
     public float projectileSpeed = 250f;
@@ -65,7 +64,7 @@ public class weaponBase : MonoBehaviour
             gunGFX.SetActive(true);
             if (camControl.lookingDir.point != null) firePoint.transform.LookAt(camControl.lookingDir.point);
 
-            if (canFire && interactionInput.Combat.Fire1.IsPressed())
+            if (canFire && interactionInput.Combat.Fire1.IsPressed() && !interactionInput.Combat.Fire2.IsPressed())
             {
                 if (firePoint == null)
                 {
@@ -74,13 +73,14 @@ public class weaponBase : MonoBehaviour
                 }
                 StartCoroutine(fireGun());
             }
-            if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.IsPressed())
+            if (currentWeaponPower == null)
             {
-                if (currentWeaponPower == null)
-                {
-                    Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
-                    Debug.Break();
-                }
+                //Debug.LogWarning("You are missing a <b>current weapon power</b> decleration");
+                return;
+
+            }
+            if (currentWeaponPower.canUsePower && interactionInput.Combat.Fire2.WasPressedThisFrame() && !interactionInput.Combat.Fire1.IsPressed())
+            {
                 powerActivated.Invoke();
                 StartCoroutine(currentWeaponPower.usePower());
             }
@@ -105,46 +105,34 @@ public class weaponBase : MonoBehaviour
             //Detects if the weapon is firing a projectile by seeing if there is a prefab to fire or not
             if (bulletPrefab == null)
             {
-                
-                List<RaycastHit> thingsHit = new List<RaycastHit>();
 
-                if (multiPelletAngle == 0 || y == 0) thingsHit.AddRange(Physics.RaycastAll(camControl.CameraObj.transform.position, camControl.CameraObj.transform.forward, maxShotDistance, layersToIgnore).ToList());
+                List<RaycastHit> hits = new List<RaycastHit>();
+
+                if (multiPelletAngle == 0 || y == 0)
+                {
+                    RaycastHit hit;
+                    Physics.Raycast(camControl.CameraObj.transform.position, camControl.CameraObj.transform.forward, out hit, math.INFINITY, layersToIgnore);
+                    if (hit.transform != null) hits.Add(hit);
+                }
                 else
                 {
-                    thingsHit.AddRange(Physics.RaycastAll(camControl.CameraObj.transform.position, Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0) * camControl.CameraObj.transform.forward, maxShotDistance, layersToIgnore).ToList());
+                    RaycastHit hit;
+                    Physics.Raycast(camControl.CameraObj.transform.position, Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle),
+                        Random.Range(-multiPelletAngle, multiPelletAngle), 0) * camControl.CameraObj.transform.forward, out hit, math.INFINITY, layersToIgnore);
+                    if (hit.transform != null) hits.Add(hit);
                 }
 
-                if(thingsHit.Count > 0)
+                foreach (RaycastHit hit in hits)
                 {
-                    thingsHit.OrderBy(RaycastHit => Vector3.Distance(this.transform.localPosition, RaycastHit.point)).ToList();
-
-                    for (int i = 0; i < bulletPeirce+1; i++)
-                    {
-                        if (thingsHit.Count - 1 == i) break;
-                        if (thingsHit[i].collider.CompareTag("Enemy"))
-                        {
-                            enemyStats tempReference = thingsHit[i].collider.GetComponent<enemyStats>();
-                            tempReference.takeDamage(weaponDamage);
-                        }
-                        else if (thingsHit[i].collider.gameObject.layer == LayerMask.NameToLayer("Walkable"))
-                        {
-                            break;
-                        }
-                    }
-
-                    if (thingsHit.Count > bulletPeirce)
-                    {
-                        StartCoroutine(weaponVFX.spawnTrail(thingsHit[bulletPeirce]));
-                    } else if(thingsHit.Count == 0) StartCoroutine(weaponVFX.spawnTrail(camControl.lookingDir));
-                    else StartCoroutine(weaponVFX.spawnTrail(thingsHit[thingsHit.Count-1]));
-                    //Call spawntrail function from weaponVFX scripts
+                    StartCoroutine(weaponVFX.spawnTrail(hit));
+                    if (hit.transform.CompareTag("Enemy")) hit.transform.GetComponent<enemyStats>().takeDamage(weaponDamage);
                 }
             }
             else if (bulletPrefab != null)
             {
                 GameObject tempBullet = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation * Quaternion.Euler(Random.Range(-multiPelletAngle, multiPelletAngle), Random.Range(-multiPelletAngle, multiPelletAngle), 0), GameObject.Find("Bullet Storage").transform);
 
-                tempBullet.GetComponent<playerProjectileBase>().loadStats(weaponDamage, projectileSpeed, maxShotDistance, bulletPeirce); 
+                tempBullet.GetComponent<playerProjectileBase>().loadStats(weaponDamage, projectileSpeed, maxShotDistance);
             }
         }
 
@@ -153,7 +141,4 @@ public class weaponBase : MonoBehaviour
     }
 
 
-    private void OnDrawGizmosSelected()
-    {
-    }
 }

@@ -63,7 +63,7 @@ public class movement : MonoBehaviour
     [SerializeField] private float slamDrag;
     [SerializeField] private float timeToRaiseSlam;
     [SerializeField] private float raiseDistance;
-    private bool canSlam = true;
+    [SerializeField] private bool canSlam = true;
 
     private Vector2 horizontalMovement;
 
@@ -87,14 +87,13 @@ public class movement : MonoBehaviour
         movementInput.playerMovment.Dash.performed += DashMovement_performed => StartCoroutine(dash());
         movementInput.playerMovment.Jump.performed += JumpMovement_performed => StartCoroutine(jump());
         movementInput.playerMovment.Slam.performed += Slam_performed => StartCoroutine(buttSlam());
-        //movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
-        //movementInput.playerMovment.Slide.canceled += Slide_canceled => StartCoroutine(endslide());
+        movementInput.playerMovment.Slide.started += Slide_performed => StartCoroutine(startSlide());
     }
 
 
     private void FixedUpdate()
     {
-        if(!freeLook) movePlayer();
+        if (!freeLook) movePlayer();
 
     }
 
@@ -108,17 +107,8 @@ public class movement : MonoBehaviour
         {
             gameObject.transform.localRotation = objOrientation.transform.localRotation;
         }
-        if(currentMovementState != movementStates.jumping || currentMovementState != movementStates.dashing)
-        {
-            if (getGroundCheck())
-            {
-                currentMovementState = movementStates.grounded;
-                
-            } else currentMovementState = movementStates.jumping;
-        }
+        if (movementInput.playerMovment.Slide.WasReleasedThisFrame() && currentMovementState == movementStates.sliding) StartCoroutine(endslide());
     }
-
-    
 
     void movePlayer()
     {
@@ -132,9 +122,11 @@ public class movement : MonoBehaviour
 
     void handleStamina()
     {
-        if (instantRecharge){
-            if(getGroundCheck()) staminaCharges = 3;
-        } else if (getGroundCheck())
+        if (instantRecharge)
+        {
+            if (getGroundCheck()) staminaCharges = 3;
+        }
+        else if (getGroundCheck())
         {
             currentCharge += Time.deltaTime;
             if (currentCharge > rechargeRate * staminaCharges)
@@ -142,7 +134,7 @@ public class movement : MonoBehaviour
                 staminaCharges++;
                 currentCharge = 0;
             }
-            
+
         }
 
         if (staminaCharges > 3)
@@ -153,8 +145,12 @@ public class movement : MonoBehaviour
 
     IEnumerator jump()
     {
-        if (!canJump) yield break;
-        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
+        if (!canJump || currentMovementState == movementStates.dashing || currentMovementState == movementStates.slamming) yield break;
+        if (currentMovementState == movementStates.sliding)
+        {
+            StopCoroutine(startSlide());
+            StartCoroutine(endslide());
+        }
         if (getGroundCheck() == false)
         {
             if (staminaCharges > 0)
@@ -175,12 +171,17 @@ public class movement : MonoBehaviour
         yield return new WaitForSeconds(jumpCooldown);
 
         canJump = true;
+        AudioManager.instance.PlaySFX(FMODEvents.instance.jumpSFX, this.transform.position);
     }
 
     IEnumerator dash()
     {
-        if (!canDash) yield break;
-        if (currentMovementState == movementStates.sliding) StartCoroutine(endslide());
+        if (!canDash || currentMovementState == movementStates.slamming) yield break;
+        if (currentMovementState == movementStates.sliding)
+        {
+            StopCoroutine(startSlide());
+            StartCoroutine(endslide());
+        }
         if (!getGroundCheck())
         {
             if (staminaCharges > 0)
@@ -189,7 +190,7 @@ public class movement : MonoBehaviour
             }
             else yield break;
         }
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
 
         canDash = false;
         currentMovementState = movementStates.dashing;
@@ -229,25 +230,29 @@ public class movement : MonoBehaviour
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
-
+        
     }
 
     IEnumerator startSlide()
     {
-        if (!getGroundCheck() || !canSlide || currentMovementState == movementStates.dashing || currentMovementState == movementStates.sliding || currentMovementState == movementStates.wallrunning) yield break;
+        if (!getGroundCheck() || !canSlide || currentMovementState == movementStates.dashing
+            || currentMovementState == movementStates.sliding
+            || movementInput.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) yield break;
 
-        Vector3 moveVector = gameObject.transform.forward * horizontalMovement.y + gameObject.transform.right * horizontalMovement.x;
-        freeLook = true;
+
         currentMovementState = movementStates.sliding;
         canSlide = false;
+        freeLook = true;
+        Vector3 moveVector = gameObject.transform.forward * horizontalMovement.y + gameObject.transform.right * horizontalMovement.x;
         playerCollider.height /= 2f;
         transform.position = new Vector3(transform.position.x, transform.position.y - .5f, transform.position.z);
         while (movementInput.playerMovment.Slide.IsPressed())
         {
             rb.AddForce(moveVector * slideSpeed * moveMulti * Time.deltaTime, ForceMode.Force);
+
             yield return null;
         }
-        
+
         //play particle effects,
         //play slide sound,
     }
@@ -267,53 +272,40 @@ public class movement : MonoBehaviour
     IEnumerator buttSlam()
     {
         //Detects if the player can slam
-        if(currentMovementState == movementStates.grounded 
-            || currentMovementState == movementStates.sliding 
-            || currentMovementState == movementStates.slamming 
-            || getGroundCheck() && canSlam)
-        {
-            yield break;
-        }
+        if (getGroundCheck() || currentMovementState == movementStates.dashing || currentMovementState == movementStates.slamming || currentMovementState == movementStates.sliding || !canSlam) yield break;
 
         //Sets the player to start slamming, turns off gravity and stops any vertical movement while
         //causing the player to slow a lot with a high drag 
+        canSlam = false;
         currentMovementState = movementStates.slamming;
         gravity.gravityReference.useGravity = false;
         rb.drag = slamDrag;
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         freeLook = true;
-        canSlam = false;
 
         //The player will then raise into the air slightly before slamming
         float tempTime = 0;
-        while(tempTime < timeToRaiseSlam)
+        while (tempTime < timeToRaiseSlam)
         {
             tempTime += Time.deltaTime;
             rb.Move(transform.position + -gravity.gravityReference.currentGravityDir * raiseDistance, transform.rotation);
             yield return null;
         }
 
-        //Once the player has raised slightly they will slam down quickly
+        //Slams the player down at high speeds
         rb.AddForce(gravity.gravityReference.currentGravityDir * buttSlamForce, ForceMode.Impulse);
 
-        //Waits till certain seconds, or till the player hits the ground
-        tempTime = 0;
-        while(tempTime > 0.5f || getGroundCheck())
-        {
-            tempTime += Time.deltaTime;
-            yield return null;
-        }
-
-
+        //Causes the player to not be able to control movment until the player hits the ground
+        while (!getGroundCheck()) yield return null;
+        currentMovementState = movementStates.grounded;
         gravity.gravityReference.useGravity = true;
         rb.drag = drag;
         freeLook = false;
-        if (getGroundCheck()) currentMovementState = movementStates.grounded;
-        else currentMovementState = movementStates.jumping;
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        //if slam hits the ground,
-        //deal dmg to enemies and knock them back,
-        //screenshake
+
+
+
+        //Will look for enemies around the slam position and ragdoll them
+        StartCoroutine(playerJuice.playerJuiceReference.screenshake(.25f, .75f));
 
         yield return new WaitForSeconds(buttSlamCooldown);
         canSlam = true;
@@ -359,6 +351,5 @@ public enum movementStates
     jumping = 1,
     dashing = 2,
     sliding = 3,
-    wallrunning = 4,
     slamming = 5
 }

@@ -12,7 +12,6 @@ public class cameraControl : MonoBehaviour
     [SerializeField] private GameObject Orientation;
     public GameObject CameraObj;
     CameraInputActions controls;
-    gravity playerGravReference;
     public RaycastHit lookingDir;
     public LayerMask layersToIgnoreForAimingDir;
 
@@ -29,16 +28,19 @@ public class cameraControl : MonoBehaviour
     float xRot;
     float yRot;
 
+    private playerMovement playerMovementScript;
+    private bool gravityIsFlipped;
+
     private void Awake()
     {
+        /*
+#if !UNITY_EDITOR
         getSettings();
-
+#endif*/
 
         Cursor.lockState = CursorLockMode.Locked;
         controls = new CameraInputActions();
-        controls.CameraControls.CameraRotation.performed += CameraRotation_performed;
-
-        playerGravReference = GameObject.Find("Game Manager").GetComponent<gravity>();
+        playerMovementScript = GetComponent<playerMovement>();
 
         layersToIgnoreForAimingDir = ~layersToIgnoreForAimingDir;
     }
@@ -55,35 +57,49 @@ public class cameraControl : MonoBehaviour
 
     private void Update()
     {
-        CameraObj.transform.localRotation = Quaternion.Euler(yRot, CameraObj.transform.localRotation.y, CameraObj.transform.localRotation.z);
-        
-        if(!playerGravReference.gravityIsFlipped )
+        if (playerMovementScript.canAffectRotation)
         {
-            Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, xRot, 0);
-        } else if (playerGravReference.gravityIsFlipped)
-        {
-            Orientation.transform.localRotation = Quaternion.Euler(Orientation.transform.localRotation.x, -xRot, 180);
-
+            calculateRotation();
+            Orientation.transform.localEulerAngles = new Vector3(0, xRot, 0);
+            if (playerMovementScript.current_PlayerRotationState == playerRotationState.nonFlipped)
+            {
+                CameraObj.transform.localEulerAngles = new Vector3(yRot, 0, 0);
+                Orientation.transform.localEulerAngles = new Vector3(0, xRot, 0);
+            }
+            else
+            {
+                CameraObj.transform.localEulerAngles = new Vector3(yRot, 0, 0);
+                Orientation.transform.localEulerAngles = new Vector3(0, xRot, 180);
+            }
         }
-
-
         Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity, layersToIgnoreForAimingDir);
     }
 
     void getSettings()
     {
-        mouseSensitivityHorizontal = gameSettings.gameSettingsReference.HorizontalSensDefault;
-        mouseSensitivityVertical = gameSettings.gameSettingsReference.VerticalSensDefault;
-        flipHoirzontal = gameSettings.gameSettingsReference.flipHorizontalDefault;
-        flipVertical = gameSettings.gameSettingsReference.flipVerticalDefault;
+        mouseSensitivityHorizontal = PlayerPrefs.GetFloat("horizontalMouseSensitivitySetting");
+        mouseSensitivityVertical = PlayerPrefs.GetFloat("verticalMouseSensitivitySetting");
+        if (PlayerPrefs.GetString("flipHoizontalMouseSetting") == "true") flipHoirzontal = true;
+        else flipHoirzontal = false;
+        if (PlayerPrefs.GetString("flipVerticalMouseSetting") == "true") flipVertical = true;
+        else flipVertical = false;
 
-        Camera.main.fieldOfView = gameSettings.gameSettingsReference.FOVSettingDefault;
+        Camera.main.fieldOfView = PlayerPrefs.GetFloat("FOVSettings");
     }
 
-    private void CameraRotation_performed(InputAction.CallbackContext obj)
+    private void calculateRotation()
     {
-        mouseX = obj.ReadValue<Vector2>().x;
-        mouseY = obj.ReadValue<Vector2>().y;
+        if (playerMovementScript.current_PlayerRotationState == playerRotationState.nonFlipped)
+        {
+            mouseX = controls.CameraControls.CameraRotation.ReadValue<Vector2>().x;
+            mouseY = controls.CameraControls.CameraRotation.ReadValue<Vector2>().y;
+        }
+        else
+        {
+            mouseX = controls.CameraControls.CameraRotation.ReadValue<Vector2>().x * -1;
+            mouseY = controls.CameraControls.CameraRotation.ReadValue<Vector2>().y;
+        }
+
 
         if (flipHoirzontal) xRot -= mouseX * mouseSensitivityHorizontal * Time.deltaTime;
         else xRot += mouseX * mouseSensitivityHorizontal * Time.deltaTime;

@@ -16,10 +16,10 @@ public class weaponInventory : MonoBehaviour
         interactionInput = new InteractionInputActions();
 
         interactionInput.Combat.WeaponSlot1.performed += takeOutWeapon1 => takeOutWeapon(0);
-        interactionInput.Combat.WeaponSlot1.performed += takeOutWeapon2 => takeOutWeapon(1);
-        interactionInput.Combat.WeaponSlot1.performed += takeOutWeapon3 => takeOutWeapon(2);
-        interactionInput.Combat.WeaponSlot1.performed += takeOutWeapon4 => takeOutWeapon(3);
-        interactionInput.Combat.WeaponSlot1.performed += takeOutWeapon5 => takeOutWeapon(4);
+        interactionInput.Combat.WeaponSlot2.performed += takeOutWeapon2 => takeOutWeapon(1);
+        interactionInput.Combat.WeaponSlot3.performed += takeOutWeapon3 => takeOutWeapon(2);
+        interactionInput.Combat.WeaponSlot4.performed += takeOutWeapon4 => takeOutWeapon(3);
+        interactionInput.Combat.WeaponSlot5.performed += takeOutWeapon5 => takeOutWeapon(4);
     }
 
     private void OnEnable()
