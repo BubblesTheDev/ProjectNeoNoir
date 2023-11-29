@@ -430,7 +430,6 @@ public class playerMovement : MonoBehaviour
         else slideTempDir = current_playerDirectionalVector.normalized;
         transform.position -= Vector3.up * colliderHeight_Slide;
         canAffectMovement = false;
-        gravityAffected = false;
 
         while (current_PlayerInputActions.playerMovment.Slide.IsPressed())
         {
@@ -440,7 +439,6 @@ public class playerMovement : MonoBehaviour
 
         transform.position += Vector3.up * colliderHeight_Slide;
         playerCollider.height = colliderHeight_normal;
-        gravityAffected = true;
         canAffectMovement = true;
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_slideCooldownTime);
