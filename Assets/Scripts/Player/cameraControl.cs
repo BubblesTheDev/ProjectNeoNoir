@@ -64,12 +64,12 @@ public class cameraControl : MonoBehaviour
             if (playerMovementScript.current_PlayerRotationState == playerRotationState.nonFlipped)
             {
                 CameraObj.transform.localEulerAngles = new Vector3(yRot, 0, 0);
-            Orientation.transform.localEulerAngles = new Vector3(0, xRot, 0);
+                Orientation.transform.localEulerAngles = new Vector3(0, xRot, 0);
             }
             else
             {
                 CameraObj.transform.localEulerAngles = new Vector3(yRot, 0, 0);
-            Orientation.transform.localEulerAngles = new Vector3(0, xRot, 180);
+                Orientation.transform.localEulerAngles = new Vector3(0, xRot, 180);
             }
         }
         Physics.Raycast(CameraObj.transform.position, CameraObj.transform.forward, out lookingDir, Mathf.Infinity, layersToIgnoreForAimingDir);
@@ -97,7 +97,7 @@ public class cameraControl : MonoBehaviour
         else
         {
             mouseX = controls.CameraControls.CameraRotation.ReadValue<Vector2>().x * -1;
-            mouseY = controls.CameraControls.CameraRotation.ReadValue<Vector2>().y * -1;
+            mouseY = controls.CameraControls.CameraRotation.ReadValue<Vector2>().y;
         }
 
 

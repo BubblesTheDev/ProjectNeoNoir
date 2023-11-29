@@ -170,7 +170,7 @@ public class playerMovement : MonoBehaviour
         }
 
         rb.velocity = horizontal_playerVelocity + vertical_playerVelocity;
-        if(dragAffected) applyDrag();
+        if (dragAffected) applyDrag();
         positionLastFrame = transform.position;
     }
 
@@ -196,7 +196,7 @@ public class playerMovement : MonoBehaviour
         #endregion
 
         #region Draw Jump Heigt
-        if(debug_ShowJumpHeight)
+        if (debug_ShowJumpHeight)
         {
             if (current_playerMovementAction != playerMovementAction.jumping && grounded) tempJumpStartVector = transform.position;
             if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) tempJumpStartVector = transform.position;
@@ -208,7 +208,7 @@ public class playerMovement : MonoBehaviour
                 }
             }
             else Gizmos.color = Color.red;
-            for (int i = 0; i < jumpHeight-1; i++)
+            for (int i = 0; i < jumpHeight - 1; i++)
             {
                 Handles.DrawWireDisc(tempJumpStartVector + (transform.up * (i - 0.75f)), transform.up, playerCollider.radius);
             }
@@ -230,14 +230,15 @@ public class playerMovement : MonoBehaviour
 
     private void groundDetection()
     {
-        if(Physics.Raycast(transform.position + groundCheck_PositionalOffset, -transform.up, out groundCheck_HitInformation, groundCheck_Distance, groundCheck_LayersToHit))
+        if (current_playerMovementAction == playerMovementAction.jumping || current_playerMovementAction == playerMovementAction.flipping) return;
+        if (Physics.Raycast(transform.position + groundCheck_PositionalOffset, -transform.up, out groundCheck_HitInformation, groundCheck_Distance, groundCheck_LayersToHit))
         {
             float tempAngle = Vector3.Angle(transform.up, groundCheck_HitInformation.normal);
             if (tempAngle < maxSlopeAngle)
             {
                 grounded = true;
                 onAcceptableSlope = true;
-                if (current_CoyoteTime == 0 && current_playerMovementAction != playerMovementAction.jumping)
+                if (current_CoyoteTime <= 0)
                 {
                     current_CoyoteTime = timeInSeconds_GroundedCoyoteTime;
                     current_NumberOfMidairJumps = numberOf_MidairJumps;
@@ -248,14 +249,15 @@ public class playerMovement : MonoBehaviour
             {
                 grounded = true;
                 onAcceptableSlope = false;
-                if (current_CoyoteTime == 0 && current_playerMovementAction != playerMovementAction.jumping)
+                if (current_CoyoteTime <= 0)
                 {
                     current_CoyoteTime = timeInSeconds_GroundedCoyoteTime;
                     current_NumberOfMidairJumps = numberOf_MidairJumps;
                 }
                 return;
             }
-        } else if(current_CoyoteTime > 0) 
+        }
+        else if (current_CoyoteTime > 0)
         {
             current_CoyoteTime -= Time.deltaTime;
             grounded = true;
@@ -272,21 +274,10 @@ public class playerMovement : MonoBehaviour
 
     private void getPlayerInput()
     {
-        
-
-        if(current_PlayerRotationState == playerRotationState.nonFlipped)
-        {
-            current_playerDirectionalVector = directionalOrientation.transform.forward *
+        current_playerDirectionalVector = directionalOrientation.transform.forward *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
             directionalOrientation.transform.right *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
-        } else
-        {
-            current_playerDirectionalVector = directionalOrientation.transform.forward *
-            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
-            directionalOrientation.transform.right *
-            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x * -1;
-        }
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
@@ -357,7 +348,7 @@ public class playerMovement : MonoBehaviour
     private void applyHorizontalAcceleration()
     {
         if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) return;
-        if(grounded) horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration_Ground * Time.deltaTime;
+        if (grounded) horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration_Ground * Time.deltaTime;
         else horizontal_playerVelocity += current_playerDirectionalVector.normalized * acceleration_Air * Time.deltaTime;
     }
 
@@ -367,18 +358,18 @@ public class playerMovement : MonoBehaviour
         {
             current_NumberOfDashCharges += timeInSeconds_ForASingleCharge * Time.deltaTime;
         }
-        else if(current_NumberOfDashCharges > numberOf_MaximumDashCharges) current_NumberOfDashCharges = numberOf_MaximumDashCharges;
+        else if (current_NumberOfDashCharges > numberOf_MaximumDashCharges) current_NumberOfDashCharges = numberOf_MaximumDashCharges;
     }
 
     private IEnumerator action_Jump()
     {
         if (!action_CanJump || current_playerMovementAction != playerMovementAction.moving) yield break;
         else if (!grounded && current_NumberOfMidairJumps <= 0) yield break;
-        else if(!grounded && current_NumberOfMidairJumps > 0) current_NumberOfMidairJumps--;
+        else if (!grounded && current_NumberOfMidairJumps > 0) current_NumberOfMidairJumps--;
         current_playerMovementAction = playerMovementAction.jumping;
         action_CanJump = false;
         current_CoyoteTime = 0;
-
+        grounded = false;
         vertical_playerVelocity = Vector3.zero;
         float jumpVelocity = Mathf.Sqrt(-2 * -(gravityAcceleration * Mathf.Exp(2)) * jumpHeight);
         vertical_playerVelocity += transform.up * jumpVelocity;
@@ -390,7 +381,7 @@ public class playerMovement : MonoBehaviour
     }
     private IEnumerator action_Dash()
     {
-        if (!action_CanDash || current_playerMovementAction != playerMovementAction.moving || current_NumberOfDashCharges <= 0) yield break;
+        if (!action_CanDash || current_playerMovementAction != playerMovementAction.moving || current_NumberOfDashCharges < 1) yield break;
         current_playerMovementAction = playerMovementAction.dashing;
         action_CanDash = false;
         dragAffected = false;
@@ -399,7 +390,7 @@ public class playerMovement : MonoBehaviour
         current_NumberOfDashCharges--;
 
         Vector3 tempDashDirectionalVector = Vector3.zero;
-        if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) tempDashDirectionalVector = Vector3.Scale(directionalOrientation.transform.forward, new Vector3(1,0,1)).normalized;
+        if (current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().magnitude == 0) tempDashDirectionalVector = Vector3.Scale(directionalOrientation.transform.forward, new Vector3(1, 0, 1)).normalized;
         else tempDashDirectionalVector = current_playerDirectionalVector.normalized;
         Vector3 dashStartPos = transform.position;
 
@@ -409,7 +400,7 @@ public class playerMovement : MonoBehaviour
 
 
         float dashOverride = 0f;
-        while(Vector3.Distance(dashStartPos, transform.position) < dashDistance && dashOverride < dashDuration)
+        while (Vector3.Distance(dashStartPos, transform.position) < dashDistance && dashOverride < dashDuration)
         {
             dragAffected = false;
             dashOverride += Time.deltaTime;
@@ -486,27 +477,35 @@ public class playerMovement : MonoBehaviour
     private IEnumerator action_Flip()
     {
         if (!action_CanFlip || current_playerMovementAction != playerMovementAction.moving) yield break;
+        
         current_playerMovementAction = playerMovementAction.flipping;
         action_CanFlip = false;
-        gravityAffected = false; 
+        gravityAffected = false;
         canAffectMovement = false;
         canAffectRotation = false;
         vertical_playerVelocity = Vector3.zero;
+
+
+
         float tempTimer = 0;
-        while(tempTimer < timeInSeconds_ToFlip)
+        while (tempTimer < timeInSeconds_ToFlip)
         {
             directionalOrientation.transform.localEulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
-            current_CoyoteTime = 0;
             tempTimer += Time.deltaTime;
             yield return null;
         }
 
-        if(current_PlayerRotationState == playerRotationState.nonFlipped) current_PlayerRotationState = playerRotationState.flipped;
+        current_CoyoteTime = 0;
+        grounded = false;
+        
+        if (current_PlayerRotationState == playerRotationState.nonFlipped) current_PlayerRotationState = playerRotationState.flipped;
         else current_PlayerRotationState = playerRotationState.nonFlipped;
+        
         gravityAffected = true;
         canAffectRotation = true;
         canAffectMovement = true;
         current_playerMovementAction = playerMovementAction.moving;
+        
         yield return new WaitForSeconds(action_flipCooldownTime);
         action_CanFlip = true;
     }
@@ -514,7 +513,7 @@ public class playerMovement : MonoBehaviour
 }
 #if UNITY_EDITOR
 [CustomEditor(typeof(playerMovement)), CanEditMultipleObjects]
-public class playerMovementEditor: Editor
+public class playerMovementEditor : Editor
 {
     private bool showDebug = false;
     private bool showCooldowns = false;
@@ -561,7 +560,7 @@ public class playerMovementEditor: Editor
         EditorGUILayout.Space();
         EditorGUILayout.BeginVertical();
         showDebug = EditorGUILayout.Foldout(showDebug, "Show Debug Menu", true, EditorStyles.foldoutHeader);
-        if(showDebug)
+        if (showDebug)
         {
             EditorGUILayout.BeginVertical();
             reference.debug_showAllowedActions = EditorGUILayout.Toggle("Enable Show Allowed Actions", reference.debug_showAllowedActions);
@@ -735,16 +734,16 @@ public class playerMovementEditor: Editor
             GUILayout.Label("Gravity Flip Varialbes", EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Current Player Rotation State");
-            EditorGUILayout.EnumPopup(reference.current_PlayerRotationState );
-            EditorGUILayout.EndHorizontal ();
+            EditorGUILayout.EnumPopup(reference.current_PlayerRotationState);
+            EditorGUILayout.EndHorizontal();
             reference.timeInSeconds_ToFlip = EditorGUILayout.FloatField("Time In Seconds To Flip gravity", reference.timeInSeconds_ToFlip);
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Normal Gravity Directional Vector");
             GUILayout.Label("Flipped Gravity Directional Vector");
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            reference.directionalVector_NonFlipped = EditorGUILayout.Vector3Field("",reference.directionalVector_NonFlipped);
-            reference.directionalVector_Flipped = EditorGUILayout.Vector3Field("",reference.directionalVector_Flipped);
+            reference.directionalVector_NonFlipped = EditorGUILayout.Vector3Field("", reference.directionalVector_NonFlipped);
+            reference.directionalVector_Flipped = EditorGUILayout.Vector3Field("", reference.directionalVector_Flipped);
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndVertical();
