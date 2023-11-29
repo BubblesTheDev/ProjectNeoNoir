@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &819165392996640916
+--- !u!1 &6478092132555893140
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 270905897000337335}
-  - component: {fileID: 2878033261828200290}
-  - component: {fileID: 6903653582180304594}
-  - component: {fileID: 4270610093244792077}
-  - component: {fileID: 7227051426348592630}
-  - component: {fileID: 1667027215028630504}
+  - component: {fileID: 2166144423206000378}
+  - component: {fileID: 2457140346900736638}
+  - component: {fileID: 7432982995875028095}
+  - component: {fileID: 6697106150892529909}
+  - component: {fileID: 7378927305003027038}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &270905897000337335
+--- !u!4 &2166144423206000378
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
+  m_GameObject: {fileID: 6478092132555893140}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.36033872, z: 0, w: 0.9328216}
-  m_LocalPosition: {x: 0, y: 5.206, z: 0}
+  m_LocalRotation: {x: -0, y: 0.7940838, z: -0, w: 0.60780835}
+  m_LocalPosition: {x: 230.72, y: 7.02, z: -16.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5996785758006679571}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 42.242, z: 0}
---- !u!54 &2878033261828200290
+  m_LocalEulerAnglesHint: {x: 0, y: 105.138, z: 0}
+--- !u!54 &2457140346900736638
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
+  m_GameObject: {fileID: 6478092132555893140}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -64,13 +62,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &6903653582180304594
+--- !u!136 &7432982995875028095
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
+  m_GameObject: {fileID: 6478092132555893140}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -87,13 +85,13 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: -0.5, z: 0}
---- !u!114 &4270610093244792077
+--- !u!114 &6697106150892529909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
+  m_GameObject: {fileID: 6478092132555893140}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dc117bc225aa514fb9bed59b74564c7, type: 3}
@@ -104,112 +102,103 @@ MonoBehaviour:
   layersToIgnoreForAimingDir:
     serializedVersion: 2
     m_Bits: 160
-  mouseSensitivity: 20
-  maxAngle: 80
-  minAngle: -70
+  mouseSensitivityHorizontal: 50
+  mouseSensitivityVertical: 50
+  flipHoirzontal: 0
+  flipVertical: 0
+  maxAngle: 90
+  minAngle: -90
   mouseX: 0
   mouseY: 0
---- !u!114 &7227051426348592630
+--- !u!114 &7378927305003027038
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
+  m_GameObject: {fileID: 6478092132555893140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fccde661052e3c4458983b55d256d2dd, type: 3}
+  m_Script: {fileID: 11500000, guid: a1e7c6501c05c5d4f83b47b25f06e023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  objOrientation: {fileID: 0}
-  freeLook: 0
-  moveSpeed: 50
-  moveMulti: 50
-  drag: 2
-  airDrag: 1.2
-  currentMovementState: 0
-  groundCheckDistance: 0.4
-  groundCheckPosition: {fileID: 5308592672857772293}
-  groundCheckLayers:
+  current_playerMovementAction: 0
+  grounded: 0
+  onAcceptableSlope: 0
+  gravityAffected: 1
+  canAffectMovement: 1
+  canAffectRotation: 1
+  dragAffected: 1
+  action_jumpCooldownTime: 0.1
+  action_dashCooldownTime: 0.05
+  action_slideCooldownTime: 0.1
+  action_slamCooldownTime: 0.1
+  action_flipCooldownTime: 5
+  groundCheck_PositionalOffset: {x: 0, y: -0.45, z: 0}
+  timeInSeconds_GroundedCoyoteTime: 0.5
+  current_CoyoteTime: 0
+  groundCheck_Distance: 1.25
+  groundCheck_LayersToHit:
     serializedVersion: 2
-    m_Bits: 64
-  staminaCharges: 3
-  instantRecharge: 1
-  currentCharge: 0
-  rechargeRate: 0.66
-  jumpForce: 40
-  jumpCooldown: 0.2
-  canJump: 1
-  dashForce: 25
-  dashCooldown: 0.4
-  dashDistance: 5
-  dashDrag: 0.5
-  maxDashTime: 0.15
-  canDash: 1
-  slideSpeed: 100
-  slideCooldown: 0.2
-  buttSlamForce: 100
-  buttSlamCooldown: 1.5
-  slamDrag: 4
-  timeToRaiseSlam: 0.15
-  raiseDistance: 0.25
-  usedStamina:
+    m_Bits: 6
+  horizontal_playerVelocity: {x: 0, y: 0, z: 0}
+  acceleration_Ground: 500
+  acceleration_Air: 200
+  terminalVelocity_Ground: 20
+  terminalVelocity_Air: 50
+  speedStopThreshold: 0.05
+  maxSlopeAngle: 35
+  vertical_playerVelocity: {x: 0, y: 0, z: 0}
+  jumpHeight: 12
+  numberOf_MidairJumps: 1
+  gravityAcceleration: 25
+  terminalVelocity_Gravity: 15
+  terminalVelocity_Jump: 12
+  dashDistance: 10
+  dashDuration: 0.1
+  numberOf_MaximumDashCharges: 3
+  timeInSeconds_ForASingleCharge: 1
+  acceleration_Slide: 1000
+  acceleration_EndSlideJump: 2
+  timeInSeconds_ExtraJumpCoyoteTime: 1
+  terminalVelocity_Slide: 25
+  colliderHeight_normal: 2
+  colliderHeight_Slide: 0.35
+  raiseDistance_Slam: 2.5
+  timeInSeconds_ToRaise: 0.25
+  acceleration_Slam_Downward: 1000
+  terminalVelocity_Slam_Downward: 50
+  current_PlayerRotationState: 0
+  timeInSeconds_ToFlip: 0.4
+  directionalVector_NonFlipped: {x: 0, y: -1, z: 0}
+  directionalVector_Flipped: {x: 0, y: 1, z: 0}
+  rotationalOffset: {x: 0, y: 0, z: 0}
+  onAction_Jump_Start:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1667027215028630504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819165392996640916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dcfef5744d5e374da8369f9255e77dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHP: 5
-  maxHp: 5
-  maxStaticEnergy: 25
-  currentStaticEnergy: 0
-  movementMulti: 15
-  staticEnergyRate: 1
-  immunityTime: 1
-  tookDamage:
+  onAction_Dash_Start:
     m_PersistentCalls:
       m_Calls: []
-  healedDamage:
+  onAction_Slide_Start:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &5308592672857772293
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5996785758006679571}
-  m_Layer: 7
-  m_Name: GroundCheckPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5996785758006679571
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5308592672857772293}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 270905897000337335}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  onAction_Slam_Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_Flip_Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_Slide_End:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_Slam_End:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_Flip_End:
+    m_PersistentCalls:
+      m_Calls: []
+  debug_ShowGroundedRay: 1
+  debug_ShowJumpHeight: 1
+  debug_ShowDashDistance: 1
+  debug_showPlayerSpeed: 1
+  debug_showAllowedActions: 0
