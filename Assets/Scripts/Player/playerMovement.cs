@@ -285,7 +285,7 @@ public class playerMovement : MonoBehaviour
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
-        if (current_PlayerInputActions.playerMovment.Slide.WasPressedThisFrame()) StartCoroutine(action_Slide());
+        if (current_PlayerInputActions.playerMovment.Slide.IsPressed()) StartCoroutine(action_Slide());
         if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) StartCoroutine(action_Jump());
         if (current_PlayerInputActions.playerMovment.FlipGravity.WasPressedThisFrame()) StartCoroutine(action_Flip());
     }
