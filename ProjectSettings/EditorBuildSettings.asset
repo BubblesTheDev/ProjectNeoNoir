@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Act 1 Into Cutscene.unity
+    path: Assets/Scenes/L1/Act1 Intro Cutscene.unity
     guid: 2cd1bed8591a0ad4b8dcaec60c2c06af
   - enabled: 1
-    path: Assets/Scenes/level1.unity
+    path: Assets/Scenes/L1/L1.unity
     guid: 3f599cbff7431684ab8e5a4351db26d4
   m_configObjects: {}
