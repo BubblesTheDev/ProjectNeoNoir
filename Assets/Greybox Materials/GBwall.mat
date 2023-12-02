@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: GBwall
   m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
-  m_Parent: {fileID: 2100000, guid: 0faf08228432a664cb2d46f4d1eee2b0, type: 2}
+  m_Parent: {fileID: 2100000, guid: 7e6b6a154cd59634b8e06a92e338ba2c, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
