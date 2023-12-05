@@ -171,7 +171,6 @@ public class movement : MonoBehaviour
         yield return new WaitForSeconds(jumpCooldown);
 
         canJump = true;
-        AudioManager.instance.PlaySFX(FMODEvents.instance.jumpSFX, this.transform.position);
     }
 
     IEnumerator dash()
@@ -190,7 +189,6 @@ public class movement : MonoBehaviour
             }
             else yield break;
         }
-        AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
 
         canDash = false;
         currentMovementState = movementStates.dashing;

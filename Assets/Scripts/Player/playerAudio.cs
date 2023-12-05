@@ -37,7 +37,7 @@ public class playerAudio : MonoBehaviour
 
     private void playJumpSound()
     {
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.jumpSFX, this.transform.position);
     }
     private void playSlideJumpSound()
     {
@@ -45,7 +45,7 @@ public class playerAudio : MonoBehaviour
     }
     private void playDashSound()
     {
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
     }
     private void startSlideSound()
     {
@@ -57,7 +57,7 @@ public class playerAudio : MonoBehaviour
     }
     private void playNormalFlipSound()
     {
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.gravitySwitch, this.transform.position);
     }
     private void stopSlideSound()
     {
@@ -69,7 +69,7 @@ public class playerAudio : MonoBehaviour
     }
     private void playFlippedFlipSound()
     {
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.gravitySwitch, this.transform.position);
     }
     private void playCannotAirJumpSound()
     {
