@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7432982995875028095}
   - component: {fileID: 6697106150892529909}
   - component: {fileID: 7378927305003027038}
+  - component: {fileID: 204246448550179059}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -156,10 +157,12 @@ MonoBehaviour:
   terminalVelocity_Jump: 12
   dashDistance: 10
   dashDuration: 0.1
+  dashVelocityDivider: 0.75
   numberOf_MaximumDashCharges: 3
-  timeInSeconds_ForASingleCharge: 1
+  timeInSeconds_ToRechargeOneCharge: 1
   acceleration_Slide: 1000
-  acceleration_EndSlideJump: 2
+  acceleration_SlideJumpBoost: 0
+  canSlideJump: 0
   timeInSeconds_ExtraJumpCoyoteTime: 1
   terminalVelocity_Slide: 25
   colliderHeight_normal: 2
@@ -170,10 +173,18 @@ MonoBehaviour:
   terminalVelocity_Slam_Downward: 50
   current_PlayerRotationState: 0
   timeInSeconds_ToFlip: 0.4
+  timeInSeconds_CurrentGravityFlipDuration: 0
+  timeInSeconds_GravityFlipDuration: 0
+  timeInSeconds_ToFullyRechargeGravity: 0
+  overchargedGravityFlip: 0
+  overchargeRechargePenalty: 0.75
   directionalVector_NonFlipped: {x: 0, y: -1, z: 0}
   directionalVector_Flipped: {x: 0, y: 1, z: 0}
   rotationalOffset: {x: 0, y: 0, z: 0}
   onAction_Jump_Start:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_SlideJumpStart:
     m_PersistentCalls:
       m_Calls: []
   onAction_Dash_Start:
@@ -197,8 +208,44 @@ MonoBehaviour:
   onAction_Flip_End:
     m_PersistentCalls:
       m_Calls: []
+  onAction_CannotAirJump:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_CannotDash:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_CannotFlip:
+    m_PersistentCalls:
+      m_Calls: []
+  onAction_OverchargeFlip:
+    m_PersistentCalls:
+      m_Calls: []
   debug_ShowGroundedRay: 1
   debug_ShowJumpHeight: 1
   debug_ShowDashDistance: 1
   debug_showPlayerSpeed: 1
-  debug_showAllowedActions: 0
+--- !u!114 &204246448550179059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6478092132555893140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcfef5744d5e374da8369f9255e77dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  maxHp: 5
+  maxStaticEnergy: 100
+  currentStaticEnergy: 0
+  movementMulti: 2
+  staticEnergyRate: 1
+  immunityTime: 1
+  tookDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  healedDamage:
+    m_PersistentCalls:
+      m_Calls: []
