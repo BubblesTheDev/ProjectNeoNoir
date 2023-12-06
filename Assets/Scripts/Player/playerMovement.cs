@@ -438,7 +438,8 @@ public class playerMovement : MonoBehaviour
         {
             onAction_SlideJumpStart.Invoke();
             horizontal_playerVelocity += directionalOrientation.transform.forward.normalized * acceleration_SlideJumpBoost;
-        } else onAction_Jump_Start.Invoke();
+        }
+        else onAction_Jump_Start.Invoke();
         
         
         yield return new WaitForSeconds(0.015f);
@@ -492,6 +493,7 @@ public class playerMovement : MonoBehaviour
     }
     private IEnumerator action_Slide()
     {
+
         if (!action_CanSlide || !grounded || current_playerMovementAction != playerMovementAction.moving) yield break;
 
         onAction_Slide_Start.Invoke();
@@ -510,8 +512,7 @@ public class playerMovement : MonoBehaviour
             horizontal_playerVelocity += slideTempDir * acceleration_Slide * Time.deltaTime;
             yield return null;
         }
-
-        transform.position += Vector3.up * colliderHeight_Slide;
+        // transform.position += Vector3.up * colliderHeight_Slide;
         playerCollider.height = colliderHeight_normal;
         canAffectMovement = true;
         current_playerMovementAction = playerMovementAction.moving;
