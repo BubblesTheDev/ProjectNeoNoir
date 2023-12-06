@@ -1,3 +1,4 @@
+using FMOD;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -15,12 +16,13 @@ public class AfterImagePool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Seeker = transform.root.GetComponent<GameObject>();
         afterImages = new List<SeekerAfterImage>(poolSize);
         for (int i = 0; i < poolSize; i++) {
             GameObject nextAfterImage = Instantiate(prefab);
             afterImages.Add(nextAfterImage.GetComponent<SeekerAfterImage>());
-         // nextAfterImage.GetComponent<SeekerAfterImage>().targetObject = Seeker.character;
-        //  nextAfterImage.GetComponent<SeekerAfterImage>().targetAnimator = Seeker.animator;
+          nextAfterImage.GetComponent<SeekerAfterImage>().targetObject = Seeker.gameObject; // gets target gameobject
+        //  nextAfterImage.GetComponent<SeekerAfterImage>().targetAnimator = Seeker.animator; // gets target animator
         }
 
 
