@@ -41,13 +41,19 @@ public class PlayerHUD : MonoBehaviour
     {
         healthStats = GameObject.Find("Player").GetComponent<playerHealth>();
         movementStats = GameObject.Find("Player").GetComponent<playerMovement>();
-        startPos = HUD.transform.position;
 
         setupStats();
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
         im_HUD = HUD.GetComponent<Image>();
+
+    }
+
+    private void Start()
+    {
+        startPos = HUD.transform.position;
+
     }
 
     private void Update()
@@ -110,7 +116,7 @@ public class PlayerHUD : MonoBehaviour
             timer += Time.deltaTime;
             float shakeCurve = screenshakeAnimationCurve.Evaluate(timer / healthStats.immunityTime);
             HUD.transform.position = startPos + shakeCurve * shakeStrength * Random.insideUnitSphere;
-            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve);
+            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve * (shakeStrength / 40));
             yield return null;
         }
         HUD.transform.position = startPos;
