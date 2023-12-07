@@ -54,7 +54,7 @@ public class playerJuice : MonoBehaviour
         if (!enableHeadbob) return;
 
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * frequency.y * headbobIntensity) * amplitude.y * headbobIntensity;
+        pos.y -= Mathf.Abs(Mathf.Sin(Time.time * frequency.y * headbobIntensity) * amplitude.y * headbobIntensity);
         pos.x += Mathf.Sin(Time.time * frequency.x * headbobIntensity) * amplitude.x * headbobIntensity;
 
         if (rb.velocity.magnitude > headbobActivateLimit) objThatFollows.transform.localPosition += pos;
