@@ -42,9 +42,10 @@ public class roomEnemySpawner : MonoBehaviour
         currentWaveIndex++;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(!playerInRoom) playerInRoom = true;
+        if(other.gameObject.CompareTag("Player")) if(!playerInRoom) playerInRoom = true;
+
     }
 }
 
