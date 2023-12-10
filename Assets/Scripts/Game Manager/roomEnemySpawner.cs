@@ -48,7 +48,7 @@ public class roomEnemySpawner : MonoBehaviour
 
     }
 }
-
+[System.Serializable]
 public struct wave
 {
     public bool noEnemiesRemaining;
