@@ -23,9 +23,8 @@ public class PlayerHUD : MonoBehaviour
 
 
     [Space, Header("Gravswitch UI Variables")]
-    [SerializeField] private float maxGravCharge;
-    [SerializeField] private float currentGravCharge;
     [SerializeField] private float arrowGlowTime;
+    [SerializeField] private Color arrowColor = new Color(0, 228, 255);
     [SerializeField] private Image gravSlider;
 
     private playerHealth healthStats;
@@ -47,8 +46,10 @@ public class PlayerHUD : MonoBehaviour
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
+        movementStats.onAction_Flip_Start.AddListener(flipGrav);
+        movementStats.onAction_Flip_End.AddListener(flipGrav);
         im_HUD = HUD.GetComponent<Image>();
-        gravSwitch.value = 100;
+        
 
 
     }
@@ -66,12 +67,7 @@ public class PlayerHUD : MonoBehaviour
         else pistolIcon.enabled = false;
         if (shotgun.GetComponent<weaponBase>().weaponIsEquipped) shotgunIcon.enabled = true;
         else shotgunIcon.enabled = false;
-        if (Input.GetKeyDown(KeyCode.R) && gravSwitch.value >= 1)
-        {
-            StartCoroutine(gravSwitchCD());
-        }
-
-        }
+    }
 
 
     void setupStats()
@@ -83,6 +79,8 @@ public class PlayerHUD : MonoBehaviour
 
         staticMeter.maxValue = healthStats.maxStaticEnergy;
         staminaBar.maxValue = movementStats.numberOf_MaximumDashCharges;
+        gravSwitch.maxValue = movementStats.timeInSeconds_GravityFlipDuration;
+        gravSwitch.value = movementStats.timeInSeconds_GravityFlipDuration;
     }
 
     void startDecreasingHP()
@@ -112,24 +110,28 @@ public class PlayerHUD : MonoBehaviour
     {
         staminaBar.value = movementStats.current_NumberOfDashCharges;
         staticMeter.value = healthStats.currentStaticEnergy;
-
+        gravSwitch.value = movementStats.timeInSeconds_CurrentGravityFlipDuration;
     }
 
-    IEnumerator gravSwitchCD()
+    private void flipGrav()
     {
-        float timer = 0;
-        gravSlider.color = Color.white;
-        yield return new WaitForSeconds(movementStats.timeInSeconds_ToFlip + movementStats.timeInSeconds_GravityFlipDuration);
-        gravSlider.color = new Color(0, 228, 255);
-        gravSwitch.value = 0;
-        while (timer < movementStats.timeInSeconds_ToFullyRechargeGravity - 2.2f)
-        {
-            timer += Time.deltaTime;
-            gravSwitch.value = timer / (movementStats.timeInSeconds_ToFullyRechargeGravity - 2.2f);
-            yield return null;
-        }
-        gravSwitch.value = 1;
+        StartCoroutine(switchGravity());
+    }
 
+    IEnumerator switchGravity()
+    {
+        gravSlider.color = Color.white;
+        yield return new WaitForSeconds(movementStats.timeInSeconds_ToFlip + arrowGlowTime);
+        if (movementStats.overchargedGravityFlip) 
+        { 
+            gravSlider.color = Color.red;
+            yield return new WaitForSeconds(movementStats.timeInSeconds_ToFullyRechargeGravity);
+            gravSlider.color = arrowColor;
+        }
+        else
+        {
+            gravSlider.color = arrowColor;
+        }
     }
 
     private IEnumerator ShakeHUD()
