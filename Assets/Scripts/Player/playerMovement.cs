@@ -47,7 +47,7 @@ public class playerMovement : MonoBehaviour
 
     #region horizontal Movement
     [Space, Header("Horizontal Movement")]
-    [SerializeField] private Vector3 horizontal_playerVelocity;
+    public Vector3 horizontal_playerVelocity;
     public float acceleration_Ground, acceleration_Air;
     public float terminalVelocity_Ground, terminalVelocity_Air;
     public float speedStopThreshold;
@@ -56,7 +56,7 @@ public class playerMovement : MonoBehaviour
 
     #region Vertical Movement
     [Space, Header("Vertical Movement")]
-    [SerializeField] private Vector3 vertical_playerVelocity;
+    public Vector3 vertical_playerVelocity;
     public float jumpHeight;
     public int numberOf_MidairJumps = 1;
     private int current_NumberOfMidairJumps;

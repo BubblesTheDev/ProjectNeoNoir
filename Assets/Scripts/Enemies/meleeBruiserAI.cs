@@ -41,10 +41,13 @@ public class meleeBruiserAI : MonoBehaviour
 
     private void Update()
     {
-        if (Mathf.Abs(ref_NavMeshAgent.velocity.magnitude) > 0 && currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeWalk");
-        else if(currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeAngy");
-        if (currentAIState == bruiserAIStates.following) ref_NavMeshAgent.SetDestination(ref_PlayerObj.transform.position);
-        if (canPunch && Vector3.Distance(transform.position, ref_PlayerObj.transform.position) <= distanceToPunchPlayer) StartCoroutine(action_PunchPlayer());
+        if (currentAIState == bruiserAIStates.following)
+        {
+            if(Mathf.Abs(ref_NavMeshAgent.velocity.magnitude) > 0) ref_meleeAnimator.Play("BasicMeleeWalk");
+            else ref_meleeAnimator.Play("BasicMeleeAngy");
+            ref_NavMeshAgent.SetDestination(ref_PlayerObj.transform.position);
+        }
+        if (canPunch && Vector3.Distance(transform.position + Vector3.up * 1.5f, ref_PlayerObj.transform.position) <= distanceToPunchPlayer) StartCoroutine(action_PunchPlayer());
 
         if (hitboxActive_Punch)
         {
@@ -58,6 +61,15 @@ public class meleeBruiserAI : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if(ref_PlayerObj != null) 
+        {
+            if (canPunch && Vector3.Distance(transform.position, ref_PlayerObj.transform.position) < 15f)
+            {
+                Gizmos.color = Color.white;
+                Gizmos.DrawLine(transform.position + Vector3.up * 1.5f, ref_PlayerObj.transform.position);
+            }
+        }
+
         #region punchDebug
         if (hitboxActive_Punch) Gizmos.color = Color.red;
         else if (canPunch) Gizmos.color = Color.green;

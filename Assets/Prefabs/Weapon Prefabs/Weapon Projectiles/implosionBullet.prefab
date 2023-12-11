@@ -415,9 +415,11 @@ MonoBehaviour:
   implosionRange: 5
   damage: 1
   implosionForce: 50
-  pullForce: 100
+  pullForce: 450
   maxDistance: 50
   stoppingDistance: 2
+  overFlowMaxTime: 3
+  isPulling: 0
   bulletEffect: {fileID: 2553844760092814956}
   gravityChain: {fileID: 8332733161846461004}
 --- !u!120 &8332733161846461004
