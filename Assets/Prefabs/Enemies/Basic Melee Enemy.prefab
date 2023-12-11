@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAIState: 0
-  canPunch: 0
+  canPunch: 1
   punchAttackCooldown: 2.5
   hitStunDuration: 0.5
   hitboxActive_Punch: 0
