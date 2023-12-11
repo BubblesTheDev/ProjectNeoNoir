@@ -17,7 +17,8 @@ public class meleeBruiserAI : MonoBehaviour
     [SerializeField] private float timeBeforePunchAttack;
     [SerializeField] private float distanceToPunchPlayer;
     [SerializeField] private Vector3 punchAttackHitboxCenter, punchAttackHitboxSize;
-
+    [SerializeField] private LayerMask ref_playerLayer;
+    private bool hasHitPlayerThisAttack = false;
 
     #region Assignables
     private NavMeshAgent ref_NavMeshAgent;
@@ -25,7 +26,6 @@ public class meleeBruiserAI : MonoBehaviour
     private playerHealth ref_PlayerStats;
     private Animator ref_meleeAnimator;
     private enemyStats ref_EnemyStats;
-    public LayerMask ref_playerLayer;
     #endregion
 
     private void Awake()
@@ -35,22 +35,23 @@ public class meleeBruiserAI : MonoBehaviour
         ref_PlayerStats = ref_PlayerObj.GetComponent<playerHealth>();
         ref_meleeAnimator = GetComponent<Animator>();
         ref_EnemyStats = GetComponent<enemyStats>();
-       // ref_playerLayer = ref_PlayerObj.layer;
 
         ref_EnemyStats.onDamageTaken.AddListener(startTakeDamage);
     }
 
     private void Update()
     {
-        if (ref_NavMeshAgent.velocity.magnitude > 0 && currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeWalk");
+        if (Mathf.Abs(ref_NavMeshAgent.velocity.magnitude) > 0 && currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeWalk");
+        else if(currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeAngy");
         if (currentAIState == bruiserAIStates.following) ref_NavMeshAgent.SetDestination(ref_PlayerObj.transform.position);
         if (canPunch && Vector3.Distance(transform.position, ref_PlayerObj.transform.position) <= distanceToPunchPlayer) StartCoroutine(action_PunchPlayer());
 
         if (hitboxActive_Punch)
         {
-            if(Physics.CheckBox(transform.localPosition + punchAttackHitboxCenter, punchAttackHitboxSize, transform.localRotation, ref_playerLayer))
+            if(Physics.CheckBox(transform.position + transform.TransformDirection(punchAttackHitboxCenter), punchAttackHitboxSize, transform.rotation, ref_playerLayer) && !hasHitPlayerThisAttack)
             {
                 StartCoroutine(ref_PlayerStats.takeDamage(1));
+                hasHitPlayerThisAttack = true;
             }
         }
     }
@@ -62,15 +63,27 @@ public class meleeBruiserAI : MonoBehaviour
         else if (canPunch) Gizmos.color = Color.green;
         else Gizmos.color = Color.yellow;
 
-        Gizmos.DrawSphere(transform.localPosition + punchAttackHitboxCenter, 0.05f);
-        Gizmos.DrawWireCube(transform.localPosition + punchAttackHitboxCenter, punchAttackHitboxSize * 2f);
+        Gizmos.DrawSphere(transform.localPosition + transform.TransformDirection(punchAttackHitboxCenter), 0.05f);
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(punchAttackHitboxCenter, punchAttackHitboxSize * 2f);
         #endregion
+    }
+
+    void startTakeDamage()
+    {
+        StartCoroutine(action_TakeDamage());
+    }
+
+    public void toggle_PunchHitbox()
+    {
+        hitboxActive_Punch = !hitboxActive_Punch;
     }
 
     IEnumerator action_PunchPlayer()
     {
         currentAIState = bruiserAIStates.punching;
         ref_NavMeshAgent.isStopped = true;
+        ref_NavMeshAgent.velocity = Vector3.zero;
         canPunch = false;
 
         ref_meleeAnimator.Play("BasicMeleePunch");
@@ -80,28 +93,19 @@ public class meleeBruiserAI : MonoBehaviour
         currentAIState = bruiserAIStates.following;
         yield return new WaitForSeconds(punchAttackCooldown);
         canPunch = true;
-    }
-
-    void startTakeDamage()
-    {
-        StartCoroutine(action_TakeDamage());
+        hasHitPlayerThisAttack = false;
     }
 
     IEnumerator action_TakeDamage()
     {
         currentAIState = bruiserAIStates.hitstun;
-        //StopCoroutine(hitPlayer());
+        StopCoroutine(action_PunchPlayer());
         canPunch = true;
         ref_NavMeshAgent.isStopped = true;
         ref_meleeAnimator.Play("BasicMeleeHit");
         yield return new WaitForSeconds(ref_meleeAnimator.GetCurrentAnimatorStateInfo(0).length);
         ref_NavMeshAgent.isStopped = false;
         currentAIState = bruiserAIStates.following;
-    }
-
-    public void toggle_PunchHitbox()
-    {
-        hitboxActive_Punch = !hitboxActive_Punch;
     }
 }
 

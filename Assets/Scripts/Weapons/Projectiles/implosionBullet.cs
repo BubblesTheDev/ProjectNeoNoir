@@ -99,10 +99,8 @@ public class implosionBullet : MonoBehaviour
             gravityChain.positionCount = 2;
             gravityChain.SetPosition(0, transform.position);
             gravityChain.SetPosition(1, orientation.transform.position + (-Vector3.up * 0.5f));
-            gravity.gravityReference.useGravity = false;
             yield return null;
         }
-        gravity.gravityReference.useGravity = true;
         isDead = true;
     }
 

@@ -23,10 +23,12 @@ public class playerJuice : MonoBehaviour
     private Vector3 headbobOriginalPosition;
     private Rigidbody rb;
     private cameraControl camControl;
+    private playerMovement playerMoveScript;
     private void Awake()
     {
         rb = GameObject.Find("Player").GetComponent<Rigidbody>();
         camControl = GameObject.Find("Player").GetComponent<cameraControl>();
+        playerMoveScript = GameObject.Find("Player").GetComponent<playerMovement>();
         headbobOriginalPosition = objThatFollows.transform.localPosition;
         playerJuiceReference = this;
 
@@ -36,6 +38,7 @@ public class playerJuice : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (playerMoveScript.grounded && playerMoveScript.current_playerMovementAction == playerMovementAction.moving) enableHeadbob = true; else enableHeadbob = false;
         smoothFollow();
         headbob();
     }

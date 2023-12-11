@@ -440,8 +440,8 @@ public class playerMovement : MonoBehaviour
             horizontal_playerVelocity += directionalOrientation.transform.forward.normalized * acceleration_SlideJumpBoost;
         }
         else onAction_Jump_Start.Invoke();
-        
-        
+
+
         yield return new WaitForSeconds(0.015f);
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_jumpCooldownTime);
@@ -489,7 +489,7 @@ public class playerMovement : MonoBehaviour
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_dashCooldownTime);
         action_CanDash = true;
-        
+
     }
     private IEnumerator action_Slide()
     {
@@ -522,8 +522,8 @@ public class playerMovement : MonoBehaviour
         float timeToWaitForCooldown = 0;
         while (canSlideJump || !action_CanSlide)
         {
-            if(timeToWaitForCooldown >= action_dashCooldownTime) action_CanSlide = true;
-            if(timeToWaitForCooldown >= timeInSeconds_ExtraJumpCoyoteTime) canSlideJump = false;
+            if (timeToWaitForCooldown >= action_dashCooldownTime) action_CanSlide = true;
+            if (timeToWaitForCooldown >= timeInSeconds_ExtraJumpCoyoteTime) canSlideJump = false;
             timeToWaitForCooldown += Time.deltaTime;
             yield return null;
         }
@@ -581,7 +581,7 @@ public class playerMovement : MonoBehaviour
 
         if (!overchargedGravityFlip)
         {
-            if(current_PlayerRotationState == playerRotationState.nonFlipped) onAction_Flip_Start.Invoke();
+            if (current_PlayerRotationState == playerRotationState.nonFlipped) onAction_Flip_Start.Invoke();
             else onAction_Flip_End.Invoke();
         }
         else
@@ -600,7 +600,8 @@ public class playerMovement : MonoBehaviour
         float tempTimer = 0;
         while (tempTimer < timeInSeconds_ToFlip)
         {
-            directionalOrientation.transform.localEulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
+
+            directionalOrientation.transform.Find("CameraHolder").transform.eulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
             tempTimer += Time.deltaTime;
             yield return null;
         }
