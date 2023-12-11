@@ -183,7 +183,11 @@ public class playerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (gravityAffected) applyGravity();
-        if (canAffectRotation) transform.rotation = directionalOrientation.transform.rotation;
+        if (canAffectRotation) 
+        {
+            Vector3 tempRot = new Vector3(directionalOrientation.transform.eulerAngles.x, directionalOrientation.transform.rotation.y, directionalOrientation.transform.Find("CameraHolder").transform.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(tempRot);
+        }
         if (canAffectMovement)
         {
             applyHorizontalAcceleration();
@@ -300,15 +304,25 @@ public class playerMovement : MonoBehaviour
 
     private void getPlayerInput()
     {
-        current_playerDirectionalVector = directionalOrientation.transform.forward *
+        if(current_PlayerRotationState == playerRotationState.nonFlipped)
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
             directionalOrientation.transform.right *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
+        } else
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y -
+            directionalOrientation.transform.right *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
+        }
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
         if (current_PlayerInputActions.playerMovment.Slide.IsPressed()) StartCoroutine(action_Slide());
-        if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) StartCoroutine(action_Jump());
+        if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame() && !grounded) StartCoroutine(action_Jump());
+        else if(current_PlayerInputActions.playerMovment.Jump.IsPressed() && grounded) StartCoroutine(action_Jump());
         if (current_PlayerInputActions.playerMovment.FlipGravity.WasPressedThisFrame()) StartCoroutine(action_Flip());
     }
 
@@ -605,7 +619,7 @@ public class playerMovement : MonoBehaviour
             tempTimer += Time.deltaTime;
             yield return null;
         }
-
+        transform.localEulerAngles += new Vector3(0, 0, 180);
         current_CoyoteTime = 0;
         grounded = false;
 
