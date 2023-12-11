@@ -25,7 +25,7 @@ public class meleeBruiserAI : MonoBehaviour
     private playerHealth ref_PlayerStats;
     private Animator ref_meleeAnimator;
     private enemyStats ref_EnemyStats;
-    private LayerMask ref_playerLayer;
+    public LayerMask ref_playerLayer;
     #endregion
 
     private void Awake()
@@ -35,7 +35,7 @@ public class meleeBruiserAI : MonoBehaviour
         ref_PlayerStats = ref_PlayerObj.GetComponent<playerHealth>();
         ref_meleeAnimator = GetComponent<Animator>();
         ref_EnemyStats = GetComponent<enemyStats>();
-        ref_playerLayer = ref_PlayerObj.layer;
+       // ref_playerLayer = ref_PlayerObj.layer;
 
         ref_EnemyStats.onDamageTaken.AddListener(startTakeDamage);
     }
@@ -44,11 +44,11 @@ public class meleeBruiserAI : MonoBehaviour
     {
         if (ref_NavMeshAgent.velocity.magnitude > 0 && currentAIState == bruiserAIStates.following) ref_meleeAnimator.Play("BasicMeleeWalk");
         if (currentAIState == bruiserAIStates.following) ref_NavMeshAgent.SetDestination(ref_PlayerObj.transform.position);
-        else if (canPunch && Vector3.Distance(transform.position, ref_PlayerObj.transform.position) <= distanceToPunchPlayer) StartCoroutine(action_PunchPlayer());
+        if (canPunch && Vector3.Distance(transform.position, ref_PlayerObj.transform.position) <= distanceToPunchPlayer) StartCoroutine(action_PunchPlayer());
 
         if (hitboxActive_Punch)
         {
-            if(Physics.CheckBox(transform.position + punchAttackHitboxCenter, punchAttackHitboxSize, transform.rotation, ref_playerLayer))
+            if(Physics.CheckBox(transform.localPosition + punchAttackHitboxCenter, punchAttackHitboxSize, transform.localRotation, ref_playerLayer))
             {
                 StartCoroutine(ref_PlayerStats.takeDamage(1));
             }
@@ -62,8 +62,8 @@ public class meleeBruiserAI : MonoBehaviour
         else if (canPunch) Gizmos.color = Color.green;
         else Gizmos.color = Color.yellow;
 
-        Gizmos.DrawSphere(transform.position + punchAttackHitboxCenter, 0.05f);
-        Gizmos.DrawWireCube(transform.position + punchAttackHitboxCenter, punchAttackHitboxSize * 2f);
+        Gizmos.DrawSphere(transform.localPosition + punchAttackHitboxCenter, 0.05f);
+        Gizmos.DrawWireCube(transform.localPosition + punchAttackHitboxCenter, punchAttackHitboxSize * 2f);
         #endregion
     }
 

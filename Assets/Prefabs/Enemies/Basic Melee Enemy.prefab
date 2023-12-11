@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8412280548184099628}
   - component: {fileID: 7121471657364119923}
   - component: {fileID: 7423844078839269297}
-  - component: {fileID: 4316724540016721733}
   - component: {fileID: 4343454892006027904}
+  - component: {fileID: 6400306043264206916}
   m_Layer: 8
   m_Name: Basic Melee Enemy
   m_TagString: Enemy
@@ -99,27 +99,6 @@ MonoBehaviour:
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4316724540016721733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2644451572962075471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dec30035300178498d5e7f1279c4655, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentAIState: 0
-  canPunch: 1
-  punchAttackCooldown: 2.5
-  hitStunDuration: 0.5
-  hitboxActive_Punch: 0
-  timeBeforePunchAttack: 0.05
-  distanceToPunchPlayer: 2
-  punchAttackHitboxCenter: {x: 0, y: 1.25, z: 0.5}
-  punchAttackHitboxSize: {x: 0.5, y: 0.5, z: 0.25}
 --- !u!195 &4343454892006027904
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -131,10 +110,10 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 15
-  m_Acceleration: 8
+  m_Acceleration: 50
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -142,6 +121,30 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6400306043264206916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2644451572962075471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b873675f313e54d8b89ec01cf3026c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAIState: 0
+  canPunch: 1
+  punchAttackCooldown: 2.5
+  hitStunDuration: 0.5
+  hitboxActive_Punch: 0
+  timeBeforePunchAttack: 0.05
+  distanceToPunchPlayer: 4
+  punchAttackHitboxCenter: {x: 0, y: 1.25, z: 0.5}
+  punchAttackHitboxSize: {x: 0.5, y: 0.5, z: 0.5}
+  ref_playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1001 &825571683547843996
 PrefabInstance:
   m_ObjectHideFlags: 0

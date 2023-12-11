@@ -67,7 +67,7 @@ public class playerJuice : MonoBehaviour
 
 
         Vector3 localRBVelocity = objThatFollows.transform.parent.transform.InverseTransformDirection(rb.velocity);
-        Vector3 targetPos = new Vector3(sideLagDistance + (-Mathf.Clamp(localRBVelocity.x, -15, 15) / 100),
+        Vector3 targetPos = new Vector3(sideLagDistance * (-Mathf.Clamp(localRBVelocity.x, -15, 15) / 100),
             heightLagDifference * (-Mathf.Clamp(localRBVelocity.y, -15, 15) / 100),
             frontLagDifference * (-Mathf.Clamp(localRBVelocity.z, -15, 15) / 100));
 
