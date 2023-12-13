@@ -14,7 +14,7 @@ public class roomEnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if(playerInRoom && !spawnerActive && waves.Count <= currentWaveIndex-1)
+        if(playerInRoom && !spawnerActive && waves.Count >= currentWaveIndex)
         {
             if (waves[currentWaveIndex].noEnemiesRemaining && enemiesRemaining.Count <= 0 || !waves[currentWaveIndex].noEnemiesRemaining)
             {
