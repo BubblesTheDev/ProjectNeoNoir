@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{6696e061-5555-4024-8582-89d58fdcd2a6}">
+		<property name="assetPath">
+			<value>Sliding sound effect.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.3990476190476189</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7b97db15-e2df-4e58-a513-ffe8389781e2}</destination>
+		</relationship>
+	</object>
+</objects>
