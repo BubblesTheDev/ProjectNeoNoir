@@ -46,11 +46,11 @@ public class playerAudio : MonoBehaviour
     }
     private void playDashSound()
     {
-        AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
+       AudioManager.instance.PlaySFX(FMODEvents.instance.dashSFX, this.transform.position);
     }
     private void startSlideSound()
     {
-        AudioManager.instance.PlaySlideSFX();
+       AudioManager.instance.PlaySlideSFX(true);
     }
     private void startSlamSound()
     {
@@ -62,7 +62,7 @@ public class playerAudio : MonoBehaviour
     }
     private void stopSlideSound()
     {
-        
+        AudioManager.instance.PlaySlideSFX(false);
     }
     private void playSlamEndSound()
     {
