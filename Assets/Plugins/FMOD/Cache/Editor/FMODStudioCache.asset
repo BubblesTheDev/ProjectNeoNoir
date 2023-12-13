@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638380733542202701
+  lastModified: 638367773983209844
   FileSizes:
   - Name: Desktop
     Value: 1508512
@@ -186,12 +186,13 @@ MonoBehaviour:
   - {fileID: -960567780894804745}
   - {fileID: -1768820465465701210}
   - {fileID: 5541465778415878518}
+  - {fileID: 6641238648295066897}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3007531110623088639}
   StringsBanks:
   - {fileID: 1590631789720631276}
-  cacheTime: 638380736705268203
+  cacheTime: 638380747718845881
   cacheVersion: 131608
 --- !u!114 &1590631789720631276
 MonoBehaviour:
@@ -208,10 +209,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638380733521754696
+  lastModified: 638380747718825931
   FileSizes:
   - Name: Desktop
-    Value: 1676
+    Value: 1718
   Exists: 1
 --- !u!114 &3007531110623088639
 MonoBehaviour:
@@ -228,7 +229,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638380733521734811
+  lastModified: 638367773983090161
   FileSizes:
   - Name: Desktop
     Value: 1486
@@ -248,10 +249,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638380736705268203
+  lastModified: 638380747718845881
   FileSizes:
   - Name: Desktop
-    Value: 152480
+    Value: 185856
   Exists: 1
 --- !u!114 &4023185743054466139
 MonoBehaviour:
@@ -361,6 +362,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1850
+--- !u!114 &6641238648295066897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Sliding SFX
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Sliding SFX
+  Guid:
+    Data1: 183932647
+    Data2: 1314470019
+    Data3: 1168790170
+    Data4: -835152268
+  Banks:
+  - {fileID: 3554470872376053765}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3399
 --- !u!114 &7081418972501285641
 MonoBehaviour:
   m_ObjectHideFlags: 0
