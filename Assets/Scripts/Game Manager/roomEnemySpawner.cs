@@ -29,6 +29,7 @@ public class roomEnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(waves[currentWaveIndex].delayBeforeWave);
         for (int i = 0; i < waves[currentWaveIndex].enemies.Count; i++)
         {
+            AudioManager.instance.PlaySFX(FMODEvents.instance.enemySpawn, this.transform.position);
             GameObject temp = Instantiate(waves[currentWaveIndex].enemies[i].enemyToSpawn, 
                 waves[currentWaveIndex].enemies[i].spawnPoint.transform.position, 
                 waves[currentWaveIndex].enemies[i].spawnPoint.transform.rotation, 
