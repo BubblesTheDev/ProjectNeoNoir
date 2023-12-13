@@ -47,7 +47,7 @@ public class playerMovement : MonoBehaviour
 
     #region horizontal Movement
     [Space, Header("Horizontal Movement")]
-    [SerializeField] private Vector3 horizontal_playerVelocity;
+    public Vector3 horizontal_playerVelocity;
     public float acceleration_Ground, acceleration_Air;
     public float terminalVelocity_Ground, terminalVelocity_Air;
     public float speedStopThreshold;
@@ -56,7 +56,7 @@ public class playerMovement : MonoBehaviour
 
     #region Vertical Movement
     [Space, Header("Vertical Movement")]
-    [SerializeField] private Vector3 vertical_playerVelocity;
+    public Vector3 vertical_playerVelocity;
     public float jumpHeight;
     public int numberOf_MidairJumps = 1;
     private int current_NumberOfMidairJumps;
@@ -183,7 +183,11 @@ public class playerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (gravityAffected) applyGravity();
-        if (canAffectRotation) transform.rotation = directionalOrientation.transform.rotation;
+        if (canAffectRotation) 
+        {
+            Vector3 tempRot = new Vector3(directionalOrientation.transform.eulerAngles.x, directionalOrientation.transform.rotation.y, directionalOrientation.transform.Find("CameraHolder").transform.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(tempRot);
+        }
         if (canAffectMovement)
         {
             applyHorizontalAcceleration();
@@ -300,15 +304,25 @@ public class playerMovement : MonoBehaviour
 
     private void getPlayerInput()
     {
-        current_playerDirectionalVector = directionalOrientation.transform.forward *
+        if(current_PlayerRotationState == playerRotationState.nonFlipped)
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y +
             directionalOrientation.transform.right *
             current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
+        } else
+        {
+            current_playerDirectionalVector = directionalOrientation.transform.forward *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().y -
+            directionalOrientation.transform.right *
+            current_PlayerInputActions.playerMovment.HorizontalMovement.ReadValue<Vector2>().x;
+        }
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
         if (current_PlayerInputActions.playerMovment.Slide.IsPressed()) StartCoroutine(action_Slide());
-        if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame()) StartCoroutine(action_Jump());
+        if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame() && !grounded) StartCoroutine(action_Jump());
+        else if(current_PlayerInputActions.playerMovment.Jump.IsPressed() && grounded) StartCoroutine(action_Jump());
         if (current_PlayerInputActions.playerMovment.FlipGravity.WasPressedThisFrame()) StartCoroutine(action_Flip());
     }
 
@@ -440,8 +454,8 @@ public class playerMovement : MonoBehaviour
             horizontal_playerVelocity += directionalOrientation.transform.forward.normalized * acceleration_SlideJumpBoost;
         }
         else onAction_Jump_Start.Invoke();
-        
-        
+
+
         yield return new WaitForSeconds(0.015f);
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_jumpCooldownTime);
@@ -489,7 +503,7 @@ public class playerMovement : MonoBehaviour
         current_playerMovementAction = playerMovementAction.moving;
         yield return new WaitForSeconds(action_dashCooldownTime);
         action_CanDash = true;
-        
+
     }
     private IEnumerator action_Slide()
     {
@@ -522,8 +536,8 @@ public class playerMovement : MonoBehaviour
         float timeToWaitForCooldown = 0;
         while (canSlideJump || !action_CanSlide)
         {
-            if(timeToWaitForCooldown >= action_dashCooldownTime) action_CanSlide = true;
-            if(timeToWaitForCooldown >= timeInSeconds_ExtraJumpCoyoteTime) canSlideJump = false;
+            if (timeToWaitForCooldown >= action_dashCooldownTime) action_CanSlide = true;
+            if (timeToWaitForCooldown >= timeInSeconds_ExtraJumpCoyoteTime) canSlideJump = false;
             timeToWaitForCooldown += Time.deltaTime;
             yield return null;
         }
@@ -581,7 +595,7 @@ public class playerMovement : MonoBehaviour
 
         if (!overchargedGravityFlip)
         {
-            if(current_PlayerRotationState == playerRotationState.nonFlipped) onAction_Flip_Start.Invoke();
+            if (current_PlayerRotationState == playerRotationState.nonFlipped) onAction_Flip_Start.Invoke();
             else onAction_Flip_End.Invoke();
         }
         else
@@ -600,11 +614,12 @@ public class playerMovement : MonoBehaviour
         float tempTimer = 0;
         while (tempTimer < timeInSeconds_ToFlip)
         {
-            directionalOrientation.transform.localEulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
+
+            directionalOrientation.transform.Find("CameraHolder").transform.eulerAngles += new Vector3(0, 0, (180 / timeInSeconds_ToFlip) * Time.deltaTime);
             tempTimer += Time.deltaTime;
             yield return null;
         }
-
+        transform.localEulerAngles += new Vector3(0, 0, 180);
         current_CoyoteTime = 0;
         grounded = false;
 
