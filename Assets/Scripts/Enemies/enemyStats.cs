@@ -12,6 +12,8 @@ public class enemyStats : MonoBehaviour
     public float moveSpeed;
     public float ragDollTime;
 
+    public roomEnemySpawner spawner;
+
     private void Update()
     {
         if (currentHP <= 0) die();
@@ -21,7 +23,7 @@ public class enemyStats : MonoBehaviour
     {
         if (GetComponent<basicRangedAI>()) Destroy(GetComponent<basicRangedAI>());
         else if (GetComponent<meleeBruiserAI>()) Destroy(GetComponent<meleeBruiserAI>());
-
+        spawner.enemiesRemaining.Remove(gameObject);
 
         StartCoroutine(ragDollEnemy(15f));
         Destroy(gameObject, 0f);

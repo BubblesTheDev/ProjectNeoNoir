@@ -9,7 +9,7 @@ public class roomEnemySpawner : MonoBehaviour
     [SerializeField] private List<wave> waves = new List<wave>();
     [SerializeField] bool spawnerActive = false, playerInRoom = false;
     [SerializeField] private float timeBetweenEnemySpawns;
-    [SerializeField] private List<GameObject> enemiesRemaining = new List<GameObject>();
+    public List<GameObject> enemiesRemaining = new List<GameObject>();
 
 
     private void Update()
@@ -29,10 +29,13 @@ public class roomEnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(waves[currentWaveIndex].delayBeforeWave);
         for (int i = 0; i < waves[currentWaveIndex].enemies.Count; i++)
         {
-            enemiesRemaining.Add(Instantiate(waves[currentWaveIndex].enemies[i].enemyToSpawn, 
+            GameObject temp = Instantiate(waves[currentWaveIndex].enemies[i].enemyToSpawn, 
                 waves[currentWaveIndex].enemies[i].spawnPoint.transform.position, 
                 waves[currentWaveIndex].enemies[i].spawnPoint.transform.rotation, 
-                GameObject.Find("EnemyHolder").transform));
+                GameObject.Find("EnemyHolder").transform);
+
+            enemiesRemaining.Add(temp);
+            temp.GetComponent<enemyStats>().spawner = GetComponent<roomEnemySpawner>();
             yield return new WaitForSeconds(timeBetweenEnemySpawns);
         }
         spawnerActive = false;
