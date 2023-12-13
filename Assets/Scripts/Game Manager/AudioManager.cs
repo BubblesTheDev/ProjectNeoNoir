@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.UIElements;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
     private List<EventInstance> eventInstances;
 
     private EventInstance musicEventInstance;
+
+    FMOD.Studio.EventInstance slidingSFX;
 
     public static AudioManager instance { get; private set; }
 
@@ -44,6 +48,23 @@ public class AudioManager : MonoBehaviour
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
         eventInstances.Add(eventInstance);
         return eventInstance;
+    }
+
+    public void PlaySlideSFX(Boolean sliding)
+    {
+        if (sliding == true)
+        {
+            slidingSFX = RuntimeManager.CreateInstance(FMODEvents.instance.slideSFX);
+            slidingSFX.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+            slidingSFX.start();
+        }
+
+        if (sliding == false)
+        {
+           slidingSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            Debug.Log("stop sliding");
+        }
+     
     }
 
     private void CleanUp()
