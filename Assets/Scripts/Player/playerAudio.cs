@@ -50,7 +50,7 @@ public class playerAudio : MonoBehaviour
     }
     private void startSlideSound()
     {
-
+        AudioManager.instance.PlaySlideSFX();
     }
     private void startSlamSound()
     {

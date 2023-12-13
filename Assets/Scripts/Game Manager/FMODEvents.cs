@@ -24,6 +24,7 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference jumpSFX { get; private set; }
     [field: SerializeField] public EventReference dashSFX { get; private set; }
     [field: SerializeField] public EventReference regenSFX { get; private set; }
+    [field: SerializeField] public EventReference slideSFX { get; private set; }
 
     public static FMODEvents instance {  get; private set; }
 
