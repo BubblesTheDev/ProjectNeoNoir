@@ -23,10 +23,12 @@ public class playerJuice : MonoBehaviour
     private Vector3 headbobOriginalPosition;
     private Rigidbody rb;
     private cameraControl camControl;
+    private playerMovement playerMoveScript;
     private void Awake()
     {
         rb = GameObject.Find("Player").GetComponent<Rigidbody>();
         camControl = GameObject.Find("Player").GetComponent<cameraControl>();
+        playerMoveScript = GameObject.Find("Player").GetComponent<playerMovement>();
         headbobOriginalPosition = objThatFollows.transform.localPosition;
         playerJuiceReference = this;
 
@@ -36,6 +38,7 @@ public class playerJuice : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (playerMoveScript.grounded && playerMoveScript.current_playerMovementAction == playerMovementAction.moving) enableHeadbob = true; else enableHeadbob = false;
         smoothFollow();
         headbob();
     }
@@ -54,7 +57,7 @@ public class playerJuice : MonoBehaviour
         if (!enableHeadbob) return;
 
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * frequency.y * headbobIntensity) * amplitude.y * headbobIntensity;
+        pos.y -= Mathf.Abs(Mathf.Sin(Time.time * frequency.y * headbobIntensity) * amplitude.y * headbobIntensity);
         pos.x += Mathf.Sin(Time.time * frequency.x * headbobIntensity) * amplitude.x * headbobIntensity;
 
         if (rb.velocity.magnitude > headbobActivateLimit) objThatFollows.transform.localPosition += pos;
@@ -67,7 +70,7 @@ public class playerJuice : MonoBehaviour
 
 
         Vector3 localRBVelocity = objThatFollows.transform.parent.transform.InverseTransformDirection(rb.velocity);
-        Vector3 targetPos = new Vector3(sideLagDistance + (-Mathf.Clamp(localRBVelocity.x, -15, 15) / 100),
+        Vector3 targetPos = new Vector3(sideLagDistance * (-Mathf.Clamp(localRBVelocity.x, -15, 15) / 100),
             heightLagDifference * (-Mathf.Clamp(localRBVelocity.y, -15, 15) / 100),
             frontLagDifference * (-Mathf.Clamp(localRBVelocity.z, -15, 15) / 100));
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 using UnityEngine.VFX;
 
 public class implosionBullet : MonoBehaviour
@@ -22,6 +23,8 @@ public class implosionBullet : MonoBehaviour
     [SerializeField] private float pullForce;
     [SerializeField] private float maxDistance;
     [SerializeField] private float stoppingDistance;
+    [SerializeField] private float overFlowMaxTime;
+    [SerializeField] private bool isPulling;
 
 
     [Space, Header("VFX Variables")]
@@ -65,7 +68,7 @@ public class implosionBullet : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isDead) Destroy(gameObject, 5f);
+        if (isDead && !isPulling) Destroy(gameObject, 5f);
     }
 
     void implosion()
@@ -90,19 +93,41 @@ public class implosionBullet : MonoBehaviour
 
     IEnumerator pullPlayer()
     {
-
         GameObject player = GameObject.Find("Player");
         GameObject orientation = GameObject.Find("Orientation");
+        playerMovement tempReference = player.GetComponent<playerMovement>();
+
+        isPulling = true;
+
+        float overFlowTime = 0;
         while (Vector3.Distance(player.transform.position, transform.position) > stoppingDistance)
         {
-            player.GetComponent<Rigidbody>().AddForce((transform.position - player.transform.position).normalized * pullForce, ForceMode.Force);
+            Vector3 tempDirVector = (transform.position - player.transform.position).normalized;
+            
+            tempReference.horizontal_playerVelocity += new Vector3(tempDirVector.x, 0, tempDirVector.z) * pullForce * Time.deltaTime;
+            tempReference.vertical_playerVelocity += new Vector3(0, tempDirVector.y, 0) * pullForce * Time.deltaTime;
+            tempReference.canAffectMovement = false;
+            tempReference.gravityAffected = false;
+            tempReference.dragAffected = false;
+            tempReference.current_playerMovementAction = playerMovementAction.jumping;
+
             gravityChain.positionCount = 2;
             gravityChain.SetPosition(0, transform.position);
             gravityChain.SetPosition(1, orientation.transform.position + (-Vector3.up * 0.5f));
-            gravity.gravityReference.useGravity = false;
+
+            overFlowTime += Time.deltaTime;
+            if(overFlowTime > overFlowMaxTime || Vector3.Distance(player.transform.position, transform.position) <= stoppingDistance) yield break;
             yield return null;
         }
-        gravity.gravityReference.useGravity = true;
+
+        tempReference.canAffectMovement = true;
+        tempReference.gravityAffected = true;
+        tempReference.dragAffected = true;
+        tempReference.current_playerMovementAction = playerMovementAction.moving;
+        gravityChain.positionCount = 1;
+
+        yield return null;
+        isPulling = false;
         isDead = true;
     }
 

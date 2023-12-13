@@ -24,7 +24,7 @@ public class gunnerProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) StartCoroutine(other.gameObject.GetComponent<playerHealth>().takeDamage(damage));
-        Destroy(gameObject);
+        if(!other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
     }
 
 }

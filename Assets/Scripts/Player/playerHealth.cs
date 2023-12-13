@@ -40,9 +40,12 @@ public class playerHealth : MonoBehaviour
 
         if (rb.velocity.magnitude > 0 || rb.velocity.magnitude < 0)
         {
-            float movementStaticIncrease = Mathf.Sqrt(Mathf.Pow(rb.velocity.magnitude, 2));
-            currentStaticEnergy += staticEnergyRate * (1+(movementStaticIncrease / movementMulti)) * Time.deltaTime;
-            if (currentStaticEnergy >= maxStaticEnergy) currentStaticEnergy = maxStaticEnergy;
+            if(currentHP < 5)
+            {
+                float movementStaticIncrease = Mathf.Sqrt(Mathf.Pow(rb.velocity.magnitude, 2));
+                currentStaticEnergy += staticEnergyRate * (1 + (movementStaticIncrease / movementMulti)) * Time.deltaTime;
+                if (currentStaticEnergy >= maxStaticEnergy) currentStaticEnergy = maxStaticEnergy;
+            }
         }
         if (Input.GetKeyDown(KeyCode.F1)) StartCoroutine(takeDamage(1));
     }

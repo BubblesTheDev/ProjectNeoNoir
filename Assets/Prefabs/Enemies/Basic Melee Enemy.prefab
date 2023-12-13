@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7954663573278458718}
-  - component: {fileID: 7121471657364119923}
   - component: {fileID: 8412280548184099628}
+  - component: {fileID: 7121471657364119923}
   - component: {fileID: 7423844078839269297}
-  - component: {fileID: 4919911670346043991}
   - component: {fileID: 4343454892006027904}
+  - component: {fileID: 6400306043264206916}
   m_Layer: 8
   m_Name: Basic Melee Enemy
   m_TagString: Enemy
@@ -37,6 +37,27 @@ Transform:
   - {fileID: 936674432590604919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8412280548184099628
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2644451572962075471}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 952929a45b4f9f74cb3246106d9bd007, type: 3}
+  m_Controller: {fileID: 9100000, guid: 20a93fc4be5856f4aaf8dff0905e193b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!64 &7121471657364119923
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59,27 +80,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8839368762345780380, guid: 77049c2abfe42d14ebced0822479a168, type: 3}
---- !u!95 &8412280548184099628
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2644451572962075471}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 952929a45b4f9f74cb3246106d9bd007, type: 3}
-  m_Controller: {fileID: 9100000, guid: 20a93fc4be5856f4aaf8dff0905e193b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7423844078839269297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,32 +95,10 @@ MonoBehaviour:
   currentHP: 3
   maxHp: 3
   moveSpeed: 40
-  fireDuration: 4
-  oilDuration: 5
-  stunDuration: 1
-  fireTickDmg: 0.5
-  oilPercentSlow: 0.5
-  effectsOnEnemy: 0
+  ragDollTime: 0
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4919911670346043991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2644451572962075471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19def585dbffa2a40871de501accf23d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 15
-  cooldownTime: 1
-  distanceToStop: 2.5
-  hurtBox: {fileID: 0}
-  meleeAnimator: {fileID: 8412280548184099628}
 --- !u!195 &4343454892006027904
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -132,17 +110,41 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 15
-  m_Acceleration: 8
+  m_Acceleration: 50
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6400306043264206916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2644451572962075471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b873675f313e54d8b89ec01cf3026c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAIState: 0
+  canPunch: 1
+  punchAttackCooldown: 2.5
+  hitStunDuration: 0.5
+  hitboxActive_Punch: 0
+  timeBeforePunchAttack: 0.05
+  distanceToPunchPlayer: 4
+  punchAttackHitboxCenter: {x: 0, y: 1.25, z: 0.65}
+  punchAttackHitboxSize: {x: 0.5, y: 0.5, z: 0.5}
+  ref_playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1001 &825571683547843996
 PrefabInstance:
   m_ObjectHideFlags: 0

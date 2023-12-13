@@ -50,44 +50,28 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: dragAffected
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: action_jumpCooldownTime
     value: 0.1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: action_CanJump
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: action_dashCooldownTime
-    value: 0.1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: action_CanDash
-    value: 1
+    value: 0.05
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: action_slideCooldownTime
     value: 0.1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: action_CanSlide
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: action_slamCooldownTime
     value: 0.1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: action_CanSlam
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: action_flipCooldownTime
-    value: 0.1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: action_CanFlip
-    value: 1
+    value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: groundCheck_PositionalOffset.x
@@ -95,19 +79,27 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: groundCheck_PositionalOffset.y
-    value: -1.45
+    value: -0.45
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: groundCheck_PositionalOffset.z
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: timeInSeconds_GroundedCoyoteTime
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: current_CoyoteTime
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: groundCheck_Distance
-    value: 0.25
+    value: 1.25
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: groundCheck_LayersToHit.m_Bits
-    value: 64
+    value: 6
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: horizontal_playerVelocity.x
@@ -122,16 +114,20 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: acceleration
+    propertyPath: acceleration_Ground
     value: 500
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: acceleration_Air
+    value: 200
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: terminalVelocity_Ground
-    value: 17
+    value: 20
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: terminalVelocity_Air
-    value: 25
+    value: 50
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: speedStopThreshold
@@ -158,6 +154,10 @@ Preset:
     value: 12
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: numberOf_MidairJumps
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: gravityAcceleration
     value: 25
     objectReference: {fileID: 0}
@@ -174,16 +174,32 @@ Preset:
     value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: dashDuration
+    value: 0.1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: numberOf_MaximumDashCharges
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: timeInSeconds_ForASingleCharge
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: acceleration_Slide
     value: 1000
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: acceleration_EndSlideJump
-    value: 0
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: timeInSeconds_ExtraJumpCoyoteTime
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: terminalVelocity_Slide
-    value: 28
+    value: 25
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: colliderHeight_normal
@@ -215,7 +231,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: timeInSeconds_ToFlip
-    value: 0
+    value: 0.4
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: directionalVector_NonFlipped.x
@@ -239,6 +255,18 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: directionalVector_Flipped.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: rotationalOffset.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: rotationalOffset.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: rotationalOffset.z
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -271,6 +299,26 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: onAction_Flip_End.m_PersistentCalls.m_Calls.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: debug_ShowGroundedRay
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: debug_ShowJumpHeight
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: debug_ShowDashDistance
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: debug_showPlayerSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: debug_showAllowedActions
     value: 0
     objectReference: {fileID: 0}
   m_ExcludedProperties: []

@@ -23,12 +23,12 @@ public class PlayerHUD : MonoBehaviour
 
 
     [Space, Header("Gravswitch UI Variables")]
-    [SerializeField] private float maxGravCharge;
-    [SerializeField] private float currentGravCharge;
     [SerializeField] private float arrowGlowTime;
+    [SerializeField] private Color arrowColor = new Color(0, 228, 255);
+    [SerializeField] private Image gravSlider;
 
     private playerHealth healthStats;
-    private movement movementStats;
+    private playerMovement movementStats;
 
 
     [Space, Header("Weapon HUD")]
@@ -40,14 +40,24 @@ public class PlayerHUD : MonoBehaviour
     private void Awake()
     {
         healthStats = GameObject.Find("Player").GetComponent<playerHealth>();
-        movementStats = GameObject.Find("Player").GetComponent<movement>();
-        startPos = HUD.transform.position;
+        movementStats = GameObject.Find("Player").GetComponent<playerMovement>();
 
         setupStats();
 
         healthStats.tookDamage.AddListener(startDecreasingHP);
         healthStats.healedDamage.AddListener(increaseHP);
+        movementStats.onAction_Flip_Start.AddListener(flipGrav);
+        movementStats.onAction_Flip_End.AddListener(flipGrav);
         im_HUD = HUD.GetComponent<Image>();
+        
+
+
+    }
+
+    private void Start()
+    {
+        startPos = HUD.transform.position;
+
     }
 
     private void Update()
@@ -57,7 +67,6 @@ public class PlayerHUD : MonoBehaviour
         else pistolIcon.enabled = false;
         if (shotgun.GetComponent<weaponBase>().weaponIsEquipped) shotgunIcon.enabled = true;
         else shotgunIcon.enabled = false;
-
     }
 
 
@@ -69,7 +78,9 @@ public class PlayerHUD : MonoBehaviour
         healthDrain.value = healthStats.maxHp;
 
         staticMeter.maxValue = healthStats.maxStaticEnergy;
-        staminaBar.maxValue = 3;
+        staminaBar.maxValue = movementStats.numberOf_MaximumDashCharges;
+        gravSwitch.maxValue = movementStats.timeInSeconds_GravityFlipDuration;
+        gravSwitch.value = movementStats.timeInSeconds_GravityFlipDuration;
     }
 
     void startDecreasingHP()
@@ -97,12 +108,30 @@ public class PlayerHUD : MonoBehaviour
 
     void constantStats()
     {
-        if (!movementStats.instantRecharge)
-        {
-            staminaBar.value = movementStats.staminaCharges + movementStats.currentCharge;
-        }
-        else staminaBar.value = movementStats.staminaCharges;
+        staminaBar.value = movementStats.current_NumberOfDashCharges;
         staticMeter.value = healthStats.currentStaticEnergy;
+        gravSwitch.value = movementStats.timeInSeconds_CurrentGravityFlipDuration;
+    }
+
+    private void flipGrav()
+    {
+        StartCoroutine(switchGravity());
+    }
+
+    IEnumerator switchGravity()
+    {
+        gravSlider.color = Color.white;
+        yield return new WaitForSeconds(movementStats.timeInSeconds_ToFlip + arrowGlowTime);
+        if (movementStats.overchargedGravityFlip) 
+        { 
+            gravSlider.color = Color.red;
+            yield return new WaitForSeconds(movementStats.timeInSeconds_ToFullyRechargeGravity);
+            gravSlider.color = arrowColor;
+        }
+        else
+        {
+            gravSlider.color = arrowColor;
+        }
     }
 
     private IEnumerator ShakeHUD()
@@ -114,7 +143,7 @@ public class PlayerHUD : MonoBehaviour
             timer += Time.deltaTime;
             float shakeCurve = screenshakeAnimationCurve.Evaluate(timer / healthStats.immunityTime);
             HUD.transform.position = startPos + shakeCurve * shakeStrength * Random.insideUnitSphere;
-            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve);
+            im_HUD.color = Color.Lerp(Color.black, Color.red, shakeCurve * (shakeStrength / 40));
             yield return null;
         }
         HUD.transform.position = startPos;

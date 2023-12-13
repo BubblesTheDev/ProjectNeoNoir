@@ -71,6 +71,15 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FlipGravity"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e97964e-486b-4a7c-865b-0301121522b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Slam"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca4352d8-c382-445b-9007-8a6ee1fd2838"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""FlipGravity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +228,7 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         m_playerMovment_Dash = m_playerMovment.FindAction("Dash", throwIfNotFound: true);
         m_playerMovment_Slide = m_playerMovment.FindAction("Slide", throwIfNotFound: true);
         m_playerMovment_Slam = m_playerMovment.FindAction("Slam", throwIfNotFound: true);
+        m_playerMovment_FlipGravity = m_playerMovment.FindAction("FlipGravity", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -274,6 +295,7 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_playerMovment_Dash;
     private readonly InputAction m_playerMovment_Slide;
     private readonly InputAction m_playerMovment_Slam;
+    private readonly InputAction m_playerMovment_FlipGravity;
     public struct PlayerMovmentActions
     {
         private @MovementInputActions m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_playerMovment_Dash;
         public InputAction @Slide => m_Wrapper.m_playerMovment_Slide;
         public InputAction @Slam => m_Wrapper.m_playerMovment_Slam;
+        public InputAction @FlipGravity => m_Wrapper.m_playerMovment_FlipGravity;
         public InputActionMap Get() { return m_Wrapper.m_playerMovment; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -307,6 +330,9 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
             @Slam.started += instance.OnSlam;
             @Slam.performed += instance.OnSlam;
             @Slam.canceled += instance.OnSlam;
+            @FlipGravity.started += instance.OnFlipGravity;
+            @FlipGravity.performed += instance.OnFlipGravity;
+            @FlipGravity.canceled += instance.OnFlipGravity;
         }
 
         private void UnregisterCallbacks(IPlayerMovmentActions instance)
@@ -326,6 +352,9 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
             @Slam.started -= instance.OnSlam;
             @Slam.performed -= instance.OnSlam;
             @Slam.canceled -= instance.OnSlam;
+            @FlipGravity.started -= instance.OnFlipGravity;
+            @FlipGravity.performed -= instance.OnFlipGravity;
+            @FlipGravity.canceled -= instance.OnFlipGravity;
         }
 
         public void RemoveCallbacks(IPlayerMovmentActions instance)
@@ -368,5 +397,6 @@ public partial class @MovementInputActions: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnSlide(InputAction.CallbackContext context);
         void OnSlam(InputAction.CallbackContext context);
+        void OnFlipGravity(InputAction.CallbackContext context);
     }
 }

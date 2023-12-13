@@ -20,7 +20,7 @@ public class enemyStats : MonoBehaviour
     void die()
     {
         if (GetComponent<basicRangedAI>()) Destroy(GetComponent<basicRangedAI>());
-        else if (GetComponent<basicMeleeAI>()) Destroy(GetComponent<basicMeleeAI>());
+        else if (GetComponent<meleeBruiserAI>()) Destroy(GetComponent<meleeBruiserAI>());
 
 
         StartCoroutine(ragDollEnemy(15f));
