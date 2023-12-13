@@ -14,14 +14,11 @@ public class roomEnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if(playerInRoom)
+        if(playerInRoom && !spawnerActive && waves.Count <= currentWaveIndex-1)
         {
-            if(!spawnerActive) 
+            if (waves[currentWaveIndex].noEnemiesRemaining && enemiesRemaining.Count <= 0 || !waves[currentWaveIndex].noEnemiesRemaining)
             {
-                if (waves[currentWaveIndex].noEnemiesRemaining && enemiesRemaining.Count <= 0 || !waves[currentWaveIndex].noEnemiesRemaining)
-                {
-                   StartCoroutine(spawnWave());
-                }
+                StartCoroutine(spawnWave());
             }
         }
     }
