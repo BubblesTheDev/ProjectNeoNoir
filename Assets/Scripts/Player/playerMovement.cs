@@ -440,6 +440,8 @@ public class playerMovement : MonoBehaviour
             yield break;
         }
         else if (!grounded && current_NumberOfMidairJumps > 0) current_NumberOfMidairJumps--;
+        if(current_playerMovementAction == playerMovementAction.sliding) onAction_Slide_End.Invoke();
+
 
         current_playerMovementAction = playerMovementAction.jumping;
         action_CanJump = false;
