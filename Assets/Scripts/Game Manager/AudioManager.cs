@@ -50,21 +50,17 @@ public class AudioManager : MonoBehaviour
         return eventInstance;
     }
 
-    public void PlaySlideSFX(Boolean sliding)
+    public void PlaySlideSFX()
     {
-        if (sliding == true)
-        {
             slidingSFX = RuntimeManager.CreateInstance(FMODEvents.instance.slideSFX);
             slidingSFX.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
             slidingSFX.start();
-        }
+            slidingSFX.release();
+    }
 
-        if (sliding == false)
-        {
-            slidingSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-           //Debug.Log("stop sliding");
-        }
-     
+    public void StopSlideSFX()
+    {
+        slidingSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     private void CleanUp()
