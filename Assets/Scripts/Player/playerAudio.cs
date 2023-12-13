@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,11 +62,11 @@ public class playerAudio : MonoBehaviour
     }
     private void stopSlideSound()
     {
-
+        
     }
     private void playSlamEndSound()
     {
-
+  
     }
     private void playFlippedFlipSound()
     {
@@ -95,7 +96,7 @@ public class playerAudio : MonoBehaviour
 
     private void playHealedSound()
     {
-
+        AudioManager.instance.PlaySFX(FMODEvents.instance.regenSFX, this.transform.position);
     }
 
 }
