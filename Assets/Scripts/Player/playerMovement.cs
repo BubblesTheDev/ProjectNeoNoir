@@ -320,7 +320,7 @@ public class playerMovement : MonoBehaviour
 
         if (current_PlayerInputActions.playerMovment.Dash.WasPressedThisFrame()) StartCoroutine(action_Dash());
         if (current_PlayerInputActions.playerMovment.Slam.WasPressedThisFrame()) StartCoroutine(action_Slam());
-        if (current_PlayerInputActions.playerMovment.Slide.IsPressed()) StartCoroutine(action_Slide());
+        if (current_PlayerInputActions.playerMovment.Slide.IsPressed() && !current_PlayerInputActions.playerMovment.Jump.IsPressed()) StartCoroutine(action_Slide());
         if (current_PlayerInputActions.playerMovment.Jump.WasPressedThisFrame() && !grounded) StartCoroutine(action_Jump());
         else if(current_PlayerInputActions.playerMovment.Jump.IsPressed() && grounded) StartCoroutine(action_Jump());
         if (current_PlayerInputActions.playerMovment.FlipGravity.WasPressedThisFrame()) StartCoroutine(action_Flip());
@@ -559,7 +559,7 @@ public class playerMovement : MonoBehaviour
 
         while (tempTimer < timeInSeconds_ToRaise)
         {
-            vertical_playerVelocity = directionalOrientation.transform.up * (raiseDistance_Slam / timeInSeconds_ToRaise);
+            vertical_playerVelocity = transform.up * (raiseDistance_Slam / timeInSeconds_ToRaise);
 
             tempTimer += Time.deltaTime;
             yield return null;
@@ -567,7 +567,7 @@ public class playerMovement : MonoBehaviour
         vertical_playerVelocity = Vector3.zero;
         while (!grounded)
         {
-            vertical_playerVelocity += -directionalOrientation.transform.up * acceleration_Slam_Downward * Time.deltaTime;
+            vertical_playerVelocity += -transform.up * acceleration_Slam_Downward * Time.deltaTime;
             yield return null;
 
         }
