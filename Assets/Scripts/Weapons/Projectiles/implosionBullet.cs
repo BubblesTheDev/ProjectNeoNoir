@@ -25,6 +25,7 @@ public class implosionBullet : MonoBehaviour
     [SerializeField] private float stoppingDistance;
     [SerializeField] private float overFlowMaxTime;
     [SerializeField] private bool isPulling;
+    [HideInInspector] public bool canPull = true;
 
 
     [Space, Header("VFX Variables")]
@@ -59,7 +60,7 @@ public class implosionBullet : MonoBehaviour
 
     private void Update()
     {
-        if (inputActions.Combat.Fire2.WasPressedThisFrame() && !isDead && Vector3.Distance(transform.position, GameObject.Find("Player").transform.position) < maxDistance)
+        if (inputActions.Combat.Fire2.WasPressedThisFrame() && !isDead && Vector3.Distance(transform.position, GameObject.Find("Player").transform.position) < maxDistance && canPull)
         {
             StartCoroutine(pullPlayer());
             implosion();
@@ -98,6 +99,7 @@ public class implosionBullet : MonoBehaviour
         playerMovement tempReference = player.GetComponent<playerMovement>();
 
         isPulling = true;
+        canPull = false;
 
         float overFlowTime = 0;
         while (Vector3.Distance(player.transform.position, transform.position) > stoppingDistance)

@@ -12,7 +12,7 @@ public class pistolPower : weaponPowerBase
     [SerializeField] private float chargeScaleVel;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject firePoint;
-
+    private GameObject mostRecentBullet;
 
     [Header("VFX Variables")]
     [SerializeField] private VisualEffect chargeEffect;
@@ -48,7 +48,7 @@ public class pistolPower : weaponPowerBase
     public override IEnumerator usePower()
     {
         if (!canUsePower) yield break;
-
+        if(mostRecentBullet != null) mostRecentBullet.GetComponent<implosionBullet>().canPull = false;
         canUsePower = false;
 
         while(inputActions.Combat.Fire2.IsPressed())
@@ -69,7 +69,7 @@ public class pistolPower : weaponPowerBase
     {
         GameObject temp = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation, GameObject.Find("Bullet Storage").transform);
         float chargePercent = currentChargeTime / maxChargeTime;
-
+        mostRecentBullet = temp;
         shakingObj.transform.localPosition = startingPos;
 
         temp.transform.localScale *= 1 + (chargeScaleMulti * chargePercent);
