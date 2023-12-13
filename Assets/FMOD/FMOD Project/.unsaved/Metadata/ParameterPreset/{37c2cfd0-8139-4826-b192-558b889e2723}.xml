@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{37c2cfd0-8139-4826-b192-558b889e2723}">
+		<property name="name">
+			<value>SoundFade</value>
+		</property>
+		<relationship name="folder">
+			<destination>{3391db65-69fc-40e5-af32-2c850b0b5046}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{fda71691-1324-4963-a1a7-dbd4696239c8}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{fda71691-1324-4963-a1a7-dbd4696239c8}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

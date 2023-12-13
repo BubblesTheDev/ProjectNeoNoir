@@ -61,8 +61,8 @@ public class AudioManager : MonoBehaviour
 
         if (sliding == false)
         {
-           slidingSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            Debug.Log("stop sliding");
+            slidingSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+           //Debug.Log("stop sliding");
         }
      
     }
