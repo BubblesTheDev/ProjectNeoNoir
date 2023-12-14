@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638380888799680636
+  lastModified: 638380972342842864
   FileSizes:
   - Name: Desktop
     Value: 1508512
@@ -47,6 +47,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 116600
+--- !u!114 &-7353903619244289297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Enemy Respawn/Enemy Spawn
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Enemy Respawn/Enemy Spawn
+  Guid:
+    Data1: 1202879218
+    Data2: 1103647499
+    Data3: 627866271
+    Data4: -1358632427
+  Banks:
+  - {fileID: 3554470872376053765}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 504
 --- !u!114 &-7169193491349355849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,33 +128,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-4754760656491468085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Enemy Spawn
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Enemy Spawn
-  Guid:
-    Data1: 1546181499
-    Data2: 1319078812
-    Data3: -846030425
-    Data4: -221930339
-  Banks:
-  - {fileID: 3554470872376053765}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 2003
 --- !u!114 &-1768820465465701210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +203,6 @@ MonoBehaviour:
   - {fileID: -7751529498400552234}
   - {fileID: 7273446975872980850}
   - {fileID: 8721254714375528169}
-  - {fileID: 7158228713120288495}
   - {fileID: 4023185743054466139}
   - {fileID: -6497474993315520006}
   - {fileID: -7169193491349355849}
@@ -214,13 +213,13 @@ MonoBehaviour:
   - {fileID: -1768820465465701210}
   - {fileID: 5541465778415878518}
   - {fileID: 6641238648295066897}
-  - {fileID: -4754760656491468085}
+  - {fileID: -7353903619244289297}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3007531110623088639}
   StringsBanks:
   - {fileID: 1590631789720631276}
-  cacheTime: 638380889893913488
+  cacheTime: 638380972344370656
   cacheVersion: 131608
 --- !u!114 &1590631789720631276
 MonoBehaviour:
@@ -237,10 +236,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638380889893893544
+  lastModified: 638380972342453924
   FileSizes:
   - Name: Desktop
-    Value: 1766
+    Value: 1716
   Exists: 1
 --- !u!114 &3007531110623088639
 MonoBehaviour:
@@ -257,7 +256,7 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638380888797763847
+  lastModified: 638380972342414021
   FileSizes:
   - Name: Desktop
     Value: 1486
@@ -277,10 +276,10 @@ MonoBehaviour:
   Path: Assets/FMOD/FMOD Project/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638380889893913488
+  lastModified: 638380972344370656
   FileSizes:
   - Name: Desktop
-    Value: 187840
+    Value: 164864
   Exists: 1
 --- !u!114 &4023185743054466139
 MonoBehaviour:
@@ -435,33 +434,6 @@ MonoBehaviour:
     Data2: 1179578397
     Data3: -1150068829
     Data4: 579732067
-  Banks:
-  - {fileID: 3554470872376053765}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &7158228713120288495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Enemy Respawn/Enemy Respawn
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Enemy Respawn/Enemy Respawn
-  Guid:
-    Data1: 93584658
-    Data2: 1263675326
-    Data3: -1399696706
-    Data4: -2047675087
   Banks:
   - {fileID: 3554470872376053765}
   IsStream: 0
