@@ -3,7 +3,37 @@ guid: 488d23108d991ba4ba642dfb29e0074b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blades
+    second: {fileID: 2100000, guid: e90b1f09ed80dd249972c4ae5bbc2dd7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2100000, guid: 11b431125374a5247bedbe5aecba93eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassHead
+    second: {fileID: 2100000, guid: 5adcd821d33bb3c4082097a475d759e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gold_Parts
+    second: {fileID: 2100000, guid: d468e917c17a8e14fbf1fa17cf5edb36, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grey
+    second: {fileID: 2100000, guid: 76c03099b8839bd47b6bcdbf4cb59e2b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: InnerHead
+    second: {fileID: 2100000, guid: 7ac11dde89c68104a879f0a6e5c3a17a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
